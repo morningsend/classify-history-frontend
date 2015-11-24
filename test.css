@@ -5,21 +5,50 @@ body{
 }
 
 #container {
-	width: 300px;
+	width: 400px;
 	display: relative;
 	margin: 0 auto;
 	padding-top: 10%;
 }
 
 #block{
-
-	background-color: white;
+	width: 300px;
+	margin: 0 auto;
+	background-color: #969696;
 	padding: 16px;
-	box-shadow: 0px 0px 60px 0px rgba(0,0,0,0.75);
 	border-radius: 8px;
 	opacity: 0.7;
-	-webkit-box-shadow: 16px 12px 5px 0px rgba(0,0,0,0.75);
-	-moz-box-shadow: 16px 12px 5px 0px rgba(0,0,0,0.75);
 	box-shadow: 16px 12px 5px 0px rgba(0,0,0,0.75);
+	box-shadow: 0px 0px 52px 25px rgba(0,0,0,0.73);
+	box-shadow: 0px 0px 52px 25px rgba(0,0,0,0.73);
+	box-shadow: 0px 0px 52px 25px rgba(0,0,0,0.73);
 }
 
+.myButton {
+	-moz-box-shadow: 0px 10px 14px -7px #3e7327;
+	-webkit-box-shadow: 0px 10px 14px -7px #3e7327;
+	box-shadow: 0px 10px 14px -7px #3e7327;
+	background-color:#808582;
+	-moz-border-radius:3px;
+	-webkit-border-radius:3px;
+	border-radius:3px;
+	border:3px solid #363436;
+	display:inline-block;
+	cursor:pointer;
+	color:#545254;
+	font-family:Arial;
+	font-size:13px;
+	font-weight:bold;
+	padding:6px 18px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #000000;
+}
+.myButton:hover {
+	background-color:#524f52;
+}
+.myButton:active {
+	position:relative;
+	top:1px;
+}
+	
+	

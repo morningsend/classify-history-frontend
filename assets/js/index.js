@@ -1,0 +1,14 @@
+var React = require("react");
+var App = require("./app");
+var LoginForm = require("./loginform.jsx");
+var Counter = require("./counter");
+var FilterList = require("./filterlist");
+var Image = require("./image");
+console.log(Image);
+console.log(LoginForm);
+console.log(FilterList);
+React.render(<App />, document.getElementById("react-app"));
+React.render(<LoginForm />, document.getElementById("login-form-container"));
+React.render(<Counter />, document.getElementById("counter-app"));
+React.render(<FilterList />, document.getElementById("filter-list-app"));
+React.render(<Image />, document.getElementById("image-app"));

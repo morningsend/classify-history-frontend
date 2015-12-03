@@ -25,7 +25,7 @@ Then you can go to http://localhost:8050/webpack-dev-server/ to view webpack ser
 
 go to http://localhost:8050/index.html/ to view the test website I have written.
 
-Webpack Dev server will load the index.html file and compile all react JSX code into java script behind the scene and watcht for any changes you make to the files in assets/js folder. If you have made an error, it will show you in the console.
+Webpack Dev server will load the index.html file and compile all react JSX code into java script behind the scene and watch for any changes you make to the files in assets/js folder. If you have made an error, it will show you in the console.
 
 
 Note: Please develop the React.js code using ES5 syntax for now 

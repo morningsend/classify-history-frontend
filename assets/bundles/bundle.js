@@ -47,19 +47,10 @@
 	"use strict";
 
 	var React = __webpack_require__(1);
-	var App = __webpack_require__(158);
-	var LoginForm = __webpack_require__(159);
-	var Counter = __webpack_require__(160);
-	var FilterList = __webpack_require__(161);
-	var Image = __webpack_require__(162);
-	console.log(Image);
-	console.log(LoginForm);
-	console.log(FilterList);
-	React.render(React.createElement(App, null), document.getElementById("react-app"));
-	React.render(React.createElement(LoginForm, null), document.getElementById("login-form-container"));
-	React.render(React.createElement(Counter, null), document.getElementById("counter-app"));
-	React.render(React.createElement(FilterList, null), document.getElementById("filter-list-app"));
-	React.render(React.createElement(Image, null), document.getElementById("image-app"));
+	var ReactDOM = __webpack_require__(158);
+	var App = __webpack_require__(159);
+
+	ReactDOM.render(React.createElement(App, null), document.querySelector('#wrapper'));
 
 /***/ },
 /* 1 */
@@ -19643,15 +19634,10 @@
 /* 158 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
-	var React = __webpack_require__(1);
-	module.exports = React.createClass({
-	    displayName: "App",
-	    render: function render() {
-	        return React.createElement("h1", null, "Hello World!");
-	    }
-	});
+	module.exports = __webpack_require__(3);
+
 
 /***/ },
 /* 159 */
@@ -19660,77 +19646,46 @@
 	"use strict";
 
 	var React = __webpack_require__(1);
+	var ReactDOM = __webpack_require__(158);
+	var FilterList = __webpack_require__(160);
+	var ImageIcon = __webpack_require__(161);
+	var Dialog = __webpack_require__(162);
+	var LoginDialog = __webpack_require__(163);
 
-	var loginFormClass = React.createClass({
-	    displayName: "LoginForm",
-	    render: function render() {
-	        return React.createElement(
-	            "form",
-	            { action: "/login", method: "POST" },
-	            React.createElement("input", { name: "username", type: "text", placeholder: "Enter User Name" }),
-	            React.createElement("input", { name: "password", type: "password", placeholder: "Enter Password" }),
-	            React.createElement(
-	                "button",
-	                { "class": "btn btn-default", id: "login-btn", type: "submit" },
-	                "Comfirm"
-	            ),
-	            React.createElement(
-	                "button",
-	                { "class": "btn btn-light", id: "cancel-btn", type: "cancel" },
-	                "Cancel"
-	            )
-	        );
-	    },
-	    getInitialState: function getInitialState() {
-	        return { display: "block" };
-	    }
+	var App = React.createClass({
+		displayName: "App",
+
+		render: function render() {
+
+			return React.createElement(
+				"div",
+				null,
+				React.createElement(FilterList, null),
+				React.createElement(ImageIcon, { url: "assets/images/image1.jpg", width: "100", height: "100" }),
+				React.createElement(
+					Dialog,
+					null,
+					React.createElement(
+						"h1",
+						null,
+						"Hello world"
+					),
+					React.createElement(
+						"h2",
+						null,
+						"React is cool"
+					)
+				),
+				React.createElement(LoginDialog, null)
+			);
+		}
+
 	});
 
-	module.exports = loginFormClass;
+	module.exports = App;
 
 /***/ },
 /* 160 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	var React = __webpack_require__(1);
-
-	var counter = React.createClass({
-	    displayName: "counter",
-
-	    increment: function increment() {
-	        this.setState({
-	            count: (this.state.count + 1) % 10
-	        });
-	    },
-	    getInitialState: function getInitialState() {
-	        return {
-	            count: 0
-	        };
-	    },
-	    render: function render() {
-	        return React.createElement(
-	            "div",
-	            { "class": "wrapper" },
-	            React.createElement(
-	                "h1",
-	                null,
-	                this.state.count
-	            ),
-	            React.createElement(
-	                "button",
-	                { type: "button", onClick: this.increment },
-	                "Click!"
-	            )
-	        );
-	    }
-	});
-
-	module.exports = counter;
-
-/***/ },
-/* 161 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -19786,54 +19741,160 @@
 	module.exports = FilteredList;
 
 /***/ },
+/* 161 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(1);
+
+	var ImageIcon = React.createClass({
+		displayName: 'ImageIcon',
+
+		render: function render() {
+
+			return React.createElement(
+				'div',
+				null,
+				React.createElement(
+					'div',
+					null,
+					React.createElement('img', { width: this.props.width, height: this.props.height, src: this.props.url }),
+					' '
+				),
+				React.createElement(
+					'div',
+					null,
+					React.createElement(
+						'h5',
+						null,
+						'Filename.jpg'
+					)
+				)
+			);
+		}
+	});
+
+	module.exports = ImageIcon;
+
+/***/ },
 /* 162 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var React = __webpack_require__(1);
 
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	var Dialog = React.createClass({
+		displayName: "Dialog",
+
+		getInitialState: function getInitialState() {
+			return {
+				showOverlay: this.props.modal && this.props.modal == "true"
+			};
+		},
+
+		render: function render() {
+			var styles = {
+				width: '300px',
+				height: '200px',
+				color: '#ccc',
+				padding: '20px',
+				backgroundColor: '#999'
+			};
+			var overlayStyle = {
+				width: '100%',
+				minHeight: '100%'
+
+			};
+
+			return React.createElement(
+				"div",
+				{ className: "dialog-modal-overlay", style: overlayStyle },
+				React.createElement(
+					"div",
+					{ className: "dialog-wrapper", style: styles },
+					React.createElement(
+						"i",
+						null,
+						"This is in the dialog"
+					),
+					this.props.children
+				)
+			);
+		}
 	});
-	exports.Image = undefined;
 
-	var _react = __webpack_require__(1);
+	module.exports = Dialog;
 
-	var _react2 = _interopRequireDefault(_react);
+/***/ },
+/* 163 */
+/***/ function(module, exports, __webpack_require__) {
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	'use strict';
 
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	var React = __webpack_require__(1);
+	var Dialog = __webpack_require__(162);
 
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	var LoginDialog = React.createClass({
+		displayName: 'LoginDialog',
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+		getInitialState: function getInitialState() {
+			var state = {
+				username: "",
+				password: ""
+			};
+			return state;
+		},
 
-	var Image = exports.Image = (function (_React$Component) {
-	    _inherits(Image, _React$Component);
+		render: function render() {
+			return React.createElement(
+				Dialog,
+				null,
+				React.createElement(
+					'div',
+					null,
+					React.createElement('input', { type: 'username', size: '30', placeholder: 'Username', value: this.state.username, onChange: this.usernameFieldChanged }),
+					React.createElement('input', { type: 'password', size: '30', placeholder: 'password', value: this.state.password, onChange: this.passwordFieldChange })
+				),
+				React.createElement(
+					'div',
+					null,
+					React.createElement(
+						'button',
+						{ type: 'submit' },
+						'Log in'
+					),
+					React.createElement(
+						'button',
+						null,
+						'Cancel'
+					),
+					React.createElement(
+						'a',
+						{ href: '#' },
+						'Forgot password?'
+					)
+				)
+			);
+		},
+		usernameFieldChanged: function usernameFieldChanged(event) {
+			var newState = {
+				username: event.target.value,
+				password: this.state.password
+			};
+			this.setState(newState);
+		},
+		passwordFieldChange: function passwordFieldChange(event) {
+			var newState = {
+				username: this.state.username,
+				password: event.target.value
+			};
+			this.setState(newState);
+		}
+	});
 
-	    function Image(props) {
-	        _classCallCheck(this, Image);
-
-	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Image).call(this, props));
-
-	        _this.state = { url: props.url };
-	        return _this;
-	    }
-
-	    _createClass(Image, [{
-	        key: "render",
-	        value: function render() {
-	            return _react2.default.createElement("img", { url: this.state.url });
-	        }
-	    }]);
-
-	    return Image;
-	})(_react2.default.Component);
-
-	Image.propTypes = { url: _react2.default.PropTypes.string };
-	Image.defaultProps = { url: "http://www.lausd.k12.ca.us/Fleming_MS/students/Computer_Geek_Squad/elena/Elena/Graphics/white-tiger-0001.jpg" };
+	module.exports = LoginDialog;
 
 /***/ }
 /******/ ]);

@@ -19,7 +19,9 @@ module.exports = {
   module: {
     loaders: [
       { test: /\.jsx?$/, 
-       exclude: /node_modules/, 
+       include: [
+           path.resolve(__dirname, "assets")
+       ],
        loader: 'babel-loader',
        query: {
            presets:['es2015', 'react']

@@ -5,12 +5,14 @@ node_js:
     - "5.5.0"
     - "5.0.0"
     
-before_install: npm install -g webpack
+before_install: 
+    - npm install -g webpack
+    - npm install -g mocha
 
 install: 
     -npm install
 
-before_script: webpack 
+before_script: npm run build 
 
 script: npm run test
 

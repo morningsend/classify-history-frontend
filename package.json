@@ -49,6 +49,7 @@
     "webpack-dev-server": "^1.14.1"
   },
   "dependencies": {
+    "express": "^4.13.4",
     "jquery": "^2.2.0",
     "md5": "^2.0.0"
   }

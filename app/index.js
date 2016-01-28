@@ -1,9 +1,10 @@
 var React = require("react");
 var ReactDOM = require("react-dom");
-var App = require("./components/AppContainer.jsx");
 
+var TouchClassifyAppRoot = require("./components/TouchClassifyAppRoot.jsx");
+var Router = require("react-router");
 //require the style sheet. Webpack will package this.
-require('./less/style.less');
 
 
-ReactDOM.render(<App />, document.querySelector('#wrapper'));
+
+ReactDOM.render(<TouchClassifyAppRoot />, document.querySelector("#wrapper"));

@@ -2,7 +2,6 @@ var path = require("path");
 var webpack = require("webpack");
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 module.exports = {
-    context: path.join(__dirname + '/app'),
     entry: {
         index: path.resolve(__dirname, "app/index.js"),
     },
@@ -14,12 +13,8 @@ module.exports = {
     module :{
         loaders: [
             {
-                test: /\.jsx?$/,
-                exclude: /node_modules/,
-                loader: 'babel-loader',
-                query: {
-                    presets: ['es2015', 'react'],
-                }
+                test: /\.scss$/, 
+                loader: "style!css!sass"
             },
             {
                 test: /\.less$/,
@@ -29,10 +24,22 @@ module.exports = {
                 test: /\.css$/,
                 loader: "style!css",
             },
-            { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url-loader?limit=10000&minetype=application/font-woff" },
-            { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file-loader" }
-    
+            {   
+                test: /\.(ttf|eot|svg|woff|woff2)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+                loader: "file-loader" 
+            },
+            {
+                test: /\.jsx?$/,
+                exclude: /node_modules/,
+                loader: 'babel-loader',
+                query: {
+                    presets: ['es2015', 'react'],
+                }
+            }
         ]
     },
-    plugins: [ new ExtractTextPlugin("[name].css") ],
-}
+    //plugins: [ new ExtractTextPlugin("style.css",{ allChunks: true} )],
+    resolve: {
+        extensions: ['', '.js', '.json', '.jsx', '.css', '.less', '.scss'] 
+  }
+};

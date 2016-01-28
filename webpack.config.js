@@ -30,7 +30,8 @@ module.exports = {
             },
             {
                 test: /\.jsx?$/,
-                exclude: /node_modules/,
+                include: /app/,
+                exclude: /(node_modules|server)/,
                 loader: 'babel-loader',
                 query: {
                     presets: ['es2015', 'react'],

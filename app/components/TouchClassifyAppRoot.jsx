@@ -19,7 +19,7 @@ require('../less/style');
 var TouchClassifyAppRoot = React.createClass({
     getInitialState: function() {
         return {
-            loggedIn: true
+            loggedIn: false
         };
     },
     render : function() {

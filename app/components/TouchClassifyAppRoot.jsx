@@ -25,7 +25,7 @@ var TouchClassifyAppRoot = React.createClass({
         };
     },
     render : function() {
-        return (<div>
+        return (<div >
             <SinglePage>
                 <Draggable>
                     {this.state.loggedIn? <DashboardPage></DashboardPage> : <div><Login /></div> }

@@ -14,6 +14,8 @@ var AppBar = require("material-ui/lib/app-bar");
 var SinglePage = require("./SinglePageContainer");
 var Login = require("./Login");
 var DashboardPage = require("./DashboardPage");
+var Draggable = require("./Draggable");
+
 require('../less/style');
 
 var TouchClassifyAppRoot = React.createClass({
@@ -25,8 +27,11 @@ var TouchClassifyAppRoot = React.createClass({
     render : function() {
         return (<div>
             <SinglePage>
-                {this.state.loggedIn? <DashboardPage></DashboardPage> : <div><Login /></div> }
-            </SinglePage>           
+                <Draggable>
+                    {this.state.loggedIn? <DashboardPage></DashboardPage> : <div><Login /></div> }
+                </Draggable>
+            </SinglePage> 
+                      
         </div>);
     }
 });

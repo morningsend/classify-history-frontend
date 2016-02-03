@@ -2,7 +2,7 @@ var express = require("express");
 var session = require("express-session");
 var cookieParser = require("cookie-parser");
 var path = require("path");
-
+var accountController = require("./controllers/AccountController");
 var server = express();
 
 //configurations
@@ -40,8 +40,9 @@ server.use(session({
             sessionToken: ""
         }
 }));
-server.use("/", router);
-server.listen(port, host);
-
-console.log("server running on %s:%d", host, port);
-console.log("__dirname: %s", __dirname);
+server.use("/", homeRouter);
+server.use(accountController.rootUrl, accountController.router);
+server.listen(port, host, function(){
+    console.log("server running on %s:%d", host, port);
+    console.log("__dirname: %s", __dirname);
+});

@@ -1,4 +1,4 @@
-{
+module.exports = {
     "Users": [
         {
             "id": 1,
@@ -32,7 +32,7 @@
             "id": 1,
             "createdByUser": 1,
             "dateCreated": "2016/01/31 21:33:40",
-            "dateModified": "2016/01/31 21:33:40",
+            "dateModified": "2016/01/31 21:33:40"
         }
     ]
 }

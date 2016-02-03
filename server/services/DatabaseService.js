@@ -1,16 +1,23 @@
 var md5 = require("md5");
-var mockData = require("./mockdata.json");
 
 var DatabaseService = function(options){
     var data = {};
     if (options.useMock){
-        data = mockData;
+        data = options.mockData;
     }
     var users = {
-        findById: function(id){},
-        findByUsername: function(username){},
-        findByEmail: function(email){},
-        authenticate: function(credentials){}
+        findById: function(id){
+            return data.Users[0];
+        },
+        findByUsername: function(username){
+            return data.Users[0];
+        },
+        findByEmail: function(email){
+            return data.Users[0];
+        },
+        insertUser(user){
+            data.Users.append(user);
+        }
     }
     var connectDB = function(){}
     

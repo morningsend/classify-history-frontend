@@ -27,12 +27,12 @@ var TouchClassifyAppRoot = React.createClass({
     render : function() {
         return (<div >
             <SinglePage>
-                <Draggable>
-                    {this.state.loggedIn? <DashboardPage></DashboardPage> : <div><Login /></div> }
-                </Draggable>
+                {this.state.loggedIn? <DashboardPage></DashboardPage> : <Draggable><div><Login success={this.handleLogginSuccess} /></div></Draggable> }
             </SinglePage> 
-                      
         </div>);
+    },
+    handleLogginSuccess: function(event) {
+        this.setState({loggedIn: true});
     }
 });
 

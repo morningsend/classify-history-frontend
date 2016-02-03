@@ -15,14 +15,15 @@ var Draggable = React.createClass({
             rotate: 0
         };
     },
-
+    hammerEl: {},
     componentDidMount: function() {
         var self = this;
         var options = {
             direction: Hammer.DIRECTION_ALL
         };
-        var hammerEl = new Hammer(this.getDOMNode(), options);
-        hammerEl.on("pan", function(ev){
+        
+        this.hammerEl = new Hammer(this.getDOMNode(), options);
+        this.hammerEl.on("pan", function(ev){
             //console.log(ev);
             self.setState({
                 deltaX: ev.deltaX,
@@ -34,7 +35,7 @@ var Draggable = React.createClass({
         });
     },
     componentWillUnmount: function(){
-        hammerTime.off("pan");
+        this.hammerEl.off("pan");
     },
     handlePan: function(ev){
         
@@ -43,7 +44,7 @@ var Draggable = React.createClass({
         //console.log(this);
         var style = {
             //transition: "all 0.5s ease-in-out",
-            transform: "translate("+this.state.deltaX+"px," + this.state.deltaY+"px)", 
+            transform: "translate3d("+this.state.deltaX+"px," + this.state.deltaY+"px, 0)", 
         };
         return <div style={style}>{this.props.children}</div>;
     }

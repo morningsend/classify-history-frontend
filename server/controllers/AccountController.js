@@ -9,8 +9,6 @@ var AccountController = Controller({
     defineRoutes: function(router){
         var self = this;
         var rootUrl = this.rootUrl;
-        console.log(self);
-        console.log("accountController" + router);
         router.post("/login", function(request, response){
             response.end("login endpoint");
         });
@@ -23,5 +21,4 @@ var AccountController = Controller({
         return router;
     }
 });
-
 module.exports = AccountController;

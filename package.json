@@ -3,14 +3,12 @@
   "version": "1.0.0",
   "description": "React is a JavaScript library for building user interfaces.",
   "main": "index.js",
-  
   "scripts": {
     "test": "mocha",
     "dev-server": "webpack-dev-server --config webpack-dev-server.config.js --progress --colors --port 8081 --inline",
     "build": "webpack --colors --progress --config webpack.config.js",
     "start-backend": "node server/server.js"
   },
-  
   "author": "Zaiyang Li",
   "license": "ISC",
   "devDependencies": {
@@ -58,9 +56,11 @@
     "webpack-dev-server": "^1.14.1"
   },
   "dependencies": {
+    "body-parser": "^1.14.2",
     "express": "^4.13.4",
     "jquery": "^2.2.0",
     "md5": "^2.0.0",
+    "morgan": "^1.6.1",
     "promise": "^7.1.1"
   }
 }

@@ -48,6 +48,7 @@ var Login = React.createClass({
     },
     _afterLogin: function() {
         this.setState({ waitingForResponse : false});
+        this.props.success({token: "1234"});
     },
     _login: function(event) {
         this._beforeLogin();

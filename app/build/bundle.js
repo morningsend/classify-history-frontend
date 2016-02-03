@@ -19677,9 +19677,9 @@
 	var SinglePage = __webpack_require__(290);
 	var Login = __webpack_require__(291);
 	var DashboardPage = __webpack_require__(318);
-	var Draggable = __webpack_require__(353);
+	var Draggable = __webpack_require__(346);
 
-	__webpack_require__(355);
+	__webpack_require__(348);
 
 	var TouchClassifyAppRoot = React.createClass({
 	    displayName: "TouchClassifyAppRoot",
@@ -19696,17 +19696,20 @@
 	            React.createElement(
 	                SinglePage,
 	                null,
-	                React.createElement(
+	                this.state.loggedIn ? React.createElement(DashboardPage, null) : React.createElement(
 	                    Draggable,
 	                    null,
-	                    this.state.loggedIn ? React.createElement(DashboardPage, null) : React.createElement(
+	                    React.createElement(
 	                        "div",
 	                        null,
-	                        React.createElement(Login, null)
+	                        React.createElement(Login, { success: this.handleLogginSuccess })
 	                    )
 	                )
 	            )
 	        );
+	    },
+	    handleLogginSuccess: function handleLogginSuccess(event) {
+	        this.setState({ loggedIn: true });
 	    }
 	});
 
@@ -32377,6 +32380,7 @@
 	    },
 	    _afterLogin: function _afterLogin() {
 	        this.setState({ waitingForResponse: false });
+	        this.props.success({ token: "1234" });
 	    },
 	    _login: function _login(event) {
 	        this._beforeLogin();
@@ -35758,9 +35762,13 @@
 	var ToolbarSeparator = __webpack_require__(321);
 	var ToolbarTitle = __webpack_require__(322);
 	var LeftNav = __webpack_require__(323);
-	var MenuItem = __webpack_require__(338);
 
-	var Dashboard = __webpack_require__(352);
+	var Divider = __webpack_require__(338);
+	var List = __webpack_require__(340);
+	var ListItem = __webpack_require__(341);
+
+	var FontIcon = __webpack_require__(285);
+	var Dashboard = __webpack_require__(345);
 	var TopToolbar = React.createClass({
 	    displayName: "TopToolbar",
 
@@ -35802,50 +35810,63 @@
 	var Sidebar = React.createClass({
 	    displayName: "Sidebar",
 
+	    getInitialState: function getInitialState() {
+	        return {
+	            menuItemSeleted: -1
+	        };
+	    },
+	    fontIconStyle: {
+	        fontSize: "1.4em",
+	        marginRight: "2em"
+	    },
 	    render: function render() {
+	        var style = {
+	            overflow: "hidden-y"
+	        };
+	        var projectIcon = this._createIcon("assessment");
+	        var albumIcon = this._createIcon("photo");
 	        return React.createElement(
-	            LeftNav,
-	            { width: "255", docked: true },
+	            "div",
+	            { style: style },
 	            React.createElement(
-	                "div",
-	                null,
-	                "#"
-	            ),
-	            React.createElement(
-	                "div",
-	                null,
-	                "#"
-	            ),
-	            React.createElement(
-	                MenuItem,
-	                null,
-	                "Manage Projects"
-	            ),
-	            React.createElement(
-	                MenuItem,
-	                null,
-	                "Upload Images"
-	            ),
-	            React.createElement(
-	                MenuItem,
-	                null,
-	                "Browse"
-	            ),
-	            React.createElement(
-	                MenuItem,
-	                null,
-	                "Edit Tags Database"
-	            ),
-	            React.createElement(
-	                MenuItem,
-	                null,
-	                "Import"
-	            ),
-	            React.createElement(
-	                MenuItem,
-	                null,
-	                "Import"
+	                LeftNav,
+	                { width: 255, docked: true },
+	                React.createElement(
+	                    "div",
+	                    null,
+	                    "#"
+	                ),
+	                React.createElement(
+	                    "div",
+	                    null,
+	                    "#"
+	                ),
+	                React.createElement(
+	                    List,
+	                    null,
+	                    React.createElement(ListItem, { primaryText: "Projects Explorer", leftIcon: projectIcon }),
+	                    React.createElement(ListItem, { primaryText: "Albums Viewer", leftIcon: albumIcon })
+	                ),
+	                React.createElement(Divider, null),
+	                React.createElement(
+	                    "h3",
+	                    null,
+	                    "Tools"
+	                ),
+	                React.createElement(
+	                    List,
+	                    null,
+	                    React.createElement(ListItem, { primaryText: "Import" }),
+	                    React.createElement(ListItem, { primaryText: "Export" })
+	                )
 	            )
+	        );
+	    },
+	    _createIcon: function _createIcon(alias) {
+	        return React.createElement(
+	            FontIcon,
+	            { className: "material-icons md-dark", style: this.fontIconStyle },
+	            alias
 	        );
 	    }
 	});
@@ -39627,33 +39648,82 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDom = __webpack_require__(163);
+	var _muiThemeable = __webpack_require__(339);
 
-	var _reactDom2 = _interopRequireDefault(_reactDom);
+	var _muiThemeable2 = _interopRequireDefault(_muiThemeable);
 
-	var _reactAddonsPureRenderMixin = __webpack_require__(244);
+	var _styles = __webpack_require__(214);
 
-	var _reactAddonsPureRenderMixin2 = _interopRequireDefault(_reactAddonsPureRenderMixin);
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var _stylePropable = __webpack_require__(213);
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
-	var _stylePropable2 = _interopRequireDefault(_stylePropable);
+	var propTypes = {
+	  /**
+	   * CSS class that will be added to the divider's root element
+	   */
+	  className: _react2.default.PropTypes.string,
 
-	var _colors = __webpack_require__(237);
+	  /**
+	   * If true, the divider will be indented 72px
+	   */
+	  inset: _react2.default.PropTypes.bool,
 
-	var _colors2 = _interopRequireDefault(_colors);
+	  /**
+	   * Override the inline-styles of the root element.
+	   */
+	  style: _react2.default.PropTypes.object
+	};
 
-	var _popover = __webpack_require__(339);
+	var defaultProps = {
+	  inset: false
+	};
 
-	var _popover2 = _interopRequireDefault(_popover);
+	var Divider = function Divider(_ref) {
+	  var inset = _ref.inset;
+	  var muiTheme = _ref.muiTheme;
+	  var style = _ref.style;
 
-	var _check = __webpack_require__(344);
+	  var other = _objectWithoutProperties(_ref, ['inset', 'muiTheme', 'style']);
 
-	var _check2 = _interopRequireDefault(_check);
+	  var styles = {
+	    root: {
+	      margin: 0,
+	      marginTop: -1,
+	      marginLeft: inset ? 72 : 0,
+	      height: 1,
+	      border: 'none',
+	      backgroundColor: muiTheme.rawTheme.palette.borderColor
+	    }
+	  };
 
-	var _listItem = __webpack_require__(345);
+	  return _react2.default.createElement('hr', _extends({}, other, { style: (0, _styles.prepareStyles)(muiTheme, (0, _styles.mergeStyles)(styles.root, style)) }));
+	};
 
-	var _listItem2 = _interopRequireDefault(_listItem);
+	Divider.displayName = 'Divider';
+	Divider.propTypes = propTypes;
+	Divider.defaultProps = defaultProps;
+	Divider = (0, _muiThemeable2.default)(Divider);
+
+	exports.default = Divider;
+	module.exports = exports['default'];
+
+/***/ },
+/* 339 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = muiThemeable;
+
+	var _react = __webpack_require__(6);
+
+	var _react2 = _interopRequireDefault(_react);
 
 	var _lightRawTheme = __webpack_require__(258);
 
@@ -39663,83 +39733,94 @@
 
 	var _themeManager2 = _interopRequireDefault(_themeManager);
 
-	var _menu = __webpack_require__(350);
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var _menu2 = _interopRequireDefault(_menu);
+	function getDisplayName(WrappedComponent) {
+	  return WrappedComponent.displayName || WrappedComponent.name || 'Component';
+	}
+
+	function muiThemeable(WrappedComponent) {
+	  var MuiComponent = function MuiComponent(props, _ref) {
+	    var _ref$muiTheme = _ref.muiTheme;
+	    var muiTheme = _ref$muiTheme === undefined ? _themeManager2.default.getMuiTheme(_lightRawTheme2.default) : _ref$muiTheme;
+
+	    return _react2.default.createElement(WrappedComponent, _extends({}, props, { muiTheme: muiTheme }));
+	  };
+
+	  MuiComponent.displayName = getDisplayName(WrappedComponent);
+	  MuiComponent.contextTypes = {
+	    muiTheme: _react2.default.PropTypes.object
+	  };
+	  MuiComponent.childContextTypes = {
+	    muiTheme: _react2.default.PropTypes.object
+	  };
+
+	  return MuiComponent;
+	}
+	module.exports = exports['default'];
+
+/***/ },
+/* 340 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(6);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactAddonsPureRenderMixin = __webpack_require__(244);
+
+	var _reactAddonsPureRenderMixin2 = _interopRequireDefault(_reactAddonsPureRenderMixin);
+
+	var _propTypes = __webpack_require__(242);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
+
+	var _stylePropable = __webpack_require__(213);
+
+	var _stylePropable2 = _interopRequireDefault(_stylePropable);
+
+	var _typography = __webpack_require__(236);
+
+	var _typography2 = _interopRequireDefault(_typography);
+
+	var _paper = __webpack_require__(289);
+
+	var _paper2 = _interopRequireDefault(_paper);
+
+	var _lightRawTheme = __webpack_require__(258);
+
+	var _lightRawTheme2 = _interopRequireDefault(_lightRawTheme);
+
+	var _themeManager = __webpack_require__(262);
+
+	var _themeManager2 = _interopRequireDefault(_themeManager);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
-	var nestedMenuStyle = {
-	  position: 'relative'
-	};
-
-	var MenuItem = _react2.default.createClass({
-	  displayName: 'MenuItem',
+	var List = _react2.default.createClass({
+	  displayName: 'List',
 
 	  propTypes: {
 	    /**
-	     * If true, a left check mark will be rendered.
-	     */
-	    checked: _react2.default.PropTypes.bool,
-
-	    /**
-	     * Elements passed as children to inner ListItem.
+	     * These are usually ListItems that are passed to
+	     * be part of the list.
 	     */
 	    children: _react2.default.PropTypes.node,
 
 	    /**
-	     * Indicates if the menu should render with compact desktop styles.
+	     * If true, the subheader will be indented by 72px.
 	     */
-	    desktop: _react2.default.PropTypes.bool,
-
-	    /**
-	     * Disables a menu item.
-	     */
-	    disabled: _react2.default.PropTypes.bool,
-
-	    /**
-	     * Prop passed down to ListItem that tells it what kind of focus it has.
-	     */
-	    focusState: _react2.default.PropTypes.oneOf(['none', 'focused', 'keyboard-focused']),
-
-	    /**
-	     * Style overrides for the inner div.
-	     */
-	    innerDivStyle: _react2.default.PropTypes.object,
-
-	    /**
-	     * If true, the children will be indented.
-	     * Only needed when there is no leftIcon.
-	     */
-	    insetChildren: _react2.default.PropTypes.bool,
-
-	    /**
-	     * This is the SvgIcon or FontIcon to be displayed on the left side.
-	     */
-	    leftIcon: _react2.default.PropTypes.element,
-
-	    /**
-	     * Nested MenuItems for this MenuItem. Used to make nested menus.
-	     */
-	    menuItems: _react2.default.PropTypes.node,
-
-	    /**
-	     * Fired when the element is touchTapped.
-	     */
-	    onTouchTap: _react2.default.PropTypes.func,
-
-	    /**
-	     * This is the SvgIcon or FontIcon to be displayed on the right side.
-	     */
-	    rightIcon: _react2.default.PropTypes.element,
-
-	    /**
-	     * This is the block element that contains the secondary text.
-	     * If a string is passed in, a div tag will be rendered.
-	     */
-	    secondaryText: _react2.default.PropTypes.node,
+	    insetSubheader: _react2.default.PropTypes.bool,
 
 	    /**
 	     * Override the inline-styles of the root element.
@@ -39747,9 +39828,19 @@
 	    style: _react2.default.PropTypes.object,
 
 	    /**
-	     * The value of the menu item.
+	     * The subheader string that will be displayed at the top of the list.
 	     */
-	    value: _react2.default.PropTypes.any
+	    subheader: _react2.default.PropTypes.node,
+
+	    /**
+	     * The style object to override subheader styles.
+	     */
+	    subheaderStyle: _react2.default.PropTypes.object,
+
+	    /**
+	     * The zDepth prop passed to the Paper element inside list.
+	     */
+	    zDepth: _propTypes2.default.zDepth
 	  },
 
 	  contextTypes: {
@@ -39765,26 +39856,19 @@
 
 	  getDefaultProps: function getDefaultProps() {
 	    return {
-	      checked: false,
-	      desktop: false,
-	      disabled: false,
-	      focusState: 'none',
-	      insetChildren: false
+	      insetSubheader: false,
+	      zDepth: 0
 	    };
 	  },
 	  getInitialState: function getInitialState() {
 	    return {
-	      muiTheme: this.context.muiTheme ? this.context.muiTheme : _themeManager2.default.getMuiTheme(_lightRawTheme2.default),
-	      open: false
+	      muiTheme: this.context.muiTheme ? this.context.muiTheme : _themeManager2.default.getMuiTheme(_lightRawTheme2.default)
 	    };
 	  },
 	  getChildContext: function getChildContext() {
 	    return {
 	      muiTheme: this.state.muiTheme
 	    };
-	  },
-	  componentDidMount: function componentDidMount() {
-	    this._applyFocusState();
 	  },
 
 	  //to update theme inside state whenever a new theme is passed down
@@ -39792,1365 +39876,61 @@
 	  componentWillReceiveProps: function componentWillReceiveProps(nextProps, nextContext) {
 	    var newMuiTheme = nextContext.muiTheme ? nextContext.muiTheme : this.state.muiTheme;
 	    this.setState({ muiTheme: newMuiTheme });
-
-	    if (this.state.open && nextProps.focusState === 'none') {
-	      this._onRequestClose();
-	    }
-	  },
-	  componentDidUpdate: function componentDidUpdate() {
-	    this._applyFocusState();
-	  },
-	  componentWillUnmount: function componentWillUnmount() {
-	    if (this.state.open) {
-	      this.setState({
-	        open: false
-	      });
-	    }
-	  },
-	  _applyFocusState: function _applyFocusState() {
-	    this.refs.listItem.applyFocusState(this.props.focusState);
-	  },
-	  _cloneMenuItem: function _cloneMenuItem(item) {
-	    var _this = this;
-
-	    return _react2.default.cloneElement(item, {
-	      onTouchTap: function onTouchTap(event) {
-	        if (!item.props.menuItems) {
-	          _this._onRequestClose();
-	        }
-
-	        if (item.props.onTouchTap) {
-	          item.props.onTouchTap(event);
-	        }
-	      },
-	      onRequestClose: this._onRequestClose
-	    });
-	  },
-	  _onTouchTap: function _onTouchTap(event) {
-	    event.preventDefault();
-
-	    this.setState({
-	      open: true,
-	      anchorEl: _reactDom2.default.findDOMNode(this)
-	    });
-
-	    if (this.props.onTouchTap) {
-	      this.props.onTouchTap(event);
-	    }
-	  },
-	  _onRequestClose: function _onRequestClose() {
-	    this.setState({
-	      open: false,
-	      anchorEl: null
-	    });
 	  },
 	  render: function render() {
 	    var _props = this.props;
-	    var checked = _props.checked;
 	    var children = _props.children;
-	    var desktop = _props.desktop;
-	    var disabled = _props.disabled;
-	    var focusState = _props.focusState;
-	    var innerDivStyle = _props.innerDivStyle;
-	    var insetChildren = _props.insetChildren;
-	    var leftIcon = _props.leftIcon;
-	    var menuItems = _props.menuItems;
-	    var rightIcon = _props.rightIcon;
-	    var secondaryText = _props.secondaryText;
+	    var insetSubheader = _props.insetSubheader;
 	    var style = _props.style;
-	    var value = _props.value;
+	    var subheader = _props.subheader;
+	    var subheaderStyle = _props.subheaderStyle;
+	    var zDepth = _props.zDepth;
 
-	    var other = _objectWithoutProperties(_props, ['checked', 'children', 'desktop', 'disabled', 'focusState', 'innerDivStyle', 'insetChildren', 'leftIcon', 'menuItems', 'rightIcon', 'secondaryText', 'style', 'value']);
-
-	    var disabledColor = this.state.muiTheme.rawTheme.palette.disabledColor;
-	    var textColor = this.state.muiTheme.rawTheme.palette.textColor;
-	    var leftIndent = desktop ? 64 : 72;
-	    var sidePadding = desktop ? 24 : 16;
+	    var other = _objectWithoutProperties(_props, ['children', 'insetSubheader', 'style', 'subheader', 'subheaderStyle', 'zDepth']);
 
 	    var styles = {
 	      root: {
-	        color: disabled ? disabledColor : textColor,
-	        lineHeight: desktop ? '32px' : '48px',
-	        fontSize: desktop ? 15 : 16,
-	        whiteSpace: 'nowrap'
+	        padding: 0,
+	        paddingBottom: 8,
+	        paddingTop: subheader ? 0 : 8
 	      },
 
-	      innerDivStyle: {
-	        paddingLeft: leftIcon || insetChildren || checked ? leftIndent : sidePadding,
-	        paddingRight: sidePadding,
-	        paddingBottom: 0,
-	        paddingTop: 0
-	      },
-
-	      secondaryText: {
-	        float: 'right'
-	      },
-
-	      leftIconDesktop: {
-	        margin: 0,
-	        left: 24,
-	        top: 4
-	      },
-
-	      rightIconDesktop: {
-	        margin: 0,
-	        right: 24,
-	        top: 4,
-	        fill: _colors2.default.grey600
+	      subheader: {
+	        color: _typography2.default.textLightBlack,
+	        fontSize: 14,
+	        fontWeight: _typography2.default.fontWeightMedium,
+	        lineHeight: '48px',
+	        paddingLeft: insetSubheader ? 72 : 16
 	      }
 	    };
 
-	    var mergedRootStyles = this.mergeStyles(styles.root, style);
-	    var mergedInnerDivStyles = this.mergeStyles(styles.innerDivStyle, innerDivStyle);
-
-	    //Left Icon
-	    var leftIconElement = leftIcon ? leftIcon : checked ? _react2.default.createElement(_check2.default, null) : null;
-	    if (leftIconElement && desktop) {
-	      var mergedLeftIconStyles = this.mergeStyles(styles.leftIconDesktop, leftIconElement.props.style);
-	      leftIconElement = _react2.default.cloneElement(leftIconElement, { style: mergedLeftIconStyles });
-	    }
-
-	    //Right Icon
-	    var rightIconElement = undefined;
-	    if (rightIcon) {
-	      var mergedRightIconStyles = desktop ? this.mergeStyles(styles.rightIconDesktop, rightIcon.props.style) : rightIcon.props.style;
-	      rightIconElement = _react2.default.cloneElement(rightIcon, { style: mergedRightIconStyles });
-	    }
-
-	    //Secondary Text
-	    var secondaryTextElement = undefined;
-	    if (secondaryText) {
-	      var secondaryTextIsAnElement = _react2.default.isValidElement(secondaryText);
-	      var mergedSecondaryTextStyles = secondaryTextIsAnElement ? this.mergeStyles(styles.secondaryText, secondaryText.props.style) : null;
-
-	      secondaryTextElement = secondaryTextIsAnElement ? _react2.default.cloneElement(secondaryText, { style: mergedSecondaryTextStyles }) : _react2.default.createElement(
+	    var subheaderElement = undefined;
+	    if (subheader) {
+	      var mergedSubheaderStyles = this.mergeStyles(styles.subheader, subheaderStyle);
+	      subheaderElement = _react2.default.createElement(
 	        'div',
-	        { style: this.prepareStyles(styles.secondaryText) },
-	        secondaryText
+	        { style: this.prepareStyles(mergedSubheaderStyles) },
+	        subheader
 	      );
-	    }
-	    var childMenuPopover = undefined;
-	    if (menuItems) {
-	      childMenuPopover = _react2.default.createElement(
-	        _popover2.default,
-	        {
-	          anchorOrigin: { horizontal: 'right', vertical: 'top' },
-	          anchorEl: this.state.anchorEl,
-	          open: this.state.open,
-	          useLayerForClickAway: false,
-	          onRequestClose: this._onRequestClose
-	        },
-	        _react2.default.createElement(
-	          _menu2.default,
-	          { desktop: desktop, disabled: disabled, style: nestedMenuStyle },
-	          _react2.default.Children.map(menuItems, this._cloneMenuItem)
-	        )
-	      );
-	      other.onTouchTap = this._onTouchTap;
 	    }
 
 	    return _react2.default.createElement(
-	      _listItem2.default,
+	      _paper2.default,
 	      _extends({}, other, {
-	        disabled: disabled,
-	        innerDivStyle: mergedInnerDivStyles,
-	        insetChildren: insetChildren,
-	        leftIcon: leftIconElement,
-	        ref: 'listItem',
-	        rightIcon: rightIconElement,
-	        style: mergedRootStyles
+	        style: this.mergeStyles(styles.root, style),
+	        zDepth: zDepth
 	      }),
-	      children,
-	      secondaryTextElement,
-	      childMenuPopover
-	    );
-	  }
-	});
-
-	exports.default = MenuItem;
-	module.exports = exports['default'];
-
-/***/ },
-/* 339 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _react = __webpack_require__(6);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactDom = __webpack_require__(163);
-
-	var _reactDom2 = _interopRequireDefault(_reactDom);
-
-	var _windowListenable = __webpack_require__(324);
-
-	var _windowListenable2 = _interopRequireDefault(_windowListenable);
-
-	var _renderToLayer = __webpack_require__(340);
-
-	var _renderToLayer2 = _interopRequireDefault(_renderToLayer);
-
-	var _stylePropable = __webpack_require__(213);
-
-	var _stylePropable2 = _interopRequireDefault(_stylePropable);
-
-	var _propTypes = __webpack_require__(242);
-
-	var _propTypes2 = _interopRequireDefault(_propTypes);
-
-	var _paper = __webpack_require__(289);
-
-	var _paper2 = _interopRequireDefault(_paper);
-
-	var _lodash = __webpack_require__(341);
-
-	var _lodash2 = _interopRequireDefault(_lodash);
-
-	var _lightRawTheme = __webpack_require__(258);
-
-	var _lightRawTheme2 = _interopRequireDefault(_lightRawTheme);
-
-	var _themeManager = __webpack_require__(262);
-
-	var _themeManager2 = _interopRequireDefault(_themeManager);
-
-	var _popoverDefaultAnimation = __webpack_require__(343);
-
-	var _popoverDefaultAnimation2 = _interopRequireDefault(_popoverDefaultAnimation);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-	var Popover = _react2.default.createClass({
-	  displayName: 'Popover',
-
-	  propTypes: {
-	    /**
-	     * This is the DOM element that will be used to set the position of the
-	     * component.
-	     */
-	    anchorEl: _react2.default.PropTypes.object,
-
-	    /**
-	     * This is the point on the anchor where the popover
-	     * targetOrigin will stick to.
-	     * Options:
-	     * vertical: [top, middle, bottom]
-	     * horizontal: [left, center, right]
-	     */
-	    anchorOrigin: _propTypes2.default.origin,
-
-	    /**
-	     * If true, the popover will apply transitions when
-	     * added it gets added to the DOM.
-	     */
-	    animated: _react2.default.PropTypes.bool,
-
-	    /**
-	     * Override the default animation component used.
-	     */
-	    animation: _react2.default.PropTypes.func,
-
-	    /**
-	     * If true, the popover will hide when the anchor scrolls off the screen
-	     */
-	    autoCloseWhenOffScreen: _react2.default.PropTypes.bool,
-
-	    /**
-	     * If true, the popover (potentially) ignores targetOrigin
-	     * and anchorOrigin to make itself fit on screen,
-	     * which is useful for mobile devices.
-	     */
-	    canAutoPosition: _react2.default.PropTypes.bool,
-
-	    /**
-	     * Use this property to render your component inside the `Popover`.
-	     */
-	    children: _react2.default.PropTypes.node,
-
-	    /**
-	     * The css class name of the root element.
-	     */
-	    className: _react2.default.PropTypes.string,
-
-	    /**
-	     * This is a callback that fires when the popover
-	     * thinks it should close. (e.g. clickAway or offScreen)
-	     *
-	     * @param {string} reason Determines what triggered this request.
-	     */
-	    onRequestClose: _react2.default.PropTypes.func,
-
-	    /**
-	     * Controls the visibility of the popover.
-	     */
-	    open: _react2.default.PropTypes.bool,
-
-	    /**
-	     * Override the inline-styles of the root element.
-	     */
-	    style: _react2.default.PropTypes.object,
-
-	    /**
-	     * This is the point on the popover which will stick to
-	     * the anchors origin.
-	     * Options:
-	     * vertical: [top, middle, bottom]
-	     * horizontal: [left, center, right]
-	     */
-	    targetOrigin: _propTypes2.default.origin,
-
-	    /**
-	     * If true, the popover will render on top of an invisible
-	     * layer, which will prevent clicks to the underlying
-	     * elements, and trigger an onRequestClose(clickAway) event.
-	     */
-	    useLayerForClickAway: _react2.default.PropTypes.bool,
-
-	    /**
-	     * This number represents the zDepth of the paper shadow.
-	     */
-	    zDepth: _propTypes2.default.zDepth
-	  },
-
-	  contextTypes: {
-	    muiTheme: _react2.default.PropTypes.object
-	  },
-
-	  //for passing default theme context to children
-	  childContextTypes: {
-	    muiTheme: _react2.default.PropTypes.object
-	  },
-
-	  mixins: [_stylePropable2.default, _windowListenable2.default],
-
-	  getDefaultProps: function getDefaultProps() {
-	    return {
-	      anchorOrigin: {
-	        vertical: 'bottom',
-	        horizontal: 'left'
-	      },
-	      animated: true,
-	      autoCloseWhenOffScreen: true,
-	      canAutoPosition: true,
-	      onRequestClose: function onRequestClose() {},
-	      open: false,
-	      style: {
-	        overflowY: 'auto'
-	      },
-	      targetOrigin: {
-	        vertical: 'top',
-	        horizontal: 'left'
-	      },
-	      useLayerForClickAway: true,
-	      zDepth: 1
-	    };
-	  },
-	  getInitialState: function getInitialState() {
-	    this.setPlacementThrottled = (0, _lodash2.default)(this.setPlacement, 100);
-	    this.setPlacementThrottledScrolled = (0, _lodash2.default)(this.setPlacement.bind(this, true), 100);
-
-	    return {
-	      open: this.props.open,
-	      closing: false,
-	      muiTheme: this.context.muiTheme ? this.context.muiTheme : _themeManager2.default.getMuiTheme(_lightRawTheme2.default)
-	    };
-	  },
-	  getChildContext: function getChildContext() {
-	    return {
-	      muiTheme: this.state.muiTheme
-	    };
-	  },
-	  componentWillReceiveProps: function componentWillReceiveProps(nextProps, nextContext) {
-	    var _this = this;
-
-	    var newMuiTheme = nextContext.muiTheme ? nextContext.muiTheme : this.state.muiTheme;
-
-	    if (nextProps.open !== this.state.open) {
-	      if (nextProps.open) {
-	        this.anchorEl = nextProps.anchorEl || this.props.anchorEl;
-	        this.setState({
-	          open: true,
-	          closing: false,
-	          muiTheme: newMuiTheme
-	        });
-	      } else {
-	        if (nextProps.animated) {
-	          this.setState({ closing: true });
-	          this._timeout = setTimeout(function () {
-	            if (_this.isMounted()) {
-	              _this.setState({
-	                open: false,
-	                muiTheme: newMuiTheme
-	              });
-	            }
-	          }, 500);
-	        } else {
-	          this.setState({
-	            open: false,
-	            muiTheme: newMuiTheme
-	          });
-	        }
-	      }
-	    }
-	  },
-	  componentDidUpdate: function componentDidUpdate() {
-	    this.setPlacement();
-	  },
-
-	  windowListeners: {
-	    resize: 'setPlacementThrottled',
-	    scroll: 'setPlacementThrottledScrolled'
-	  },
-
-	  renderLayer: function renderLayer() {
-	    var _props = this.props;
-	    var animated = _props.animated;
-	    var animation = _props.animation;
-	    var children = _props.children;
-	    var style = _props.style;
-
-	    var other = _objectWithoutProperties(_props, ['animated', 'animation', 'children', 'style']);
-
-	    var Animation = animation || _popoverDefaultAnimation2.default;
-
-	    if (!Animation) {
-	      Animation = _paper2.default;
-	      style = {
-	        position: 'fixed'
-	      };
-	      if (!this.state.open) {
-	        return null;
-	      }
-	    }
-
-	    return _react2.default.createElement(
-	      Animation,
-	      _extends({}, other, { style: style, open: this.state.open && !this.state.closing }),
+	      subheaderElement,
 	      children
 	    );
-	  },
-	  requestClose: function requestClose(reason) {
-	    if (this.props.onRequestClose) {
-	      this.props.onRequestClose(reason);
-	    }
-	  },
-	  componentClickAway: function componentClickAway() {
-	    this.requestClose('clickAway');
-	  },
-	  _resizeAutoPosition: function _resizeAutoPosition() {
-	    this.setPlacement();
-	  },
-	  getAnchorPosition: function getAnchorPosition(el) {
-	    if (!el) {
-	      el = _reactDom2.default.findDOMNode(this);
-	    }
-
-	    var rect = el.getBoundingClientRect();
-	    var a = {
-	      top: rect.top,
-	      left: rect.left,
-	      width: el.offsetWidth,
-	      height: el.offsetHeight
-	    };
-
-	    a.right = rect.right || a.left + a.width;
-	    a.bottom = rect.bottom || a.top + a.height;
-	    a.middle = a.left + (a.right - a.left) / 2;
-	    a.center = a.top + (a.bottom - a.top) / 2;
-
-	    return a;
-	  },
-	  getTargetPosition: function getTargetPosition(targetEl) {
-	    return {
-	      top: 0,
-	      center: targetEl.offsetHeight / 2,
-	      bottom: targetEl.offsetHeight,
-	      left: 0,
-	      middle: targetEl.offsetWidth / 2,
-	      right: targetEl.offsetWidth
-	    };
-	  },
-	  setPlacement: function setPlacement(scrolling) {
-	    if (!this.state.open) {
-	      return;
-	    }
-
-	    var anchorEl = this.props.anchorEl || this.anchorEl;
-
-	    if (!this.refs.layer.getLayer()) {
-	      return;
-	    }
-
-	    var targetEl = this.refs.layer.getLayer().children[0];
-	    if (!targetEl) {
-	      return;
-	    }
-
-	    var _props2 = this.props;
-	    var targetOrigin = _props2.targetOrigin;
-	    var anchorOrigin = _props2.anchorOrigin;
-
-	    var anchor = this.getAnchorPosition(anchorEl);
-	    var target = this.getTargetPosition(targetEl);
-
-	    var targetPosition = {
-	      top: anchor[anchorOrigin.vertical] - target[targetOrigin.vertical],
-	      left: anchor[anchorOrigin.horizontal] - target[targetOrigin.horizontal]
-	    };
-
-	    if (scrolling && this.props.autoCloseWhenOffScreen) {
-	      this.autoCloseWhenOffScreen(anchor);
-	    }
-
-	    if (this.props.canAutoPosition) {
-	      target = this.getTargetPosition(targetEl); // update as height may have changed
-	      targetPosition = this.applyAutoPositionIfNeeded(anchor, target, targetOrigin, anchorOrigin, targetPosition);
-	    }
-
-	    targetEl.style.top = Math.max(0, targetPosition.top) + 'px';
-	    targetEl.style.left = Math.max(0, targetPosition.left) + 'px';
-	    targetEl.style.maxHeight = window.innerHeight + 'px';
-	  },
-	  autoCloseWhenOffScreen: function autoCloseWhenOffScreen(anchorPosition) {
-	    if (anchorPosition.top < 0 || anchorPosition.top > window.innerHeight || anchorPosition.left < 0 || anchorPosition.left > window.innerWith) {
-	      this.requestClose('offScreen');
-	    }
-	  },
-	  getOverlapMode: function getOverlapMode(anchor, target, median) {
-	    if ([anchor, target].indexOf(median) >= 0) return 'auto';
-	    if (anchor === target) return 'inclusive';
-	    return 'exclusive';
-	  },
-	  getPositions: function getPositions(anchor, target) {
-	    var a = _extends({}, anchor);
-	    var t = _extends({}, target);
-
-	    var positions = {
-	      x: ['left', 'right'].filter(function (p) {
-	        return p !== t.horizontal;
-	      }),
-	      y: ['top', 'bottom'].filter(function (p) {
-	        return p !== t.vertical;
-	      })
-	    };
-
-	    var overlap = {
-	      x: this.getOverlapMode(a.horizontal, t.horizontal, 'middle'),
-	      y: this.getOverlapMode(a.vertical, t.vertical, 'center')
-	    };
-
-	    positions.x.splice(overlap.x === 'auto' ? 0 : 1, 0, 'middle');
-	    positions.y.splice(overlap.y === 'auto' ? 0 : 1, 0, 'center');
-
-	    if (overlap.y !== 'auto') {
-	      a.vertical = a.vertical === 'top' ? 'bottom' : 'top';
-	      if (overlap.y === 'inclusive') {
-	        t.vertical = t.vertical;
-	      }
-	    }
-
-	    if (overlap.x !== 'auto') {
-	      a.horizontal = a.horizontal === 'left' ? 'right' : 'left';
-	      if (overlap.y === 'inclusive') {
-	        t.horizontal = t.horizontal;
-	      }
-	    }
-
-	    return {
-	      positions: positions,
-	      anchorPos: a
-	    };
-	  },
-	  applyAutoPositionIfNeeded: function applyAutoPositionIfNeeded(anchor, target, targetOrigin, anchorOrigin, targetPosition) {
-	    var _getPositions = this.getPositions(anchorOrigin, targetOrigin);
-
-	    var positions = _getPositions.positions;
-	    var anchorPos = _getPositions.anchorPos;
-
-	    if (targetPosition.top < 0 || targetPosition.top + target.bottom > window.innerHeight) {
-	      var newTop = anchor[anchorPos.vertical] - target[positions.y[0]];
-	      if (newTop + target.bottom <= window.innerHeight) targetPosition.top = Math.max(0, newTop);else {
-	        newTop = anchor[anchorPos.vertical] - target[positions.y[1]];
-	        if (newTop + target.bottom <= window.innerHeight) targetPosition.top = Math.max(0, newTop);
-	      }
-	    }
-	    if (targetPosition.left < 0 || targetPosition.left + target.right > window.innerWidth) {
-	      var newLeft = anchor[anchorPos.horizontal] - target[positions.x[0]];
-	      if (newLeft + target.right <= window.innerWidth) targetPosition.left = Math.max(0, newLeft);else {
-	        newLeft = anchor[anchorPos.horizontal] - target[positions.x[1]];
-	        if (newLeft + target.right <= window.innerWidth) targetPosition.left = Math.max(0, newLeft);
-	      }
-	    }
-	    return targetPosition;
-	  },
-	  render: function render() {
-	    return _react2.default.createElement(_renderToLayer2.default, {
-	      ref: 'layer',
-	      open: this.state.open,
-	      componentClickAway: this.componentClickAway,
-	      useLayerForClickAway: this.props.useLayerForClickAway,
-	      render: this.renderLayer
-	    });
 	  }
 	});
 
-	exports.default = Popover;
-	module.exports = exports['default'];
-
-/***/ },
-/* 340 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _react = __webpack_require__(6);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactDom = __webpack_require__(163);
-
-	var _reactDom2 = _interopRequireDefault(_reactDom);
-
-	var _dom = __webpack_require__(283);
-
-	var _dom2 = _interopRequireDefault(_dom);
-
-	var _lightRawTheme = __webpack_require__(258);
-
-	var _lightRawTheme2 = _interopRequireDefault(_lightRawTheme);
-
-	var _themeManager = __webpack_require__(262);
-
-	var _themeManager2 = _interopRequireDefault(_themeManager);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	// heavily inspired by https://github.com/Khan/react-components/blob/master/js/layered-component-mixin.jsx
-	var RenderToLayer = _react2.default.createClass({
-	  displayName: 'RenderToLayer',
-
-	  propTypes: {
-	    componentClickAway: _react2.default.PropTypes.func,
-	    open: _react2.default.PropTypes.bool.isRequired,
-	    render: _react2.default.PropTypes.func.isRequired,
-	    useLayerForClickAway: _react2.default.PropTypes.bool
-	  },
-
-	  contextTypes: {
-	    muiTheme: _react2.default.PropTypes.object
-	  },
-
-	  //for passing default theme context to children
-	  childContextTypes: {
-	    muiTheme: _react2.default.PropTypes.object
-	  },
-
-	  getDefaultProps: function getDefaultProps() {
-	    return {
-	      useLayerForClickAway: true
-	    };
-	  },
-	  getInitialState: function getInitialState() {
-	    return {
-	      muiTheme: this.context.muiTheme ? this.context.muiTheme : _themeManager2.default.getMuiTheme(_lightRawTheme2.default)
-	    };
-	  },
-	  getChildContext: function getChildContext() {
-	    return {
-	      muiTheme: this.state.muiTheme
-	    };
-	  },
-	  componentDidMount: function componentDidMount() {
-	    this._renderLayer();
-	  },
-
-	  //to update theme inside state whenever a new theme is passed down
-	  //from the parent / owner using context
-	  componentWillReceiveProps: function componentWillReceiveProps(nextProps, nextContext) {
-	    var newMuiTheme = nextContext.muiTheme ? nextContext.muiTheme : this.state.muiTheme;
-	    this.setState({
-	      muiTheme: newMuiTheme
-	    });
-	  },
-	  componentDidUpdate: function componentDidUpdate() {
-	    this._renderLayer();
-	  },
-	  componentWillUnmount: function componentWillUnmount() {
-	    this._unrenderLayer();
-	  },
-	  onClickAway: function onClickAway(event) {
-	    if (event.defaultPrevented) {
-	      return;
-	    }
-
-	    if (!this.props.componentClickAway) {
-	      return;
-	    }
-
-	    if (!this.props.open) {
-	      return;
-	    }
-
-	    var el = this._layer;
-	    if (event.target !== el && event.target === window || document.documentElement.contains(event.target) && !_dom2.default.isDescendant(el, event.target)) {
-	      this.props.componentClickAway(event);
-	    }
-	  },
-	  getLayer: function getLayer() {
-	    return this._layer;
-	  },
-
-	  _unrenderLayer: function _unrenderLayer() {
-	    if (!this._layer) {
-	      return;
-	    }
-
-	    if (this.props.useLayerForClickAway) {
-	      this._layer.style.position = 'relative';
-	      this._layer.removeEventListener('touchstart', this.onClickAway);
-	      this._layer.removeEventListener('click', this.onClickAway);
-	    } else {
-	      window.removeEventListener('touchstart', this.onClickAway);
-	      window.removeEventListener('click', this.onClickAway);
-	    }
-
-	    _reactDom2.default.unmountComponentAtNode(this._layer);
-	    document.body.removeChild(this._layer);
-	    this._layer = null;
-	  },
-
-	  _renderLayer: function _renderLayer() {
-	    var _this = this;
-
-	    var _props = this.props;
-	    var open = _props.open;
-	    var render = _props.render;
-
-	    if (open) {
-	      if (!this._layer) {
-	        this._layer = document.createElement('div');
-	        document.body.appendChild(this._layer);
-
-	        if (this.props.useLayerForClickAway) {
-	          this._layer.addEventListener('touchstart', this.onClickAway);
-	          this._layer.addEventListener('click', this.onClickAway);
-	          this._layer.style.position = 'fixed';
-	          this._layer.style.top = 0;
-	          this._layer.style.bottom = 0;
-	          this._layer.style.left = 0;
-	          this._layer.style.right = 0;
-	          this._layer.style.zIndex = this.state.muiTheme.zIndex.layer;
-	        } else {
-	          setTimeout(function () {
-	            window.addEventListener('touchstart', _this.onClickAway);
-	            window.addEventListener('click', _this.onClickAway);
-	          }, 0);
-	        }
-	      }
-
-	      // By calling this method in componentDidMount() and
-	      // componentDidUpdate(), you're effectively creating a "wormhole" that
-	      // funnels React's hierarchical updates through to a DOM node on an
-	      // entirely different part of the page.
-
-	      var layerElement = render();
-
-	      if (layerElement === null) {
-	        this.layerElement = _reactDom2.default.unstable_renderSubtreeIntoContainer(this, null, this._layer);
-	      } else {
-	        this.layerElement = _reactDom2.default.unstable_renderSubtreeIntoContainer(this, layerElement, this._layer);
-	      }
-	    } else {
-	      this._unrenderLayer();
-	    }
-	  },
-	  render: function render() {
-	    return null;
-	  }
-	});
-
-	exports.default = RenderToLayer;
+	exports.default = List;
 	module.exports = exports['default'];
 
 /***/ },
 /* 341 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * lodash 3.0.4 (Custom Build) <https://lodash.com/>
-	 * Build: `lodash modern modularize exports="npm" -o ./`
-	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
-	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-	 * Available under MIT license <https://lodash.com/license>
-	 */
-	var debounce = __webpack_require__(342);
-
-	/** Used as the `TypeError` message for "Functions" methods. */
-	var FUNC_ERROR_TEXT = 'Expected a function';
-
-	/**
-	 * Creates a throttled function that only invokes `func` at most once per
-	 * every `wait` milliseconds. The throttled function comes with a `cancel`
-	 * method to cancel delayed invocations. Provide an options object to indicate
-	 * that `func` should be invoked on the leading and/or trailing edge of the
-	 * `wait` timeout. Subsequent calls to the throttled function return the
-	 * result of the last `func` call.
-	 *
-	 * **Note:** If `leading` and `trailing` options are `true`, `func` is invoked
-	 * on the trailing edge of the timeout only if the the throttled function is
-	 * invoked more than once during the `wait` timeout.
-	 *
-	 * See [David Corbacho's article](http://drupalmotion.com/article/debounce-and-throttle-visual-explanation)
-	 * for details over the differences between `_.throttle` and `_.debounce`.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Function
-	 * @param {Function} func The function to throttle.
-	 * @param {number} [wait=0] The number of milliseconds to throttle invocations to.
-	 * @param {Object} [options] The options object.
-	 * @param {boolean} [options.leading=true] Specify invoking on the leading
-	 *  edge of the timeout.
-	 * @param {boolean} [options.trailing=true] Specify invoking on the trailing
-	 *  edge of the timeout.
-	 * @returns {Function} Returns the new throttled function.
-	 * @example
-	 *
-	 * // avoid excessively updating the position while scrolling
-	 * jQuery(window).on('scroll', _.throttle(updatePosition, 100));
-	 *
-	 * // invoke `renewToken` when the click event is fired, but not more than once every 5 minutes
-	 * jQuery('.interactive').on('click', _.throttle(renewToken, 300000, {
-	 *   'trailing': false
-	 * }));
-	 *
-	 * // cancel a trailing throttled call
-	 * jQuery(window).on('popstate', throttled.cancel);
-	 */
-	function throttle(func, wait, options) {
-	  var leading = true,
-	      trailing = true;
-
-	  if (typeof func != 'function') {
-	    throw new TypeError(FUNC_ERROR_TEXT);
-	  }
-	  if (options === false) {
-	    leading = false;
-	  } else if (isObject(options)) {
-	    leading = 'leading' in options ? !!options.leading : leading;
-	    trailing = 'trailing' in options ? !!options.trailing : trailing;
-	  }
-	  return debounce(func, wait, { 'leading': leading, 'maxWait': +wait, 'trailing': trailing });
-	}
-
-	/**
-	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
-	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
-	 * @example
-	 *
-	 * _.isObject({});
-	 * // => true
-	 *
-	 * _.isObject([1, 2, 3]);
-	 * // => true
-	 *
-	 * _.isObject(1);
-	 * // => false
-	 */
-	function isObject(value) {
-	  // Avoid a V8 JIT bug in Chrome 19-20.
-	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
-	  var type = typeof value;
-	  return !!value && (type == 'object' || type == 'function');
-	}
-
-	module.exports = throttle;
-
-
-/***/ },
-/* 342 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * lodash 3.1.1 (Custom Build) <https://lodash.com/>
-	 * Build: `lodash modern modularize exports="npm" -o ./`
-	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
-	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-	 * Available under MIT license <https://lodash.com/license>
-	 */
-	var getNative = __webpack_require__(277);
-
-	/** Used as the `TypeError` message for "Functions" methods. */
-	var FUNC_ERROR_TEXT = 'Expected a function';
-
-	/* Native method references for those with the same name as other `lodash` methods. */
-	var nativeMax = Math.max,
-	    nativeNow = getNative(Date, 'now');
-
-	/**
-	 * Gets the number of milliseconds that have elapsed since the Unix epoch
-	 * (1 January 1970 00:00:00 UTC).
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Date
-	 * @example
-	 *
-	 * _.defer(function(stamp) {
-	 *   console.log(_.now() - stamp);
-	 * }, _.now());
-	 * // => logs the number of milliseconds it took for the deferred function to be invoked
-	 */
-	var now = nativeNow || function() {
-	  return new Date().getTime();
-	};
-
-	/**
-	 * Creates a debounced function that delays invoking `func` until after `wait`
-	 * milliseconds have elapsed since the last time the debounced function was
-	 * invoked. The debounced function comes with a `cancel` method to cancel
-	 * delayed invocations. Provide an options object to indicate that `func`
-	 * should be invoked on the leading and/or trailing edge of the `wait` timeout.
-	 * Subsequent calls to the debounced function return the result of the last
-	 * `func` invocation.
-	 *
-	 * **Note:** If `leading` and `trailing` options are `true`, `func` is invoked
-	 * on the trailing edge of the timeout only if the the debounced function is
-	 * invoked more than once during the `wait` timeout.
-	 *
-	 * See [David Corbacho's article](http://drupalmotion.com/article/debounce-and-throttle-visual-explanation)
-	 * for details over the differences between `_.debounce` and `_.throttle`.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Function
-	 * @param {Function} func The function to debounce.
-	 * @param {number} [wait=0] The number of milliseconds to delay.
-	 * @param {Object} [options] The options object.
-	 * @param {boolean} [options.leading=false] Specify invoking on the leading
-	 *  edge of the timeout.
-	 * @param {number} [options.maxWait] The maximum time `func` is allowed to be
-	 *  delayed before it is invoked.
-	 * @param {boolean} [options.trailing=true] Specify invoking on the trailing
-	 *  edge of the timeout.
-	 * @returns {Function} Returns the new debounced function.
-	 * @example
-	 *
-	 * // avoid costly calculations while the window size is in flux
-	 * jQuery(window).on('resize', _.debounce(calculateLayout, 150));
-	 *
-	 * // invoke `sendMail` when the click event is fired, debouncing subsequent calls
-	 * jQuery('#postbox').on('click', _.debounce(sendMail, 300, {
-	 *   'leading': true,
-	 *   'trailing': false
-	 * }));
-	 *
-	 * // ensure `batchLog` is invoked once after 1 second of debounced calls
-	 * var source = new EventSource('/stream');
-	 * jQuery(source).on('message', _.debounce(batchLog, 250, {
-	 *   'maxWait': 1000
-	 * }));
-	 *
-	 * // cancel a debounced call
-	 * var todoChanges = _.debounce(batchLog, 1000);
-	 * Object.observe(models.todo, todoChanges);
-	 *
-	 * Object.observe(models, function(changes) {
-	 *   if (_.find(changes, { 'user': 'todo', 'type': 'delete'})) {
-	 *     todoChanges.cancel();
-	 *   }
-	 * }, ['delete']);
-	 *
-	 * // ...at some point `models.todo` is changed
-	 * models.todo.completed = true;
-	 *
-	 * // ...before 1 second has passed `models.todo` is deleted
-	 * // which cancels the debounced `todoChanges` call
-	 * delete models.todo;
-	 */
-	function debounce(func, wait, options) {
-	  var args,
-	      maxTimeoutId,
-	      result,
-	      stamp,
-	      thisArg,
-	      timeoutId,
-	      trailingCall,
-	      lastCalled = 0,
-	      maxWait = false,
-	      trailing = true;
-
-	  if (typeof func != 'function') {
-	    throw new TypeError(FUNC_ERROR_TEXT);
-	  }
-	  wait = wait < 0 ? 0 : (+wait || 0);
-	  if (options === true) {
-	    var leading = true;
-	    trailing = false;
-	  } else if (isObject(options)) {
-	    leading = !!options.leading;
-	    maxWait = 'maxWait' in options && nativeMax(+options.maxWait || 0, wait);
-	    trailing = 'trailing' in options ? !!options.trailing : trailing;
-	  }
-
-	  function cancel() {
-	    if (timeoutId) {
-	      clearTimeout(timeoutId);
-	    }
-	    if (maxTimeoutId) {
-	      clearTimeout(maxTimeoutId);
-	    }
-	    lastCalled = 0;
-	    maxTimeoutId = timeoutId = trailingCall = undefined;
-	  }
-
-	  function complete(isCalled, id) {
-	    if (id) {
-	      clearTimeout(id);
-	    }
-	    maxTimeoutId = timeoutId = trailingCall = undefined;
-	    if (isCalled) {
-	      lastCalled = now();
-	      result = func.apply(thisArg, args);
-	      if (!timeoutId && !maxTimeoutId) {
-	        args = thisArg = undefined;
-	      }
-	    }
-	  }
-
-	  function delayed() {
-	    var remaining = wait - (now() - stamp);
-	    if (remaining <= 0 || remaining > wait) {
-	      complete(trailingCall, maxTimeoutId);
-	    } else {
-	      timeoutId = setTimeout(delayed, remaining);
-	    }
-	  }
-
-	  function maxDelayed() {
-	    complete(trailing, timeoutId);
-	  }
-
-	  function debounced() {
-	    args = arguments;
-	    stamp = now();
-	    thisArg = this;
-	    trailingCall = trailing && (timeoutId || !leading);
-
-	    if (maxWait === false) {
-	      var leadingCall = leading && !timeoutId;
-	    } else {
-	      if (!maxTimeoutId && !leading) {
-	        lastCalled = stamp;
-	      }
-	      var remaining = maxWait - (stamp - lastCalled),
-	          isCalled = remaining <= 0 || remaining > maxWait;
-
-	      if (isCalled) {
-	        if (maxTimeoutId) {
-	          maxTimeoutId = clearTimeout(maxTimeoutId);
-	        }
-	        lastCalled = stamp;
-	        result = func.apply(thisArg, args);
-	      }
-	      else if (!maxTimeoutId) {
-	        maxTimeoutId = setTimeout(maxDelayed, remaining);
-	      }
-	    }
-	    if (isCalled && timeoutId) {
-	      timeoutId = clearTimeout(timeoutId);
-	    }
-	    else if (!timeoutId && wait !== maxWait) {
-	      timeoutId = setTimeout(delayed, wait);
-	    }
-	    if (leadingCall) {
-	      isCalled = true;
-	      result = func.apply(thisArg, args);
-	    }
-	    if (isCalled && !timeoutId && !maxTimeoutId) {
-	      args = thisArg = undefined;
-	    }
-	    return result;
-	  }
-	  debounced.cancel = cancel;
-	  return debounced;
-	}
-
-	/**
-	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
-	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
-	 * @example
-	 *
-	 * _.isObject({});
-	 * // => true
-	 *
-	 * _.isObject([1, 2, 3]);
-	 * // => true
-	 *
-	 * _.isObject(1);
-	 * // => false
-	 */
-	function isObject(value) {
-	  // Avoid a V8 JIT bug in Chrome 19-20.
-	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
-	  var type = typeof value;
-	  return !!value && (type == 'object' || type == 'function');
-	}
-
-	module.exports = debounce;
-
-
-/***/ },
-/* 343 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _transitions = __webpack_require__(241);
-
-	var _transitions2 = _interopRequireDefault(_transitions);
-
-	var _react = __webpack_require__(6);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _propTypes = __webpack_require__(242);
-
-	var _propTypes2 = _interopRequireDefault(_propTypes);
-
-	var _stylePropable = __webpack_require__(213);
-
-	var _stylePropable2 = _interopRequireDefault(_stylePropable);
-
-	var _lightRawTheme = __webpack_require__(258);
-
-	var _lightRawTheme2 = _interopRequireDefault(_lightRawTheme);
-
-	var _themeManager = __webpack_require__(262);
-
-	var _themeManager2 = _interopRequireDefault(_themeManager);
-
-	var _paper = __webpack_require__(289);
-
-	var _paper2 = _interopRequireDefault(_paper);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var PopoverDefaultAnimation = _react2.default.createClass({
-	  displayName: 'PopoverDefaultAnimation',
-
-	  propTypes: {
-	    children: _react2.default.PropTypes.node,
-
-	    /**
-	     * The css class name of the root element.
-	     */
-	    className: _react2.default.PropTypes.string,
-	    open: _react2.default.PropTypes.bool.isRequired,
-
-	    /**
-	     * Override the inline-styles of the root element.
-	     */
-	    style: _react2.default.PropTypes.object,
-	    targetOrigin: _propTypes2.default.origin,
-	    zDepth: _propTypes2.default.zDepth
-	  },
-
-	  contextTypes: {
-	    muiTheme: _react2.default.PropTypes.object
-	  },
-
-	  //for passing default theme context to children
-	  childContextTypes: {
-	    muiTheme: _react2.default.PropTypes.object
-	  },
-
-	  mixins: [_stylePropable2.default],
-
-	  getDefaultProps: function getDefaultProps() {
-	    return {
-	      style: {},
-	      zDepth: 1
-	    };
-	  },
-	  getInitialState: function getInitialState() {
-	    return {
-	      muiTheme: this.context.muiTheme ? this.context.muiTheme : _themeManager2.default.getMuiTheme(_lightRawTheme2.default),
-	      open: false
-	    };
-	  },
-	  getChildContext: function getChildContext() {
-	    return {
-	      muiTheme: this.state.muiTheme
-	    };
-	  },
-	  componentDidMount: function componentDidMount() {
-	    this.setState({ open: true }); //eslint-disable-line react/no-did-mount-set-state
-	  },
-	  componentWillReceiveProps: function componentWillReceiveProps(nextProps, nextContext) {
-	    var newMuiTheme = nextContext.muiTheme ? nextContext.muiTheme : this.state.muiTheme;
-
-	    this.setState({
-	      open: nextProps.open,
-	      muiTheme: newMuiTheme
-	    });
-	  },
-	  getStyles: function getStyles() {
-	    var targetOrigin = this.props.targetOrigin;
-
-	    var horizontal = targetOrigin.horizontal.replace('middle', 'vertical');
-
-	    return {
-	      base: {
-	        opacity: 0,
-	        transform: 'scale(0, 0)',
-	        transformOrigin: horizontal + ' ' + targetOrigin.vertical,
-	        position: 'fixed',
-	        zIndex: this.state.muiTheme.zIndex.popover,
-	        transition: _transitions2.default.easeOut('250ms', ['transform', 'opacity']),
-	        maxHeight: '100%'
-
-	      },
-	      horizontal: {
-	        maxHeight: '100%',
-	        overflowY: 'auto',
-	        transform: 'scaleX(0)',
-	        opacity: 0,
-	        transformOrigin: horizontal + ' ' + targetOrigin.vertical,
-	        transition: _transitions2.default.easeOut('250ms', ['transform', 'opacity'])
-	      },
-	      vertical: {
-	        opacity: 0,
-	        transform: 'scaleY(0)',
-	        transformOrigin: horizontal + ' ' + targetOrigin.vertical,
-	        transition: _transitions2.default.easeOut('500ms', ['transform', 'opacity'])
-	      }
-	    };
-	  },
-	  getOpenStyles: function getOpenStyles() {
-	    return {
-	      base: {
-	        opacity: 1,
-	        transform: 'scale(1, 1)'
-	      },
-	      horizontal: {
-	        opacity: 1,
-	        transform: 'scaleX(1)'
-	      },
-	      vertical: {
-	        opacity: 1,
-	        transform: 'scaleY(1)'
-	      }
-	    };
-	  },
-	  render: function render() {
-	    var _props = this.props;
-	    var className = _props.className;
-	    var style = _props.style;
-	    var zDepth = _props.zDepth;
-
-	    var styles = this.getStyles();
-	    var openStyles = {};
-	    if (this.state.open) openStyles = this.getOpenStyles();
-
-	    return _react2.default.createElement(
-	      _paper2.default,
-	      {
-	        style: this.mergeStyles(styles.base, style, openStyles.base),
-	        zDepth: zDepth,
-	        className: className
-	      },
-	      _react2.default.createElement(
-	        'div',
-	        { style: this.prepareStyles(styles.horizontal, openStyles.horizontal) },
-	        _react2.default.createElement(
-	          'div',
-	          { style: this.prepareStyles(styles.vertical, openStyles.vertical) },
-	          this.props.children
-	        )
-	      )
-	    );
-	  }
-	});
-
-	exports.default = PopoverDefaultAnimation;
-	module.exports = exports['default'];
-
-/***/ },
-/* 344 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _react = __webpack_require__(6);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactAddonsPureRenderMixin = __webpack_require__(244);
-
-	var _reactAddonsPureRenderMixin2 = _interopRequireDefault(_reactAddonsPureRenderMixin);
-
-	var _svgIcon = __webpack_require__(288);
-
-	var _svgIcon2 = _interopRequireDefault(_svgIcon);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var NavigationCheck = _react2.default.createClass({
-	  displayName: 'NavigationCheck',
-
-	  mixins: [_reactAddonsPureRenderMixin2.default],
-
-	  render: function render() {
-	    return _react2.default.createElement(
-	      _svgIcon2.default,
-	      this.props,
-	      _react2.default.createElement('path', { d: 'M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z' })
-	    );
-	  }
-	});
-
-	exports.default = NavigationCheck;
-	module.exports = exports['default'];
-
-/***/ },
-/* 345 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41201,15 +39981,15 @@
 
 	var _iconButton2 = _interopRequireDefault(_iconButton);
 
-	var _arrowDropUp = __webpack_require__(346);
+	var _arrowDropUp = __webpack_require__(342);
 
 	var _arrowDropUp2 = _interopRequireDefault(_arrowDropUp);
 
-	var _arrowDropDown = __webpack_require__(347);
+	var _arrowDropDown = __webpack_require__(343);
 
 	var _arrowDropDown2 = _interopRequireDefault(_arrowDropDown);
 
-	var _nestedList = __webpack_require__(348);
+	var _nestedList = __webpack_require__(344);
 
 	var _nestedList2 = _interopRequireDefault(_nestedList);
 
@@ -41816,7 +40596,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 346 */
+/* 342 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41857,7 +40637,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 347 */
+/* 343 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41898,7 +40678,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 348 */
+/* 344 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41913,7 +40693,7 @@
 
 	var _styles = __webpack_require__(214);
 
-	var _list = __webpack_require__(349);
+	var _list = __webpack_require__(340);
 
 	var _list2 = _interopRequireDefault(_list);
 
@@ -41968,832 +40748,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 349 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _react = __webpack_require__(6);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactAddonsPureRenderMixin = __webpack_require__(244);
-
-	var _reactAddonsPureRenderMixin2 = _interopRequireDefault(_reactAddonsPureRenderMixin);
-
-	var _propTypes = __webpack_require__(242);
-
-	var _propTypes2 = _interopRequireDefault(_propTypes);
-
-	var _stylePropable = __webpack_require__(213);
-
-	var _stylePropable2 = _interopRequireDefault(_stylePropable);
-
-	var _typography = __webpack_require__(236);
-
-	var _typography2 = _interopRequireDefault(_typography);
-
-	var _paper = __webpack_require__(289);
-
-	var _paper2 = _interopRequireDefault(_paper);
-
-	var _lightRawTheme = __webpack_require__(258);
-
-	var _lightRawTheme2 = _interopRequireDefault(_lightRawTheme);
-
-	var _themeManager = __webpack_require__(262);
-
-	var _themeManager2 = _interopRequireDefault(_themeManager);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-	var List = _react2.default.createClass({
-	  displayName: 'List',
-
-	  propTypes: {
-	    /**
-	     * These are usually ListItems that are passed to
-	     * be part of the list.
-	     */
-	    children: _react2.default.PropTypes.node,
-
-	    /**
-	     * If true, the subheader will be indented by 72px.
-	     */
-	    insetSubheader: _react2.default.PropTypes.bool,
-
-	    /**
-	     * Override the inline-styles of the root element.
-	     */
-	    style: _react2.default.PropTypes.object,
-
-	    /**
-	     * The subheader string that will be displayed at the top of the list.
-	     */
-	    subheader: _react2.default.PropTypes.node,
-
-	    /**
-	     * The style object to override subheader styles.
-	     */
-	    subheaderStyle: _react2.default.PropTypes.object,
-
-	    /**
-	     * The zDepth prop passed to the Paper element inside list.
-	     */
-	    zDepth: _propTypes2.default.zDepth
-	  },
-
-	  contextTypes: {
-	    muiTheme: _react2.default.PropTypes.object
-	  },
-
-	  //for passing default theme context to children
-	  childContextTypes: {
-	    muiTheme: _react2.default.PropTypes.object
-	  },
-
-	  mixins: [_reactAddonsPureRenderMixin2.default, _stylePropable2.default],
-
-	  getDefaultProps: function getDefaultProps() {
-	    return {
-	      insetSubheader: false,
-	      zDepth: 0
-	    };
-	  },
-	  getInitialState: function getInitialState() {
-	    return {
-	      muiTheme: this.context.muiTheme ? this.context.muiTheme : _themeManager2.default.getMuiTheme(_lightRawTheme2.default)
-	    };
-	  },
-	  getChildContext: function getChildContext() {
-	    return {
-	      muiTheme: this.state.muiTheme
-	    };
-	  },
-
-	  //to update theme inside state whenever a new theme is passed down
-	  //from the parent / owner using context
-	  componentWillReceiveProps: function componentWillReceiveProps(nextProps, nextContext) {
-	    var newMuiTheme = nextContext.muiTheme ? nextContext.muiTheme : this.state.muiTheme;
-	    this.setState({ muiTheme: newMuiTheme });
-	  },
-	  render: function render() {
-	    var _props = this.props;
-	    var children = _props.children;
-	    var insetSubheader = _props.insetSubheader;
-	    var style = _props.style;
-	    var subheader = _props.subheader;
-	    var subheaderStyle = _props.subheaderStyle;
-	    var zDepth = _props.zDepth;
-
-	    var other = _objectWithoutProperties(_props, ['children', 'insetSubheader', 'style', 'subheader', 'subheaderStyle', 'zDepth']);
-
-	    var styles = {
-	      root: {
-	        padding: 0,
-	        paddingBottom: 8,
-	        paddingTop: subheader ? 0 : 8
-	      },
-
-	      subheader: {
-	        color: _typography2.default.textLightBlack,
-	        fontSize: 14,
-	        fontWeight: _typography2.default.fontWeightMedium,
-	        lineHeight: '48px',
-	        paddingLeft: insetSubheader ? 72 : 16
-	      }
-	    };
-
-	    var subheaderElement = undefined;
-	    if (subheader) {
-	      var mergedSubheaderStyles = this.mergeStyles(styles.subheader, subheaderStyle);
-	      subheaderElement = _react2.default.createElement(
-	        'div',
-	        { style: this.prepareStyles(mergedSubheaderStyles) },
-	        subheader
-	      );
-	    }
-
-	    return _react2.default.createElement(
-	      _paper2.default,
-	      _extends({}, other, {
-	        style: this.mergeStyles(styles.root, style),
-	        zDepth: zDepth
-	      }),
-	      subheaderElement,
-	      children
-	    );
-	  }
-	});
-
-	exports.default = List;
-	module.exports = exports['default'];
-
-/***/ },
-/* 350 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _react = __webpack_require__(6);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactDom = __webpack_require__(163);
-
-	var _reactDom2 = _interopRequireDefault(_reactDom);
-
-	var _reactAddonsUpdate = __webpack_require__(234);
-
-	var _reactAddonsUpdate2 = _interopRequireDefault(_reactAddonsUpdate);
-
-	var _controllable = __webpack_require__(351);
-
-	var _controllable2 = _interopRequireDefault(_controllable);
-
-	var _stylePropable = __webpack_require__(213);
-
-	var _stylePropable2 = _interopRequireDefault(_stylePropable);
-
-	var _clickAwayable = __webpack_require__(329);
-
-	var _clickAwayable2 = _interopRequireDefault(_clickAwayable);
-
-	var _autoPrefix = __webpack_require__(215);
-
-	var _autoPrefix2 = _interopRequireDefault(_autoPrefix);
-
-	var _transitions = __webpack_require__(241);
-
-	var _transitions2 = _interopRequireDefault(_transitions);
-
-	var _keyCode = __webpack_require__(251);
-
-	var _keyCode2 = _interopRequireDefault(_keyCode);
-
-	var _propTypes = __webpack_require__(242);
-
-	var _propTypes2 = _interopRequireDefault(_propTypes);
-
-	var _list = __webpack_require__(349);
-
-	var _list2 = _interopRequireDefault(_list);
-
-	var _paper = __webpack_require__(289);
-
-	var _paper2 = _interopRequireDefault(_paper);
-
-	var _lightRawTheme = __webpack_require__(258);
-
-	var _lightRawTheme2 = _interopRequireDefault(_lightRawTheme);
-
-	var _themeManager = __webpack_require__(262);
-
-	var _themeManager2 = _interopRequireDefault(_themeManager);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-	var Menu = _react2.default.createClass({
-	  displayName: 'Menu',
-
-	  propTypes: {
-	    /**
-	     * If true, the menu will apply transitions when added it
-	     * gets added to the DOM. In order for transitions to
-	     * work, wrap the menu inside a ReactTransitionGroup.
-	     */
-	    animated: _react2.default.PropTypes.bool,
-
-	    /**
-	     * If true, the width will automatically be
-	     * set according to the items inside the menu
-	     * using the proper keyline increment.
-	     */
-	    autoWidth: _react2.default.PropTypes.bool,
-
-	    /**
-	     * Children for the Menu. Usually MenuItems.
-	     */
-	    children: _react2.default.PropTypes.node,
-
-	    /**
-	     * Indicates if the menu should render with compact desktop styles.
-	     */
-	    desktop: _react2.default.PropTypes.bool,
-
-	    /**
-	     * True if this item should be focused by the keyboard initially.
-	     */
-	    initiallyKeyboardFocused: _react2.default.PropTypes.bool,
-
-	    /**
-	     * The style object to use to override underlying list style.
-	     */
-	    listStyle: _react2.default.PropTypes.object,
-
-	    /**
-	     * The maxHeight of the menu in pixels. If
-	     * specified, the menu will scroll if larger than the maxHeight.
-	     */
-	    maxHeight: _react2.default.PropTypes.number,
-
-	    /**
-	     * If true, the value can an array and allow the menu to be a multi-select.
-	     */
-	    multiple: _react2.default.PropTypes.bool,
-
-	    /**
-	     * Fired when a menu item is touchTapped and the menu item
-	     * value is not equal to the current menu value.
-	     */
-	    onChange: _react2.default.PropTypes.func,
-
-	    /**
-	     * Fired when an Esc key is keyed down.
-	     */
-	    onEscKeyDown: _react2.default.PropTypes.func,
-
-	    /**
-	     * Fired when a menu item is touchTapped.
-	     */
-	    onItemTouchTap: _react2.default.PropTypes.func,
-
-	    /**
-	     * Fired when a key is pressed.
-	     */
-	    onKeyDown: _react2.default.PropTypes.func,
-
-	    /**
-	     * This is the placement of the menu relative to the IconButton.
-	     */
-	    openDirection: _propTypes2.default.corners,
-
-	    /**
-	     * Style for the selected Menu Item.
-	     */
-	    selectedMenuItemStyle: _react2.default.PropTypes.object,
-
-	    /**
-	     * Override the inline-styles of the root element.
-	     */
-	    style: _react2.default.PropTypes.object,
-
-	    /**
-	     * The value of the selected menu item. If passed in,
-	     * this will make the menu a controlled component.
-	     * This component also supports valueLink.
-	     */
-	    value: _react2.default.PropTypes.any,
-
-	    /**
-	     * ValueLink for this component when controlled.
-	     */
-	    valueLink: _react2.default.PropTypes.object,
-
-	    /**
-	     * Sets the width of the menu. If not specified, the menu
-	     * width will be dictated by its children. The rendered
-	     * width will always be a keyline increment
-	     * (64px for desktop, 56px otherwise).
-	     */
-	    width: _propTypes2.default.stringOrNumber,
-
-	    /**
-	     * Sets the width of the menu. If not specified,
-	     * the menu width will be dictated by its children.
-	     * The rendered width will always be a keyline increment
-	     * (64px for desktop, 56px otherwise).
-	     */
-	    zDepth: _propTypes2.default.zDepth
-	  },
-
-	  contextTypes: {
-	    muiTheme: _react2.default.PropTypes.object
-	  },
-
-	  //for passing default theme context to children
-	  childContextTypes: {
-	    muiTheme: _react2.default.PropTypes.object
-	  },
-
-	  mixins: [_stylePropable2.default, _controllable2.default, _clickAwayable2.default],
-
-	  getDefaultProps: function getDefaultProps() {
-	    return {
-	      animated: false,
-	      autoWidth: true,
-	      desktop: false,
-	      initiallyKeyboardFocused: false,
-	      maxHeight: null,
-	      multiple: false,
-	      onEscKeyDown: function onEscKeyDown() {},
-	      onItemTouchTap: function onItemTouchTap() {},
-	      onKeyDown: function onKeyDown() {},
-	      openDirection: 'bottom-left',
-	      zDepth: 1
-	    };
-	  },
-	  getInitialState: function getInitialState() {
-	    var filteredChildren = this._getFilteredChildren(this.props.children);
-	    var selectedIndex = this._getSelectedIndex(this.props, filteredChildren);
-
-	    return {
-	      focusIndex: selectedIndex >= 0 ? selectedIndex : 0,
-	      isKeyboardFocused: this.props.initiallyKeyboardFocused,
-	      keyWidth: this.props.desktop ? 64 : 56,
-	      muiTheme: this.context.muiTheme ? this.context.muiTheme : _themeManager2.default.getMuiTheme(_lightRawTheme2.default)
-	    };
-	  },
-	  getChildContext: function getChildContext() {
-	    return {
-	      muiTheme: this.state.muiTheme
-	    };
-	  },
-	  componentDidMount: function componentDidMount() {
-	    if (this.props.autoWidth) this._setWidth();
-	    if (!this.props.animated) this._animateOpen();
-	    this._setScollPosition();
-	  },
-	  componentWillReceiveProps: function componentWillReceiveProps(nextProps, nextContext) {
-	    var filteredChildren = this._getFilteredChildren(nextProps.children);
-	    var selectedIndex = this._getSelectedIndex(nextProps, filteredChildren);
-	    var newMuiTheme = nextContext.muiTheme ? nextContext.muiTheme : this.state.muiTheme;
-
-	    this.setState({
-	      focusIndex: selectedIndex >= 0 ? selectedIndex : 0,
-	      keyWidth: nextProps.desktop ? 64 : 56,
-	      muiTheme: newMuiTheme
-	    });
-	  },
-	  componentDidUpdate: function componentDidUpdate() {
-	    if (this.props.autoWidth) this._setWidth();
-	  },
-	  componentClickAway: function componentClickAway(e) {
-	    if (e.defaultPrevented) return;
-	    this._setFocusIndex(-1, false);
-	  },
-	  setKeyboardFocused: function setKeyboardFocused(keyboardFocused) {
-	    this.setState({
-	      isKeyboardFocused: keyboardFocused
-	    });
-	  },
-	  _getFilteredChildren: function _getFilteredChildren(children) {
-	    var filteredChildren = [];
-	    _react2.default.Children.forEach(children, function (child) {
-	      if (child) {
-	        filteredChildren.push(child);
-	      }
-	    });
-	    return filteredChildren;
-	  },
-	  _animateOpen: function _animateOpen() {
-	    var rootStyle = _reactDom2.default.findDOMNode(this).style;
-	    var scrollContainerStyle = _reactDom2.default.findDOMNode(this.refs.scrollContainer).style;
-	    var menuContainers = _reactDom2.default.findDOMNode(this.refs.list).childNodes;
-
-	    _autoPrefix2.default.set(rootStyle, 'transform', 'scaleX(1)', this.state.muiTheme);
-	    _autoPrefix2.default.set(scrollContainerStyle, 'transform', 'scaleY(1)', this.state.muiTheme);
-	    scrollContainerStyle.opacity = 1;
-
-	    for (var i = 0; i < menuContainers.length; ++i) {
-	      menuContainers[i].style.opacity = 1;
-	    }
-	  },
-	  _cloneMenuItem: function _cloneMenuItem(child, childIndex, styles) {
-	    var _this = this;
-
-	    var _props = this.props;
-	    var desktop = _props.desktop;
-	    var selectedMenuItemStyle = _props.selectedMenuItemStyle;
-
-	    var selected = this._isChildSelected(child, this.props);
-	    var selectedChildrenStyles = {};
-
-	    if (selected) {
-	      selectedChildrenStyles = this.mergeStyles(styles.selectedMenuItem, selectedMenuItemStyle);
-	    }
-
-	    var mergedChildrenStyles = this.mergeStyles(child.props.style || {}, selectedChildrenStyles);
-
-	    var isFocused = childIndex === this.state.focusIndex;
-	    var focusState = 'none';
-	    if (isFocused) {
-	      focusState = this.state.isKeyboardFocused ? 'keyboard-focused' : 'focused';
-	    }
-
-	    return _react2.default.cloneElement(child, {
-	      desktop: desktop,
-	      focusState: focusState,
-	      onTouchTap: function onTouchTap(e) {
-	        _this._handleMenuItemTouchTap(e, child);
-	        if (child.props.onTouchTap) child.props.onTouchTap(e);
-	      },
-	      ref: isFocused ? 'focusedMenuItem' : null,
-	      style: mergedChildrenStyles
-	    });
-	  },
-	  _decrementKeyboardFocusIndex: function _decrementKeyboardFocusIndex() {
-	    var index = this.state.focusIndex;
-
-	    index--;
-	    if (index < 0) index = 0;
-
-	    this._setFocusIndex(index, true);
-	  },
-	  _getCascadeChildrenCount: function _getCascadeChildrenCount(filteredChildren) {
-	    var _props2 = this.props;
-	    var desktop = _props2.desktop;
-	    var maxHeight = _props2.maxHeight;
-
-	    var count = 1;
-	    var currentHeight = desktop ? 16 : 8;
-	    var menuItemHeight = desktop ? 32 : 48;
-
-	    //MaxHeight isn't set - cascade all of the children
-	    if (!maxHeight) return filteredChildren.length;
-
-	    //Count all the children that will fit inside the
-	    //max menu height
-	    filteredChildren.forEach(function (child) {
-	      if (currentHeight < maxHeight) {
-	        var childIsADivider = child.type && child.type.displayName === 'Divider';
-
-	        currentHeight += childIsADivider ? 16 : menuItemHeight;
-	        count++;
-	      }
-	    });
-
-	    return count;
-	  },
-	  _getMenuItemCount: function _getMenuItemCount(filteredChildren) {
-	    var menuItemCount = 0;
-	    filteredChildren.forEach(function (child) {
-	      var childIsADivider = child.type && child.type.displayName === 'Divider';
-	      var childIsDisabled = child.props.disabled;
-	      if (!childIsADivider && !childIsDisabled) menuItemCount++;
-	    });
-	    return menuItemCount;
-	  },
-	  _getSelectedIndex: function _getSelectedIndex(props, filteredChildren) {
-	    var _this2 = this;
-
-	    var selectedIndex = -1;
-	    var menuItemIndex = 0;
-
-	    filteredChildren.forEach(function (child) {
-	      var childIsADivider = child.type && child.type.displayName === 'Divider';
-
-	      if (_this2._isChildSelected(child, props)) selectedIndex = menuItemIndex;
-	      if (!childIsADivider) menuItemIndex++;
-	    });
-
-	    return selectedIndex;
-	  },
-	  _handleKeyDown: function _handleKeyDown(e) {
-	    var filteredChildren = this._getFilteredChildren(this.props.children);
-	    switch (e.keyCode) {
-	      case _keyCode2.default.DOWN:
-	        e.preventDefault();
-	        this._incrementKeyboardFocusIndex(filteredChildren);
-	        break;
-	      case _keyCode2.default.ESC:
-	        this.props.onEscKeyDown(e);
-	        break;
-	      case _keyCode2.default.TAB:
-	        e.preventDefault();
-	        if (e.shiftKey) {
-	          this._decrementKeyboardFocusIndex();
-	        } else {
-	          this._incrementKeyboardFocusIndex(filteredChildren);
-	        }
-	        break;
-	      case _keyCode2.default.UP:
-	        e.preventDefault();
-	        this._decrementKeyboardFocusIndex();
-	        break;
-	    }
-	    this.props.onKeyDown(e);
-	  },
-	  _handleMenuItemTouchTap: function _handleMenuItemTouchTap(e, item) {
-	    var children = this.props.children;
-	    var multiple = this.props.multiple;
-	    var valueLink = this.getValueLink(this.props);
-	    var menuValue = valueLink.value;
-	    var itemValue = item.props.value;
-	    var focusIndex = _react2.default.isValidElement(children) ? 0 : children.indexOf(item);
-
-	    this._setFocusIndex(focusIndex, false);
-
-	    if (multiple) {
-	      var index = menuValue.indexOf(itemValue);
-	      var newMenuValue = index === -1 ? (0, _reactAddonsUpdate2.default)(menuValue, { $push: [itemValue] }) : (0, _reactAddonsUpdate2.default)(menuValue, { $splice: [[index, 1]] });
-
-	      valueLink.requestChange(e, newMenuValue);
-	    } else if (!multiple && itemValue !== menuValue) {
-	      valueLink.requestChange(e, itemValue);
-	    }
-
-	    this.props.onItemTouchTap(e, item);
-	  },
-	  _incrementKeyboardFocusIndex: function _incrementKeyboardFocusIndex(filteredChildren) {
-	    var index = this.state.focusIndex;
-	    var maxIndex = this._getMenuItemCount(filteredChildren) - 1;
-
-	    index++;
-	    if (index > maxIndex) index = maxIndex;
-
-	    this._setFocusIndex(index, true);
-	  },
-	  _isChildSelected: function _isChildSelected(child, props) {
-	    var multiple = props.multiple;
-	    var menuValue = this.getValueLink(props).value;
-	    var childValue = child.props.value;
-
-	    return multiple && menuValue.length && menuValue.indexOf(childValue) !== -1 || !multiple && menuValue && menuValue === childValue;
-	  },
-	  _setFocusIndex: function _setFocusIndex(newIndex, isKeyboardFocused) {
-	    this.setState({
-	      focusIndex: newIndex,
-	      isKeyboardFocused: isKeyboardFocused
-	    });
-	  },
-	  _setScollPosition: function _setScollPosition() {
-	    var desktop = this.props.desktop;
-	    var focusedMenuItem = this.refs.focusedMenuItem;
-	    var menuItemHeight = desktop ? 32 : 48;
-
-	    if (focusedMenuItem) {
-	      var selectedOffSet = _reactDom2.default.findDOMNode(focusedMenuItem).offsetTop;
-
-	      //Make the focused item be the 2nd item in the list the
-	      //user sees
-	      var scrollTop = selectedOffSet - menuItemHeight;
-	      if (scrollTop < menuItemHeight) scrollTop = 0;
-
-	      _reactDom2.default.findDOMNode(this.refs.scrollContainer).scrollTop = scrollTop;
-	    }
-	  },
-	  _setWidth: function _setWidth() {
-	    var el = _reactDom2.default.findDOMNode(this);
-	    var listEl = _reactDom2.default.findDOMNode(this.refs.list);
-	    var elWidth = el.offsetWidth;
-	    var keyWidth = this.state.keyWidth;
-	    var minWidth = keyWidth * 1.5;
-	    var keyIncrements = elWidth / keyWidth;
-	    var newWidth = undefined;
-
-	    keyIncrements = keyIncrements <= 1.5 ? 1.5 : Math.ceil(keyIncrements);
-	    newWidth = keyIncrements * keyWidth;
-
-	    if (newWidth < minWidth) newWidth = minWidth;
-
-	    el.style.width = newWidth + 'px';
-	    listEl.style.width = newWidth + 'px';
-	  },
-	  render: function render() {
-	    var _this3 = this;
-
-	    var _props3 = this.props;
-	    var animated = _props3.animated;
-	    var autoWidth = _props3.autoWidth;
-	    var children = _props3.children;
-	    var desktop = _props3.desktop;
-	    var initiallyKeyboardFocused = _props3.initiallyKeyboardFocused;
-	    var listStyle = _props3.listStyle;
-	    var maxHeight = _props3.maxHeight;
-	    var multiple = _props3.multiple;
-	    var openDirection = _props3.openDirection;
-	    var selectedMenuItemStyle = _props3.selectedMenuItemStyle;
-	    var style = _props3.style;
-	    var value = _props3.value;
-	    var valueLink = _props3.valueLink;
-	    var width = _props3.width;
-	    var zDepth = _props3.zDepth;
-
-	    var other = _objectWithoutProperties(_props3, ['animated', 'autoWidth', 'children', 'desktop', 'initiallyKeyboardFocused', 'listStyle', 'maxHeight', 'multiple', 'openDirection', 'selectedMenuItemStyle', 'style', 'value', 'valueLink', 'width', 'zDepth']);
-
-	    var openDown = openDirection.split('-')[0] === 'bottom';
-	    var openLeft = openDirection.split('-')[1] === 'left';
-
-	    var muiTheme = this.state.muiTheme;
-	    var rawTheme = muiTheme.rawTheme;
-
-	    var styles = {
-	      root: {
-	        //Nested div bacause the List scales x faster than
-	        //it scales y
-	        transition: animated ? _transitions2.default.easeOut('250ms', 'transform') : null,
-	        zIndex: muiTheme.zIndex.menu,
-	        top: openDown ? 0 : null,
-	        bottom: !openDown ? 0 : null,
-	        left: !openLeft ? 0 : null,
-	        right: openLeft ? 0 : null,
-	        transform: 'scaleX(0)',
-	        transformOrigin: openLeft ? 'right' : 'left'
-	      },
-
-	      divider: {
-	        marginTop: 7,
-	        marginBottom: 8
-	      },
-
-	      list: {
-	        display: 'table-cell',
-	        paddingBottom: desktop ? 16 : 8,
-	        paddingTop: desktop ? 16 : 8,
-	        userSelect: 'none',
-	        width: width
-	      },
-
-	      menuItemContainer: {
-	        transition: animated ? _transitions2.default.easeOut(null, 'opacity') : null,
-	        opacity: 0
-	      },
-
-	      paper: {
-	        transition: animated ? _transitions2.default.easeOut('500ms', ['transform', 'opacity']) : null,
-	        transform: 'scaleY(0)',
-	        transformOrigin: openDown ? 'top' : 'bottom',
-	        opacity: 0,
-	        maxHeight: maxHeight,
-	        overflowY: maxHeight ? 'auto' : null
-	      },
-
-	      selectedMenuItem: {
-	        color: rawTheme.palette.accent1Color
-	      }
-	    };
-
-	    var mergedRootStyles = this.mergeStyles(styles.root, style);
-	    var mergedListStyles = this.mergeStyles(styles.list, listStyle);
-
-	    var filteredChildren = this._getFilteredChildren(children);
-
-	    //Cascade children opacity
-	    var cumulativeDelay = openDown ? 175 : 325;
-	    var cascadeChildrenCount = this._getCascadeChildrenCount(filteredChildren);
-	    var cumulativeDelayIncrement = Math.ceil(150 / cascadeChildrenCount);
-
-	    var menuItemIndex = 0;
-	    var newChildren = _react2.default.Children.map(filteredChildren, function (child) {
-	      var childIsADivider = child.type && child.type.displayName === 'Divider';
-	      var childIsDisabled = child.props.disabled;
-	      var childrenContainerStyles = {};
-
-	      if (animated) {
-	        var focusIndex = _this3.state.focusIndex;
-	        var transitionDelay = 0;
-
-	        //Only cascade the visible menu items
-	        if (menuItemIndex >= focusIndex - 1 && menuItemIndex <= focusIndex + cascadeChildrenCount - 1) {
-	          cumulativeDelay = openDown ? cumulativeDelay + cumulativeDelayIncrement : cumulativeDelay - cumulativeDelayIncrement;
-	          transitionDelay = cumulativeDelay;
-	        }
-
-	        childrenContainerStyles = _this3.mergeStyles(styles.menuItemContainer, {
-	          transitionDelay: transitionDelay + 'ms'
-	        });
-	      }
-
-	      var clonedChild = childIsADivider ? _react2.default.cloneElement(child, { style: styles.divider }) : childIsDisabled ? _react2.default.cloneElement(child, { desktop: desktop }) : _this3._cloneMenuItem(child, menuItemIndex, styles);
-
-	      if (!childIsADivider && !childIsDisabled) menuItemIndex++;
-
-	      return animated ? _react2.default.createElement(
-	        'div',
-	        { style: _this3.prepareStyles(childrenContainerStyles) },
-	        clonedChild
-	      ) : clonedChild;
-	    });
-
-	    return _react2.default.createElement(
-	      'div',
-	      {
-	        onKeyDown: this._handleKeyDown,
-	        style: this.prepareStyles(mergedRootStyles)
-	      },
-	      _react2.default.createElement(
-	        _paper2.default,
-	        {
-	          ref: 'scrollContainer',
-	          style: styles.paper,
-	          zDepth: zDepth
-	        },
-	        _react2.default.createElement(
-	          _list2.default,
-	          _extends({}, other, {
-	            ref: 'list',
-	            style: mergedListStyles
-	          }),
-	          newChildren
-	        )
-	      )
-	    );
-	  }
-	});
-
-	exports.default = Menu;
-	module.exports = exports['default'];
-
-/***/ },
-/* 351 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _react = __webpack_require__(6);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	exports.default = {
-
-	  propTypes: {
-	    onChange: _react2.default.PropTypes.func,
-	    value: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.string, _react2.default.PropTypes.array]),
-	    valueLink: _react2.default.PropTypes.shape({
-	      value: _react2.default.PropTypes.string.isRequired,
-	      requestChange: _react2.default.PropTypes.func.isRequired
-	    })
-	  },
-
-	  getDefaultProps: function getDefaultProps() {
-	    return {
-	      onChange: function onChange() {}
-	    };
-	  },
-	  getValueLink: function getValueLink(props) {
-	    return props.valueLink || {
-	      value: props.value,
-	      requestChange: props.onChange
-	    };
-	  }
-	};
-	module.exports = exports['default'];
-
-/***/ },
-/* 352 */
+/* 345 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -42815,13 +40770,13 @@
 	module.exports = Dashboard;
 
 /***/ },
-/* 353 */
+/* 346 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var React = __webpack_require__(6);
-	var Hammer = __webpack_require__(354);
+	var Hammer = __webpack_require__(347);
 	var ReactDOM = __webpack_require__(163);
 	var Draggable = React.createClass({
 	    displayName: "Draggable",
@@ -42838,14 +40793,15 @@
 	            rotate: 0
 	        };
 	    },
-
+	    hammerEl: {},
 	    componentDidMount: function componentDidMount() {
 	        var self = this;
 	        var options = {
 	            direction: Hammer.DIRECTION_ALL
 	        };
-	        var hammerEl = new Hammer(this.getDOMNode(), options);
-	        hammerEl.on("pan", function (ev) {
+
+	        this.hammerEl = new Hammer(this.getDOMNode(), options);
+	        this.hammerEl.on("pan", function (ev) {
 	            //console.log(ev);
 	            self.setState({
 	                deltaX: ev.deltaX,
@@ -42856,14 +40812,14 @@
 	        });
 	    },
 	    componentWillUnmount: function componentWillUnmount() {
-	        hammerTime.off("pan");
+	        this.hammerEl.off("pan");
 	    },
 	    handlePan: function handlePan(ev) {},
 	    render: function render() {
 	        //console.log(this);
 	        var style = {
 	            //transition: "all 0.5s ease-in-out",
-	            transform: "translate(" + this.state.deltaX + "px," + this.state.deltaY + "px)"
+	            transform: "translate3d(" + this.state.deltaX + "px," + this.state.deltaY + "px, 0)"
 	        };
 	        return React.createElement(
 	            "div",
@@ -42876,7 +40832,7 @@
 	module.exports = Draggable;
 
 /***/ },
-/* 354 */
+/* 347 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*! Hammer.JS - v2.0.6 - 2015-12-23
@@ -45450,13 +43406,13 @@
 
 
 /***/ },
-/* 355 */
+/* 348 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(356);
+	var content = __webpack_require__(349);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(317)(content, {});
@@ -45476,7 +43432,7 @@
 	}
 
 /***/ },
-/* 356 */
+/* 349 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(316)();
@@ -45484,31 +43440,31 @@
 
 
 	// module
-	exports.push([module.id, "/*\n    This is the master stylesheet. Import all the stylesheet in here.\n*/\n/**\n * Global Reset of all HTML Elements\n *\n * Resetting all of our HTML Elements ensures a smoother\n * visual transition between browsers. If you don't believe me,\n * try temporarily commenting out this block of code, then go\n * and look at Mozilla versus Safari, both good browsers with\n * a good implementation of CSS. The thing is, all browser CSS\n * defaults are different and at the end of the day if visual\n * consistency is what we're shooting for, then we need to\n * make sure we're resetting all spacing elements.\n *\n */\nhtml,\nbody {\n  border: 0;\n  font-family: \"Helvetica-Neue\", \"Helvetica\", Arial, sans-serif;\n  line-height: 1.5;\n  margin: 0;\n  padding: 0;\n}\ndiv,\nspan,\nobject,\niframe,\nimg,\ntable,\ncaption,\nthead,\ntbody,\ntfoot,\ntr,\ntr,\ntd,\narticle,\naside,\ncanvas,\ndetails,\nfigure,\nhgroup,\nmenu,\nnav,\nfooter,\nheader,\nsection,\nsummary,\nmark,\naudio,\nvideo {\n  border: 0;\n  margin: 0;\n  padding: 0;\n}\nh1,\nh2,\nh3,\nh4,\nh5,\nh6,\np,\nblockquote,\npre,\na,\nabbr,\naddress,\ncit,\ncode,\ndel,\ndfn,\nem,\nins,\nq,\nsamp,\nsmall,\nstrong,\nsub,\nsup,\nb,\ni,\nhr,\ndl,\ndt,\ndd,\nol,\nul,\nli,\nfieldset,\nlegend,\nlabel {\n  border: 0;\n  font-size: 100%;\n  vertical-align: baseline;\n  margin: 0;\n  padding: 0;\n}\narticle,\naside,\ncanvas,\nfigure,\nfigure img,\nfigcaption,\nhgroup,\nfooter,\nheader,\nnav,\nsection,\naudio,\nvideo {\n  display: block;\n}\ntable {\n  border-collapse: separate;\n  border-spacing: 0;\n}\ntable caption,\ntable th,\ntable td {\n  text-align: left;\n  vertical-align: middle;\n}\na img {\n  border: 0;\n}\n:focus {\n  outline: 0;\n}\n@font-face {\n  font-family: 'Material Icons';\n  font-style: normal;\n  font-weight: 400;\n  src: url(" + __webpack_require__(357) + ");\n  /* For IE6-8 */\n  src: url(" + __webpack_require__(358) + ") format('woff2'), url(" + __webpack_require__(359) + ") format('woff'), url(" + __webpack_require__(360) + ") format('truetype');\n}\n.material-icons {\n  font-family: 'Material Icons';\n  font-weight: normal;\n  font-style: normal;\n  font-size: 24px;\n  /* Preferred icon size */\n  display: inline-block;\n  width: 1em;\n  height: 1em;\n  line-height: 1;\n  text-transform: none;\n  letter-spacing: normal;\n  word-wrap: normal;\n  white-space: nowrap;\n  direction: ltr;\n  /* Support for all WebKit browsers. */\n  -webkit-font-smoothing: antialiased;\n  /* Support for Safari and Chrome. */\n  text-rendering: optimizeLegibility;\n  /* Support for Firefox. */\n  -moz-osx-font-smoothing: grayscale;\n  /* Support for IE. */\n  font-feature-settings: 'liga';\n}\n.material-icons.md-18 {\n  font-size: 18px;\n}\n.material-icons.md-24 {\n  font-size: 24px;\n}\n.material-icons.md-36 {\n  font-size: 36px;\n}\n.material-icons.md-48 {\n  font-size: 48px;\n}\n.material-icons.md-dark {\n  color: rgba(0, 0, 0, 0.54);\n}\n.material-icons.md-dark.md-inactive {\n  color: rgba(0, 0, 0, 0.26);\n}\n.material-icons.md-light {\n  color: #ffffff;\n}\n.material-icons.md-light.md-inactive {\n  color: rgba(255, 255, 255, 0.3);\n}\n.tc-login-container {\n  padding: 1em;\n  margin: auto;\n  width: 20em;\n  transform: translateY(50%);\n}\n.tc-login-container .tc-login-text-field {\n  width: 100%;\n}\n.tc-login-container .tc-login-button {\n  width: 100%;\n}\n.tc-login-container .tc-button-recover {\n  margin-top: 1em !important;\n}\n.tc-animation-spin {\n  -webkit-animation-name: spin;\n  -webkit-animation-duration: 1000ms;\n  -webkit-animation-iteration-count: infinite;\n  -webkit-animation-timing-function: linear;\n  -moz-animation-name: spin;\n  -moz-animation-duration: 1000ms;\n  -moz-animation-iteration-count: infinite;\n  -moz-animation-timing-function: linear;\n  -ms-animation-name: spin;\n  -ms-animation-duration: 1000ms;\n  -ms-animation-iteration-count: infinite;\n  -ms-animation-timing-function: linear;\n}\n@-moz-keyframes spin {\n  from {\n    -moz-transform: rotate(0deg);\n  }\n  to {\n    -moz-transform: rotate(-360deg);\n  }\n}\n@-webkit-keyframes spin {\n  from {\n    -webkit-transform: rotate(0deg);\n  }\n  to {\n    -webkit-transform: rotate(-360deg);\n  }\n}\n@keyframes spin {\n  from {\n    transform: rotate(0deg);\n  }\n  to {\n    transform: rotate(-360deg);\n  }\n}\n.single-page-container {\n  position: fixed;\n  width: 100%;\n  height: 100%;\n}\n.root-container {\n  background-color: #8EBFFF;\n}\n", ""]);
+	exports.push([module.id, "/*\n    This is the master stylesheet. Import all the stylesheet in here.\n*/\n/**\n * Global Reset of all HTML Elements\n *\n * Resetting all of our HTML Elements ensures a smoother\n * visual transition between browsers. If you don't believe me,\n * try temporarily commenting out this block of code, then go\n * and look at Mozilla versus Safari, both good browsers with\n * a good implementation of CSS. The thing is, all browser CSS\n * defaults are different and at the end of the day if visual\n * consistency is what we're shooting for, then we need to\n * make sure we're resetting all spacing elements.\n *\n */\nhtml,\nbody {\n  border: 0;\n  font-family: \"Helvetica-Neue\", \"Helvetica\", Arial, sans-serif;\n  line-height: 1.5;\n  margin: 0;\n  padding: 0;\n}\ndiv,\nspan,\nobject,\niframe,\nimg,\ntable,\ncaption,\nthead,\ntbody,\ntfoot,\ntr,\ntr,\ntd,\narticle,\naside,\ncanvas,\ndetails,\nfigure,\nhgroup,\nmenu,\nnav,\nfooter,\nheader,\nsection,\nsummary,\nmark,\naudio,\nvideo {\n  border: 0;\n  margin: 0;\n  padding: 0;\n}\nh1,\nh2,\nh3,\nh4,\nh5,\nh6,\np,\nblockquote,\npre,\na,\nabbr,\naddress,\ncit,\ncode,\ndel,\ndfn,\nem,\nins,\nq,\nsamp,\nsmall,\nstrong,\nsub,\nsup,\nb,\ni,\nhr,\ndl,\ndt,\ndd,\nol,\nul,\nli,\nfieldset,\nlegend,\nlabel {\n  border: 0;\n  font-size: 100%;\n  vertical-align: baseline;\n  margin: 0;\n  padding: 0;\n}\narticle,\naside,\ncanvas,\nfigure,\nfigure img,\nfigcaption,\nhgroup,\nfooter,\nheader,\nnav,\nsection,\naudio,\nvideo {\n  display: block;\n}\ntable {\n  border-collapse: separate;\n  border-spacing: 0;\n}\ntable caption,\ntable th,\ntable td {\n  text-align: left;\n  vertical-align: middle;\n}\na img {\n  border: 0;\n}\n:focus {\n  outline: 0;\n}\n@font-face {\n  font-family: 'Material Icons';\n  font-style: normal;\n  font-weight: 400;\n  src: url(" + __webpack_require__(350) + ");\n  /* For IE6-8 */\n  src: url(" + __webpack_require__(351) + ") format('woff2'), url(" + __webpack_require__(352) + ") format('woff'), url(" + __webpack_require__(353) + ") format('truetype');\n}\n.material-icons {\n  font-family: 'Material Icons';\n  font-weight: normal;\n  font-style: normal;\n  font-size: 24px;\n  /* Preferred icon size */\n  display: inline-block;\n  width: 1em;\n  height: 1em;\n  line-height: 1;\n  text-transform: none;\n  letter-spacing: normal;\n  word-wrap: normal;\n  white-space: nowrap;\n  direction: ltr;\n  /* Support for all WebKit browsers. */\n  -webkit-font-smoothing: antialiased;\n  /* Support for Safari and Chrome. */\n  text-rendering: optimizeLegibility;\n  /* Support for Firefox. */\n  -moz-osx-font-smoothing: grayscale;\n  /* Support for IE. */\n  font-feature-settings: 'liga';\n}\n.material-icons.md-18 {\n  font-size: 18px;\n}\n.material-icons.md-24 {\n  font-size: 24px;\n}\n.material-icons.md-36 {\n  font-size: 36px;\n}\n.material-icons.md-48 {\n  font-size: 48px;\n}\n.material-icons.md-dark {\n  color: rgba(0, 0, 0, 0.54);\n}\n.material-icons.md-dark.md-inactive {\n  color: rgba(0, 0, 0, 0.26);\n}\n.material-icons.md-light {\n  color: #ffffff;\n}\n.material-icons.md-light.md-inactive {\n  color: rgba(255, 255, 255, 0.3);\n}\n.tc-login-container {\n  padding: 1em;\n  margin: auto;\n  width: 20em;\n  transform: translateY(50%);\n}\n.tc-login-container .tc-login-text-field {\n  width: 100%;\n}\n.tc-login-container .tc-login-button {\n  width: 100%;\n}\n.tc-login-container .tc-button-recover {\n  margin-top: 1em !important;\n}\n.tc-animation-spin {\n  -webkit-animation-name: spin;\n  -webkit-animation-duration: 1000ms;\n  -webkit-animation-iteration-count: infinite;\n  -webkit-animation-timing-function: linear;\n  -moz-animation-name: spin;\n  -moz-animation-duration: 1000ms;\n  -moz-animation-iteration-count: infinite;\n  -moz-animation-timing-function: linear;\n  -ms-animation-name: spin;\n  -ms-animation-duration: 1000ms;\n  -ms-animation-iteration-count: infinite;\n  -ms-animation-timing-function: linear;\n}\n@-moz-keyframes spin {\n  from {\n    -moz-transform: rotate(0deg);\n  }\n  to {\n    -moz-transform: rotate(-360deg);\n  }\n}\n@-webkit-keyframes spin {\n  from {\n    -webkit-transform: rotate(0deg);\n  }\n  to {\n    -webkit-transform: rotate(-360deg);\n  }\n}\n@keyframes spin {\n  from {\n    transform: rotate(0deg);\n  }\n  to {\n    transform: rotate(-360deg);\n  }\n}\n.single-page-container {\n  position: fixed;\n  width: 100%;\n  height: 100%;\n}\n.root-container {\n  background-color: #8EBFFF;\n}\n", ""]);
 
 	// exports
 
 
 /***/ },
-/* 357 */
+/* 350 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "178d7a4dacfb885abee8e2d905b08524.eot";
 
 /***/ },
-/* 358 */
+/* 351 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "81025269949a562d06d5e316f733b140.woff2";
 
 /***/ },
-/* 359 */
+/* 352 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "e2f35f2d8bb12d4d3407ebe3683adaa1.woff";
 
 /***/ },
-/* 360 */
+/* 353 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "9ac46d2eb22f2f00090a73ed943b9522.ttf";

@@ -7,8 +7,12 @@ var ToolbarGroup = require('material-ui/lib/toolbar/toolbar-group');
 var ToolbarSeparator = require('material-ui/lib/toolbar/toolbar-separator');
 var ToolbarTitle = require('material-ui/lib/toolbar/toolbar-title');
 var LeftNav = require("material-ui/lib/left-nav");
-var MenuItem = require("material-ui/lib/menus/menu-item");
 
+var Divider = require("material-ui/lib/divider");
+var List = require("material-ui/lib/lists/list");
+var ListItem = require("material-ui/lib/lists/list-item");
+
+var FontIcon = require('material-ui/lib/font-icon');
 var Dashboard = require("./Dashboard");
 var TopToolbar = React.createClass({
     render: function() {
@@ -37,17 +41,40 @@ var TopToolbar = React.createClass({
 });
 
 var Sidebar = React.createClass({
+    getInitialState: function() {
+        return {
+            menuItemSeleted: -1
+        };
+    },
+    fontIconStyle: {
+        fontSize: "1.4em",
+        marginRight: "2em"
+    },
     render: function(){
-        return <LeftNav width={"255"} docked={true}>
-            <div>#</div>
-            <div>#</div>
-            <MenuItem >Manage Projects</MenuItem>
-            <MenuItem >Upload Images</MenuItem>
-            <MenuItem >Browse</MenuItem>
-            <MenuItem >Edit Tags Database</MenuItem>
-            <MenuItem >Import</MenuItem>
-            <MenuItem >Import</MenuItem>
-        </LeftNav>;
+        var style={
+            overflow: "hidden-y"
+        };
+        var projectIcon = this._createIcon("assessment");
+        var albumIcon = this._createIcon("photo");
+        return <div style={style}>
+            <LeftNav width={255} docked={true}>
+                <div>#</div>
+                <div>#</div>
+                <List>
+                    <ListItem primaryText="Projects Explorer" leftIcon={projectIcon} />
+                    <ListItem primaryText="Albums Viewer" leftIcon={albumIcon} />
+                </List>
+                <Divider />
+                <h3>Tools</h3>
+                <List>
+                    <ListItem primaryText="Import" />
+                    <ListItem primaryText="Export" />
+                </List>
+            </LeftNav>
+        </div>;
+    },
+    _createIcon: function(alias){
+        return <FontIcon className="material-icons md-dark" style={this.fontIconStyle}>{alias}</FontIcon>;
     }
 });
 

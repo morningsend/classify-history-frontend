@@ -16,15 +16,15 @@ var ResponsiveImageGrid = React.createClass({
     },
     componentWillUnmount: function() {
         window.removeEventListener("resize", this.updateGridDimension);
-    }
+    },
     render: function() {
         return <GridList ref="gridContainer" cols={this.state.columns}>
             {
                 this.props.imageUrls.map(function(imageUrl){
-                    return <GridTile cols={1}} rows={1} key={imageUrl} title="Image" >
+                    return <GridTile cols={1} rows={1} key={imageUrl} title="Image" >
                                 <img src={imageUrl} />
                             </GridTile>;
-                });
+                })
             }
         </GridList>
     },

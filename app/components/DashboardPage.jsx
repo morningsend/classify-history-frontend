@@ -9,11 +9,14 @@ var ToolbarTitle = require('material-ui/lib/toolbar/toolbar-title');
 var LeftNav = require("material-ui/lib/left-nav");
 
 var Divider = require("material-ui/lib/divider");
-var List = require("material-ui/lib/lists/list");
-var ListItem = require("material-ui/lib/lists/list-item");
+var Menu = require('material-ui/lib/menus/menu');
+var MenuItem = require('material-ui/lib/menus/menu-item');
 
-var FontIcon = require('material-ui/lib/font-icon');
 var Dashboard = require("./Dashboard");
+var ImageGrid = require("./ResponsiveImageGrid");
+
+var MaterialIconFactory = require("./MaterialIconFactory");
+
 var TopToolbar = React.createClass({
     render: function() {
         
@@ -50,34 +53,23 @@ var Sidebar = React.createClass({
         fontSize: "1.4em",
         marginRight: "2em"
     },
-    render: function(){
-        var style={
-            overflow: "hidden-y"
-        };
-        var projectIcon = this._createIcon("assessment");
-        var albumIcon = this._createIcon("photo");
-        return <div style={style}>
+    render: function(){        
+        return <div>
             <LeftNav width={255} docked={true}>
                 <div>#</div>
                 <div>#</div>
-                <List>
-                    <ListItem primaryText="Projects Explorer" leftIcon={projectIcon} />
-                    <ListItem primaryText="Albums Viewer" leftIcon={albumIcon} />
-                </List>
-                <Divider />
-                <h3>Tools</h3>
-                <List>
-                    <ListItem primaryText="Import" />
-                    <ListItem primaryText="Export" />
-                </List>
+                {this.props.children}
             </LeftNav>
         </div>;
-    },
-    _createIcon: function(alias){
-        return <FontIcon className="material-icons md-dark" style={this.fontIconStyle}>{alias}</FontIcon>;
+    }
+    
+});
+var SidebarMenu = React.createClass({
+
+    render: function() {
+        return <div>{this.props.children}</div>;
     }
 });
-
 var Content = React.createClass({
     style : {
         margin: "56px 0 0 255px",
@@ -92,14 +84,34 @@ var Content = React.createClass({
 });
 
 var DashboardPage = React.createClass({
+    iconFactory: MaterialIconFactory(),
+    getInitialState: function() {
+        return { displayPage: 1};
+    },
     render : function(){
+        var projectIcon = this.iconFactory.createIcon("assessment");
+        var albumIcon = this.iconFactory.createIcon("theaters");
+        var dashboardIcon = this.iconFactory.createIcon("track_changes");
         return <div>
             <TopToolbar />
-            <Sidebar />
+            <Sidebar>
+                <Menu onItemTouchTap={this.handleSidebarMenuChoice}>
+                    <MenuItem key={"dashboard-menu-item"} primaryText="Dashboard" leftIcon={dashboardIcon} />
+                    <MenuItem key={"project-menu-item"} primaryText="Projects Explorer" leftIcon={projectIcon} />
+                    <MenuItem key={"album-menu-item"} primaryText="Albums Viewer" leftIcon={albumIcon} />
+                <Divider />
+                <h3>Tools</h3>
+                    <MenuItem primaryText="Import" />
+                    <MenuItem primaryText="Export" />
+                </Menu>
+            </Sidebar>
             <Content>
-                <Dashboard />
+                <Dashboard pageId={1} />
             </Content>
         </div>;
+    },
+    handleSidebarMenuChoice: function(event){
+        this.setState({displayPage: pageId});
     }
 });
 

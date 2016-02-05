@@ -17,5 +17,5 @@ echo "uploaddir : \"$dir\"" >> ./Settings.js
 echo "}" >> ./Settings.js
 
 echo "MySQL will prompt you for your MySQL password.."
-mysql --host $host -u $user -p hexhack -e "\$(cat ./db.sql)" to finish setup
+mysql --host $host -u $user -p hexhack -e "$(cat ./db.sql)" to finish setup
 echo "Setup complete"

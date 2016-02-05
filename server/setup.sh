@@ -16,4 +16,6 @@ echo "schema : \"hexhack\"," >> ./Settings.js
 echo "uploaddir : \"$dir\"" >> ./Settings.js
 echo "}" >> ./Settings.js
 
-echo "Settings file created, now run : \"mysql --host $host -u $user -p hexhack -e \"\$(cat ./db.sql)\" to finish setup"
+echo "MySQL will prompt you for your MySQL password.."
+mysql --host $host -u $user -p hexhack -e "\$(cat ./db.sql)" to finish setup
+echo "Setup complete"

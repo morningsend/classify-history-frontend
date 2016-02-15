@@ -4,10 +4,13 @@
   "description": "React is a JavaScript library for building user interfaces.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha",
+    "test": "./node_modules/jasmine/bin/jasmine.js",
     "dev-server": "webpack-dev-server --config webpack-dev-server.config.js --progress --colors --port 8081 --inline",
     "build": "webpack --colors --progress --config webpack.config.js",
     "start": "node server/server.js"
+  },
+  "engines":{
+      "node": "5.5.0"
   },
   "author": "Zaiyang Li",
   "license": "ISC",
@@ -35,11 +38,11 @@
     "hammerjs": "^2.0.6",
     "history": "^1.17.0",
     "html-loader": "^0.4.0",
+    "jasmine": "^2.4.1",
     "less": "^2.5.3",
     "less-loader": "^2.2.2",
     "material-design-icons": "^2.1.3",
     "material-ui": "^0.14.3",
-    "mocha": "^2.3.4",
     "node-sass": "^3.4.2",
     "normalize.css": "^3.0.3",
     "react": "^0.14.6",

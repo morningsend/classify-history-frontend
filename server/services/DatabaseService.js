@@ -15,10 +15,10 @@ var DatabaseService = function(options){
         findByEmail: function(email){
             return data.Users[0];
         },
-        insertUser(user){
+        insertUser: function(user){
             data.Users.append(user);
         }
-    }
+    };
     var connectDB = function(){}
     
     return {

@@ -5,12 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/jasmine/bin/jasmine.js",
-    "dev-server": "webpack-dev-server --config webpack-dev-server.config.js --progress --colors --port 8081 --inline",
+    "dev-server": "webpack-dev-server --config webpack-dev-server.config.js --progress --colors --port 8081 --inline --watch",
     "build": "webpack --colors --progress --config webpack.config.js",
     "start-backend": "node server/Server.js"
   },
   "engines": {
-    "node": "5.5.0"
+    "node": "5.5.0",
+    "npm": "3.7.x"
   },
   "author": "Zaiyang Li",
   "license": "ISC",

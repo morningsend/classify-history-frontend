@@ -9,8 +9,8 @@
     "build": "webpack --colors --progress --config webpack.config.js",
     "start-backend": "node server/Server.js"
   },
-  "engines":{
-      "node": "5.5.0"
+  "engines": {
+    "node": "5.5.0"
   },
   "author": "Zaiyang Li",
   "license": "ISC",
@@ -66,7 +66,7 @@
     "md5": "^2.0.0",
     "morgan": "^1.6.1",
     "multer": "^1.1.0",
-    "promise": "^7.1.1",
-    "mysql": "^2.10.2"
+    "mysql": "^2.10.2",
+    "promise": "^7.1.1"
   }
 }

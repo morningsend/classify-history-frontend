@@ -15,7 +15,7 @@ var SinglePage = require("./SinglePageContainer");
 var Login = require("./Login");
 var DashboardPage = require("./DashboardPage");
 var Draggable = require("./Draggable");
-
+var MainPage = require("./MainPage");
 require('../less/style');
 
 var TouchClassifyAppRoot = React.createClass({
@@ -25,9 +25,10 @@ var TouchClassifyAppRoot = React.createClass({
         };
     },
     render : function() {
+        //var component = this.state.loggedIn? <DashboardPage></DashboardPage> : <Draggable><div><Login success={this.handleLogginSuccess} /></div></Draggable> ;
         return (<div >
             <SinglePage>
-                {this.state.loggedIn? <DashboardPage></DashboardPage> : <Draggable><div><Login success={this.handleLogginSuccess} /></div></Draggable> }
+                <MainPage />
             </SinglePage> 
         </div>);
     },

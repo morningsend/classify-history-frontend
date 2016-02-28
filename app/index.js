@@ -1,8 +1,8 @@
 var React = require("react");
 var ReactDOM = require("react-dom");
 
-var TouchClassifyAppRoot = require("./components/TouchClassifyAppRoot.jsx");
-var Router = require("react-router");
+var TouchClassifyAppRoot = require("./components/TouchClassifyAppRoot");
+
 //require the style sheet. Webpack will package this.
 
 

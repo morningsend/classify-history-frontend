@@ -33,13 +33,14 @@ backend.use( cookieParser() );
 backend.post( '/login',
   function( request, response )
   {
+    response.header("Access-Control-Allow-Origin", "*");
     hexHack.onLogin( request.body.username, request.body.password,
       function( user )
       {
         if( user != null )
         {
           response.cookie( "token", user.token );
-          response.json( { status : "OK" } );
+          response.json( { status : "OK", token : user.token } );
         }
         else
         {

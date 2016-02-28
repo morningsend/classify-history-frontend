@@ -82,6 +82,7 @@ CREATE TABLE IF NOT EXISTS `hexhack`.`Images_has_Tags` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+INSERT INTO `hexhack`.`Users` (`username`,`password`) values ('user',md5('pass'));
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

@@ -7,16 +7,18 @@ var CardText = require("material-ui/lib/card/card-text");
 var RaisedButton = require("material-ui/lib/raised-button");
 var FlatButton = require("material-ui/lib/flat-button");
 var TextField = require("material-ui/lib/text-field");
+var Backend = require( "./Backend" );
 
 var style = require("../less/login.less");
 
 console.log(style);
 
 var Login = React.createClass({
+    backend: new Backend( "http://localhost:8080" ),
     initialState: {
         username: "",
         password: "",
-        waitingForResponse: false  
+        waitingForResponse: false
     },
     render: function(){
         var loginLabel = this.state.waitingForResponse ? "" : "Log in";
@@ -51,10 +53,14 @@ var Login = React.createClass({
         this.props.success({token: "1234"});
     },
     _login: function(event) {
+        var self = this;
         this._beforeLogin();
-        setTimeout(this._afterLogin, 2000);
+
+        this.backend.login( this.state.username, this.state.password, this._afterLogin,
+          function(){ self.setState( { waitingForResponse : false } ); }
+        );
     }
-    
+
 });
 
 module.exports = Login;

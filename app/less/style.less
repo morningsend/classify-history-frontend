@@ -8,9 +8,142 @@
 /*load fonts*/
 @import "material-icons.less";
 @import "fonts.less";
-/* components */
-@import "login.less";
-@import "singlepagecontainer.less";
+@import "variables.less";
+body {
+    .hammersmith;
+    font-size: @defaultFontSize;
+}
 
-/*page specifics*/
-@import "homepage.less";
+button > [data-react-toolbox="button"]{
+}
+
+.progress-bar {
+    position: absolute;
+    top: 0px;
+    z-index: 99999;
+    background-color: #777;
+}
+
+.navbar-main {
+    display: block;
+    font-family: @mainFont !important;;
+    vertical-align: middle;
+    background-color: @primaryColor;
+    padding: 0;
+    .navbar-title {
+        font-size: 2rem;
+        font-family: @titleFont;
+        display: inline-block;
+        margin-right: 3em;
+        height:100%;
+        vertical-align: middle;
+        line-height: 3em;
+    }
+    .navbar-group {
+        font-size: 1.6rem;
+        display: inline-block;
+        padding: 0;
+        height: 100%;
+        color: @textColor;
+        button {
+            height: 100%;
+            font-family: @mainFont !important;
+            .material-icons {
+                line-height: inherit;
+                
+            }
+        }
+        .tag-search-box {
+            display: inline-block;
+            height: 70%;
+            padding: 0px;
+            color: black;
+            .material-icons {
+                color: white;
+            }
+            span {
+                color: @textColor;
+            }
+            input {
+                color: white;
+            }
+            label {
+                color: #ccc;
+            }
+        }
+    }
+    .navbar-link {
+        color: @textColor;
+    }
+    a {
+        text-decoration: none;
+    }
+    
+    .float-right {
+        float: right;
+    }
+}
+
+.floating-toolbar {
+   text-align: center;
+    button {
+       margin: 3px;
+       background-color: @primaryColor;
+       border-radius: 0;
+       .material-icons {
+           font-size: 3rem;
+           color: @textColor;
+       }
+       padding: 1rem;
+       width: auto;
+       height: auto;
+       
+       &:hover, &:focus {
+           background-color: @accentColor;
+       }
+    }
+    width: 100%;
+    z-index: 1;
+    
+}
+.floating-button {
+    position: fixed;
+    right: 4rem;
+    bottom: 4rem;
+    
+    .material-icons {
+        font-size: 2.2rem;
+        line-height: 2.2rem !important;
+    }
+    z-index: 999;
+    box-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+}
+.dock-bottom {
+        position: absolute;
+        bottom: 64px;
+}
+
+.app-container {
+    
+}
+
+.slider {
+    background-color: #333;
+    padding: 0.5rem 0;
+    box-shadow: 2px 5px 5px gray;
+    ul {
+        li {
+            display: inline;
+            margin: 0 3px;
+        }   
+        white-space: nowrap;
+            overflow: auto; 
+            display: block;
+    }
+}
+.canvas {
+    background-color: #7a7a7a;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+}

@@ -6,7 +6,7 @@
   "scripts": {
     "test": "./node_modules/jasmine/bin/jasmine.js",
     "dev-server": "webpack-dev-server --config webpack.config.js --progress --colors --port 8081 --inline --watch --hot",
-    "build": "webpack --colors --progress --config webpack.config.js",
+    "build": "webpack --colors --progress --watch --config webpack.config.js",
     "start-backend": "node server/Server.js"
   },
   "engines": {
@@ -17,6 +17,7 @@
   "license": "ISC",
   "devDependencies": {
     "async": "^1.5.2",
+    "autoprefixer": "^6.3.3",
     "babel": "^6.3.26",
     "babel-core": "^6.4.5",
     "babel-eslint": "^4.1.6",
@@ -47,17 +48,19 @@
     "mysql": "^2.10.2",
     "node-sass": "^3.4.2",
     "normalize.css": "^3.0.3",
-    "react": "^0.14.6",
+    "postcss-loader": "^0.8.1",
     "react-addons-css-transition-group": "^0.14.6",
     "react-dom": "^0.14.6",
     "react-hot-loader": "^1.3.0",
     "react-router": "^1.0.3",
     "react-tap-event-plugin": "^0.2.1",
+    "react-toolbox": "^0.14.1",
+    "react_datepicker": "^0.14.6",
     "sass-loader": "^3.1.2",
     "stats-webpack-plugin": "^0.3.0",
     "style-loader": "^0.13.0",
     "url-loader": "^0.5.7",
-    "webpack": "^1.12.12",
+    "webpack": "^1.12.14",
     "webpack-dev-server": "^1.14.1"
   },
   "dependencies": {

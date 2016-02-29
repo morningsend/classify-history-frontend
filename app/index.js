@@ -1,10 +1,8 @@
-var React = require("react");
-var ReactDOM = require("react-dom");
+import React from "react";
+import ReactDOM from "react-dom";
+import { AppRoot } from "./components/AppRoot";
+import ToolboxApp from 'react-toolbox/lib/app';
+require("./less/style.less")
 
-var TouchClassifyAppRoot = require("./components/TouchClassifyAppRoot");
-
-//require the style sheet. Webpack will package this.
-
-
-
-ReactDOM.render(<TouchClassifyAppRoot />, document.querySelector("#wrapper"));
+ReactDOM.render(
+    <ToolboxApp> <AppRoot /></ToolboxApp> , document.querySelector("#wrapper"));

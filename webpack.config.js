@@ -1,6 +1,8 @@
 var path = require("path");
 var webpack = require("webpack");
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
+
+var autoprefixer = require('autoprefixer');
 module.exports = {
     entry: {
         index: path.resolve(__dirname, "app/index.js"),
@@ -14,15 +16,15 @@ module.exports = {
         loaders: [
             {
                 test: /\.scss$/, 
-                loader: "style!css!sass"
+                loader: ExtractTextPlugin.extract("style","css?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss!sass?sourceMap")
             },
             {
                 test: /\.less$/,
-                loader: "style!css!less",
+                loader: ExtractTextPlugin.extract("style","css?minimize!less"),
             },
             {
                 test: /\.css$/,
-                loader: "style!css",
+                loader: ExtractTextPlugin.extract("style","css"),
             },
             {   
                 test: /\.(ttf|eot|svg|woff|woff2)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
@@ -39,7 +41,8 @@ module.exports = {
             }
         ]
     },
-    //plugins: [ new ExtractTextPlugin("style.css",{ allChunks: true} )],
+    postcss:[autoprefixer],
+    plugins: [ new ExtractTextPlugin("style.css",{ allChunks: true} )],
     resolve: {
         extensions: ['', '.js', '.json', '.jsx', '.css', '.less', '.scss'] 
   }

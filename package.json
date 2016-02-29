@@ -55,7 +55,6 @@
     "react-router": "^1.0.3",
     "react-tap-event-plugin": "^0.2.1",
     "react-toolbox": "^0.14.1",
-    "react_datepicker": "^0.14.6",
     "sass-loader": "^3.1.2",
     "stats-webpack-plugin": "^0.3.0",
     "style-loader": "^0.13.0",

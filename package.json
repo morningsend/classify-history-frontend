@@ -11,6 +11,20 @@
     "webpack-watch": "webpack --colors --progress --watch --config webpack.config.js",
     "start-backend": "node server/Server.js"
   },
+<<<<<<< 85784713a54c54a1465e2c03d454d162169eac42
+=======
+  "jest":{
+    "testPathDirs":["__tests__"],
+    "unmockedModulePathPatterns": [
+     "<rootDir>/node_modules/react",
+     "<rootDir>/node_modules/react-dom",
+     "<rootDir>/node_modules/react-addons-test-utils"
+   ],
+   "testFileExtensions": ["js"],
+    "moduleFileExtensions": ["js", "json"],
+    "scriptPreprocessor": "<rootDir>/node_modules/babel-jest"
+  },
+>>>>>>>  missing loader
   "engines": {
     "node": "5.5.0",
     "npm": "3.7.x"
@@ -18,6 +32,11 @@
   "author": "Zaiyang Li",
   "license": "ISC",
   "devDependencies": {
+    "babel-jest": "^5.2.1",
+    "babel-preset-es2015": "*",
+    "babel-preset-react": "*",
+    "jest-cli": "*",
+    "react-addons-test-utils": "~0.14.0",
     "async": "^1.5.2",
     "autoprefixer": "^6.3.3",
     "babel": "^6.3.26",
@@ -71,6 +90,8 @@
     "webpack-dev-server": "^1.14.1"
   },
   "dependencies": {
+    "react": "~0.14.0",
+    "react-dom": "~0.14.0",
     "body-parser": "^1.14.2",
     "express": "^4.13.4",
     "jquery": "^2.2.0",

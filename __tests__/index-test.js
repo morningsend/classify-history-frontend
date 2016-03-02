@@ -1,5 +1,5 @@
 
-jest.dontMock('../app/components/AppRoot');
+jest.dontMock('../app/components/AppRoot.jsx');
 import React from 'react';
 import ReactDOM from 'react-dom';
 import TestUtils from 'react-addons-test-utils';

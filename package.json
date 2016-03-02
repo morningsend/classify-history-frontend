@@ -10,34 +10,6 @@
     "build": "webpack --colors --progress --watch --config webpack.config.js",
     "start-backend": "node server/Server.js"
   },
-  "jest": {
-    "testFileExtensions": [
-      "es6",
-      "js",
-      "scss",
-      "jsx"
-    ],
-    "moduleFileExtensions": [
-      "js",
-      "jsx",
-      "json",
-      "es6",
-      "scss"
-    ],
-    "modulePathIgnorePatterns": [
-      "<rootDir>/node_modules/"
-    ],
-    "scriptPreprocessor": "<rootDir>/jest/preprocessor.js",
-    "testPathDirs": [
-      "__tests__"
-    ],
-    "unmockedModulePathPatterns": [
-      "<rootDir>/node_modules/react",
-      "<rootDir>/node_modules/react-dom",
-      "<rootDir>/node_modules/react-addons-test-utils",
-      "<rootDir>/node_modules/fbjs"
-    ]
-  },
   "engines": {
     "node": "5.5.0",
     "npm": "3.7.x"
@@ -74,7 +46,6 @@
     "jasmine": "^2.4.1",
     "jest-cli": "^0.7.1",
     "jest-webpack-alias": "^2.2.0",
-    "jestpack": "^0.2.0",
     "less": "^2.5.3",
     "less-loader": "^2.2.2",
     "material-design-icons": "^2.1.3",

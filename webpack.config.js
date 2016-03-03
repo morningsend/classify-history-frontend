@@ -45,7 +45,7 @@ module.exports = {
     postcss:[autoprefixer],
     plugins: [ new ExtractTextPlugin("style.css",{ allChunks: true} )],
     resolve: {
-        root: path.resolve('__dirname'),
+        root: path.resolve(__dirname,"."),
         extensions: ['', '.js', '.json', '.jsx', '.css', '.less', '.scss']
   }
 };

@@ -11,8 +11,6 @@
     "webpack-watch": "webpack --colors --progress --watch --config webpack.config.js",
     "start-backend": "node server/Server.js"
   },
-<<<<<<< 85784713a54c54a1465e2c03d454d162169eac42
-=======
   "jest":{
     "testPathDirs":["__tests__"],
     "unmockedModulePathPatterns": [
@@ -24,7 +22,6 @@
     "moduleFileExtensions": ["js", "json"],
     "scriptPreprocessor": "<rootDir>/node_modules/babel-jest"
   },
->>>>>>>  missing loader
   "engines": {
     "node": "5.5.0",
     "npm": "3.7.x"

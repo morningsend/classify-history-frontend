@@ -6,7 +6,8 @@
   "scripts": {
     "test": "./node_modules/jasmine/bin/jasmine.js",
     "dev-server": "webpack-dev-server --config webpack.config.js --progress --colors --port 8081 --inline --watch --hot",
-    "build": "webpack --colors --progress --watch --config webpack.config.js",
+    "build": "webpack --colors --progress --config webpack.config.js",
+    "webpack-watch": "webpack --colors --progress --watch --config webpack.config.js",
     "start-backend": "node server/Server.js"
   },
   "engines": {

@@ -13,6 +13,13 @@ module.exports = {
         filename: 'bundle.js'
     },
     module :{
+        preLoaders: [
+            {
+                test: /\.jsx?$/,
+                exclude: /node_modules/,
+                loader: "eslint-loader"
+            }
+        ],
         loaders: [
             {
                 test: /\.scss$/, 
@@ -42,8 +49,12 @@ module.exports = {
         ]
     },
     postcss:[autoprefixer],
+    eslint: {
+        configFile: path.resolve(__dirname, ".eslintrc"),
+    },
     plugins: [ new ExtractTextPlugin("style.css",{ allChunks: true} )],
     resolve: {
         extensions: ['', '.js', '.json', '.jsx', '.css', '.less', '.scss'] 
-  }
+    }
+     
 };

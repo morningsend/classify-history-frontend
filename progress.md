@@ -17,7 +17,7 @@ Progress Sheet
 |The application's states are persisted between browser sessions.|||
 |**Usability and UX**|
 |Able to Rotate screen|||
-|Able to drag images onto canvas|||
+|Able to drag images onto canvas from image gallery|||
 |Able to |||
 |Able to tag images|||
 |Able to save work space|||
@@ -28,3 +28,6 @@ Progress Sheet
 |Able to tap on images to select them|||
 |Able to view selected image's details when click on "edit " button |||
 |Able to change current tag on the "tag tool" |||
+|**Developer Experience**|
+|Set up ESLint to check for errors in JavaScript code (.JSX .JS)|DONE|**Zaiyang Li**|
+|||

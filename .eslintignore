@@ -1,0 +1,5 @@
+node_modules/*
+app/build/*
+package.json
+webpack.config.js
+webpack-stats.json

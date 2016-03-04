@@ -11,6 +11,11 @@ class FloatingToolbar extends React.Component {
         super(props);
     }
     render() {
+        var b = {
+            a: 5
+            c: 5
+        }
+        
         return <div {... this.props}>
             <IconButton icon="undo" />
             <IconButton icon="redo" />
@@ -22,6 +27,7 @@ class FloatingToolbar extends React.Component {
             <IconButton icon="fullscreen" />
             <IconButton icon="screen_rotation" />
         </div>
+        
     }
 }
 
@@ -49,6 +55,8 @@ class Slider extends React.Component {
         var icon = this.state.collapsed? "keyboard_arrow_down" : "keyboard_arrow_up";
         return <div {...this.props} >
             <div style={style}>
+            
+              
             <ul>
                 <li><img src="https://unsplash.it/200/150/?random" /></li>
                 <li><img src="https://unsplash.it/200/150/?random" /></li>

@@ -4,14 +4,14 @@
   "description": "React is a JavaScript library for building user interfaces.",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/jasmine/bin/jasmine.js",
+    "test": "./node_modules/.bin/jest",
     "dev-server": "webpack-dev-server --config webpack.config.js --progress --colors --port 8081 --inline --watch --hot",
     "build": "webpack --colors --progress --config webpack.config.js",
     "webpack-watch": "webpack --colors --progress --watch --config webpack.config.js",
     "start-backend": "node server/Server.js"
   },
   "engines": {
-    "node": "5.5.0",
+    "node": "5.7.0",
     "npm": "3.7.x"
   },
   "author": "Zaiyang Li",
@@ -42,6 +42,7 @@
     "history": "^1.17.0",
     "html-loader": "^0.4.0",
     "jasmine": "^2.4.1",
+    "jest-cli": "^0.8.2",
     "less": "^2.5.3",
     "less-loader": "^2.2.2",
     "material-design-icons": "^2.1.3",
@@ -53,9 +54,12 @@
     "react-addons-css-transition-group": "^0.14.6",
     "react-dom": "^0.14.6",
     "react-hot-loader": "^1.3.0",
+    "react-redux": "^4.4.0",
     "react-router": "^1.0.3",
-    "react-tap-event-plugin": "^0.2.1",
+    "react-tap-event-plugin": "^0.2.2",
     "react-toolbox": "^0.14.1",
+    "redux-devtools": "^3.1.1",
+    "redux-immutable": "^3.0.6",
     "sass-loader": "^3.1.2",
     "stats-webpack-plugin": "^0.3.0",
     "style-loader": "^0.13.0",

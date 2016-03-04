@@ -48,6 +48,7 @@ Take some time to explore the repository and familiarize where the files are. Be
 			|-services/
 			server.js
 		|-test/
+		|-progress/
 		package.json
 		travis.yml
 		README.MD
@@ -89,3 +90,7 @@ A small step forward. Integrated a touch event library into the front-end compon
 
 *29/01/2016*
 The front-end and back-end repositories will be merged into one. Any existing back-end code written in Python will be ported over to Node.js. We are aiming to develop a tiny interface around the database, which will most likely to be Mongodb or MySQL. Just don't want to handcraft all the SQL queries.
+
+
+*04/03/2016*
+Added a progress folder. A markdown to keep track of current development progress. Take any feature not yet implemented from the list and get started working on them. If you finished a feature, edit the file and put your name in the table. Also don't forget to mark it as completed. Also please add new requirements to the list.

@@ -32,7 +32,7 @@ Install the build tools we are going to use: Webpack
 
 Take some time to explore the repository and familiarize where the files are. Below is a snapshot of the folder structure.
 
-	Front-end (root)
+    Front-end (root)
 		|-node_modules/
 		|-html mockup/
 		|-app/
@@ -41,8 +41,6 @@ Take some time to explore the repository and familiarize where the files are. Be
 			|-lib/
 			|-less/
 			|-fonts/
-			index.js
-			index.html
 		|-server/
 			|-controllers/
 			|-services/
@@ -75,6 +73,18 @@ You need to have several windows open at the same time: a code editor, chrome/fi
 1. Make some changes to the files in `app/` folder.
 2. run the command `npm run build` from terminal. 
 3. Open `index.html` to view the changes.
+
+###How to write unit tests and run them?
+All the test specs should be put inside the `spec/` folder. We use test framework called **Jasmine** to execute unit tests. If you want to execute the unit test, open up `testRunner.html` inside of `spec/` folder. The tests will run in browser. 
+If you are going to create a new spec, you need to code up the `**Spec.js` file and put into the `spec/` folder. Open up `IncludeSpec.js` and add a line to it:
+
+    require('./yourtestSpec.js');
+
+Then run the command 
+
+    npm build-test
+        
+Once webpack has finished bundling the test files, you can open `testRunner.html` as before to see the results.
 
 ##Changes and Progress
 Please document all the major changes here:

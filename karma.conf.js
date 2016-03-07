@@ -2,7 +2,7 @@ var webpack = require('webpack');
 
 module.exports = function (config) {
   config.set({
-    browsers: [ 'Chrome' ], //run in Chrome
+    browsers: [ 'Chrome', 'Firefox' ], //run in Chrome
     singleRun: true, //just run once by default
     frameworks: ['jasmine'], //use the jest test framework
     files: [
@@ -13,10 +13,17 @@ module.exports = function (config) {
     },
     reporters: [ 'dots' ], //report results in this format
     webpack: { //kind of a copy of your webpack config
-      devtool: 'inline-source-map', //just do inline source maps instead of the default
+      //devtool: 'inline-source-map', //just do inline source maps instead of the default
       module: {
         loaders: [
-          { test: /\.js$/, loader: 'babel-loader' }
+        {
+            test: /\.jsx?$/,
+            exclude: /node_modules/,
+            loader: 'babel-loader',
+            query: {
+                presets: ['es2015', 'react'],
+            }
+        }
         ]
       }
     },

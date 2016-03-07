@@ -9,14 +9,15 @@ export class Thumbnail extends React.Component {
     
     constructor(props){
         super(props);
-        this.state = {}
+        this.state = {
+            selected: false
+        }
     }
-    
     render (){
-        var cssClass = ClassNames(this.props.className, 'image-thumbnail');
+        var cssClass = ClassNames(this.props.className, 'image-thumbnail' , { 'selected': !this.state.selected } );
         return <Card className={cssClass} {...this.props} >
                     <CardMedia
-                            aspectRatio="wide"
+                            aspectRatio='wide'
                             image={this.props.url}
                             contentOverlay={true}
                      />

@@ -10,7 +10,7 @@ export class Canvas extends React.Component {
         this.state = {};
     }
     render() {
-        console.log(this.props.children);
+        //console.log(this.props.children);
         var cssClass = ClassNames(this.props.className, "canvas-container");
         return <div className={cssClass} >
             <div className="canvas-inner">

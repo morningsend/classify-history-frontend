@@ -104,20 +104,19 @@ class AppRoot extends React.Component {
                 </Canvas>
                 <Button icon="cloud" floating primary className="floating-button" />
                 <FloatingToolbar className="floating-toolbar dock-bottom" />
-                <ThumbnailContextMenu left={this.state.left} top={this.state.top} show={this.state.show} />
+                <ThumbnailContextMenu left={this.state.left} top={this.state.top} show={this.state.show} onHide={this._handleThumbnailContextMenuClose.bind(this)} />
             </div>;
     }
     _handleThumbnailContextMenu(e){
-        console.log(e);
-        
-        console.log(e.clientX);
-        console.log(e.clientY);
         this.setState({
             show: true,
             left:e.clientX,
             top: e.clientY
         });
         e.preventDefault();
+    }
+    _handleThumbnailContextMenuClose(...args){
+        this.setState({show:false});
     }
 }
 

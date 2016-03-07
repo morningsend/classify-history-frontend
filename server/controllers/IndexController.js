@@ -13,7 +13,7 @@ var IndexController = Controller({
             index: "index.html",
             maxAge: 60000
         }
-        router.use(express.static(path.resolve(__dirname, "../../app"), staticConfig));
+        router.use(express.static(path.resolve(__dirname, "../../app/build"), staticConfig));
         
         router.get("/", this.indexHandler);
         return router;

@@ -769,7 +769,7 @@
   display: block;
   width: 100%;
   line-height: 4rem; }
-.image-thumbnail{width:300px}.canvas-container{position:absolute;top:0;left:0;background-color:#7a7a7a;height:100%;width:100%}.canvas-container .canvas-inner{padding-top:450px}.canvas-container .canvas-inner>*{position:absolute}.style-menu_item__root___7Ze05 {
+.image-thumbnail{width:200px}.image-thumbnail .selected{border:5px solid rgba(66,22,33,.6)}.canvas-container{position:absolute;top:0;left:0;background-color:#7a7a7a;height:100%;width:100%}.canvas-container .canvas-inner{padding-top:450px}.canvas-container .canvas-inner>*{position:absolute}.style-menu_item__root___7Ze05 {
   position: relative;
   display: -webkit-box;
   display: -webkit-flex;

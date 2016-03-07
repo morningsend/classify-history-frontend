@@ -3,3 +3,5 @@ app/build/*
 package.json
 webpack.config.js
 webpack-stats.json
+webpack.jasmine.js
+spec/spec.js

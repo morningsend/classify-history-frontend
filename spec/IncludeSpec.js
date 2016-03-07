@@ -1,1 +1,2 @@
 require("./SumSpec");
+require("./ReactComponentTestExampleSpec");

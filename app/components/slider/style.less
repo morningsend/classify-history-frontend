@@ -1,0 +1,57 @@
+//import "../../less/variables.less";
+
+@slider-viewport-height: 150px;
+@slider-control-color: #eee;
+@slider-background-color: #333;
+.slider-wrapper {
+    z-index: 9999;
+    background-color: @slider-background-color;
+    padding: 0.5rem 0;
+    box-shadow: 2px 5px 5px gray;
+    position: relative;
+    ul {
+        li {
+            display: inline;
+            margin: 0 3px;
+        }   
+        white-space: nowrap;
+            overflow: auto; 
+            display: block;
+    }
+    .expanded {
+        height: @slider-viewport-height+40px;
+    }
+    .collapsed {
+        height: 0px;
+        overflow: hidden;
+    }
+    .slider-item {
+        max-height: @slider-viewport-height;
+        display: inline-block;
+        & img {
+            height: @slider-viewport-height;
+            display: inline-block;
+        }
+    }
+    .slider-controls{
+        left: 0;
+        right: 0;
+        text-align:center;
+        margin-left: auto;
+        margin-right: auto;
+        background-color: @slider-background-color;
+        position: absolute;
+        display: inline-block;
+        width: 14em;
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
+        button[data-react-toolbox="button"] {
+            color: @slider-control-color !important;
+        }
+    }
+    .viewport {
+        -webkit-overflow-scrolling: touch;
+        transition: height 0.3s ease-in-out;
+        overflow:hidden;
+    }
+}

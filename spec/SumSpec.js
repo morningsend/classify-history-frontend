@@ -1,4 +1,6 @@
 function sum(a,b){
+    if(typeof a == 'string' || typeof b == 'string')
+        throw new TypeError('incorrect argument type');
     return a+b;
 }
 

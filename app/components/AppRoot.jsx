@@ -5,17 +5,16 @@ import {Button, IconButton} from 'react-toolbox/lib/button';
 import Link from 'react-toolbox/lib/link';
 import ProgressBar from 'react-toolbox/lib/progress_bar';
 import Autocomplete from 'react-toolbox/lib/autocomplete';
+import InjectTapPlugin from 'react-tap-event-plugin';
+
+InjectTapPlugin();
 
 class FloatingToolbar extends React.Component {
     constructor (props) {
         super(props);
     }
     render() {
-        var b = {
-            a: 5
-            c: 5
-        }
-        
+       
         return <div {... this.props}>
             <IconButton icon="undo" />
             <IconButton icon="redo" />

@@ -30,4 +30,4 @@ Progress Sheet
 |Able to change current tag on the "tag tool" |||
 |**Developer Experience**|
 |Set up ESLint to check for errors in JavaScript code (.JSX .JS)|DONE|**Zaiyang Li**|
-|||
+|Set up unit testing framework |DONE|**Zaiyang Li**,**Ruichao Zhang**|

@@ -16,7 +16,7 @@ import { ContextMenu, ThumbnailContextMenu } from './menu/ContextMenu';
 
 InjectTapPlugin();
 
-class uploadFile extends React.Component{
+class UploadFile extends React.Component{
 
     constructor(props){
         super(props)
@@ -87,7 +87,7 @@ class uploadFile extends React.Component{
             console.log('I\'m a simple callback');
         };
 
-        return<div className = 'filepicker dropzone'>
+        return<div {...this.props}>
             {/* <DropzoneComponent onDrop={this.onDrop}>
                <div>Try dropping some files here, or click to select files to upload.</div>
              </Dropzone>*/}
@@ -151,7 +151,7 @@ class AppRoot extends React.Component {
     render () {
         
         return <div className="app-container">
-                <uploadFile />
+                
 
                 <div className="header">
                     <ProgressBar type="linear" mode="indeterminate" className="progress-bar" />
@@ -198,10 +198,12 @@ class AppRoot extends React.Component {
                 
                 </div>
                 <Canvas className="canvas">
-                
+                    
                     <Thumbnail url='https://unsplash.it/200/150/?random' onContextMenu={this._handleThumbnailContextMenu.bind(this)} />
                     <Thumbnail url='https://unsplash.it/200/200/?random' onContextMenu={this._handleThumbnailContextMenu.bind(this)} />
+                
                 </Canvas>
+                <UploadFile className= "upload-file filepicker dropzone"/>
                 <Button icon="cloud" floating primary className="floating-button" />
                 <FloatingToolbar className="floating-toolbar dock-bottom" />
                 <ThumbnailContextMenu left={this.state.left} top={this.state.top} show={this.state.show} onHide={this._handleThumbnailContextMenuClose.bind(this)} />
@@ -220,4 +222,4 @@ class AppRoot extends React.Component {
     }
 }
 
-export default uploadFile;
+export default AppRoot;

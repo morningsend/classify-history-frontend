@@ -24,7 +24,7 @@ Progress Sheet
 |Able to undo and redo actions|||
 |Able to upload images|||
 |Able to drag images around in canvas|||
-|Able to long-press images to display context menu|||
+|Able to long-press images to display context menu|In Progress|**Zaiyang Li**|
 |Able to tap on images to select them|||
 |Able to view selected image's details when click on "edit " button |||
 |Able to change current tag on the "tag tool" |||

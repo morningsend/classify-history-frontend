@@ -13,7 +13,7 @@ Progress Sheet
 |The backend persists user profile data|||
 |The image collections page is designed|||
 |The image collection page is implemented|||
-|The backend stores the images and serves up links|||
+|The backend stores the images and serves up links|DONE|**Jake**|
 |The application's states are persisted between browser sessions.|||
 |**Usability and UX**|
 |Able to Rotate screen|||
@@ -22,7 +22,7 @@ Progress Sheet
 |Able to tag images|||
 |Able to save work space|||
 |Able to undo and redo actions|||
-|Able to upload images|||
+|Able to upload images|DONE|**Jake**|
 |Able to drag images around in canvas|||
 |Able to long-press images to display context menu|||
 |Able to tap on images to select them|||

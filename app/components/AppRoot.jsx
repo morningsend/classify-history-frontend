@@ -13,6 +13,7 @@ import Slider, {SliderItem} from './slider/Slider';
 import Thumbnail from './image/Thumbnail';
 import Canvas from './canvas/Canvas';
 import { ContextMenu, ThumbnailContextMenu } from './menu/ContextMenu';
+import Backend from './Backend';
 
 InjectTapPlugin();
 
@@ -22,7 +23,7 @@ class UploadFile extends React.Component{
         super(props)
         this.state = {txt:''}
         this.update = this.update.bind(this)
-
+        this.backend = new Backend( "http://localhost:8080" );
     }
     onDrop (files) {
       console.log('Received files: ', files);
@@ -34,13 +35,14 @@ class UploadFile extends React.Component{
         var componentConfig = {
             iconFiletypes: ['.jpg', '.png', '.gif'],
             showFiletypeIcon: true,
-            postUrl: '/uploadHandler'
+            //postUrl: '/uploadHandler'
+            postUrl: this.backend.getImageUploadURL()
             // Notice how there's no postUrl set here
         };
         var djsConfig = {
             addRemoveLinks: true,
             acceptedFiles: "image/jpeg,image/png,image/gif"
-        };  
+        };
         var callbackArray = [
             function () {
                 console.log('Look Ma, I\'m a callback in an array!');
@@ -48,7 +50,7 @@ class UploadFile extends React.Component{
             function () {
                 console.log('Wooooow!');
             }
-        ];        
+        ];
         var eventHandlers = {
             // All of these receive the event as first parameter:
             drop: callbackArray,
@@ -100,7 +102,7 @@ class UploadFile extends React.Component{
 // stateless child
 const UploadCanvas = (props) =>{
     return <div>
-               <input type = "text" 
+               <input type = "text"
                onChange = {props.update} />
                <h1>{props.txt}</h1>
           </div>
@@ -110,7 +112,7 @@ class FloatingToolbar extends React.Component {
         super(props);
     }
     render() {
-       
+
         return <div {... this.props}>
             <IconButton icon="undo" />
             <IconButton icon="redo" />
@@ -122,7 +124,7 @@ class FloatingToolbar extends React.Component {
             <IconButton icon="fullscreen" />
             <IconButton icon="screen_rotation" />
         </div>
-        
+
     }
 }
 
@@ -149,9 +151,9 @@ class AppRoot extends React.Component {
         console.log("hehahahah");
     }
     render () {
-        
+
         return <div className="app-container">
-                
+
 
                 <div className="header">
                     <ProgressBar type="linear" mode="indeterminate" className="progress-bar" />
@@ -184,7 +186,7 @@ class AppRoot extends React.Component {
                             />
                         </Navigation >
                     </AppBar>
-                    
+
                     <Slider className="slider" >
                         <SliderItem className="slider-item" ><img src="https://unsplash.it/200/150/?random" /></SliderItem>
                         <SliderItem className="slider-item" ><img src="https://unsplash.it/300/150/?random" /></SliderItem>
@@ -195,13 +197,13 @@ class AppRoot extends React.Component {
                         <SliderItem className="slider-item" ><img src="https://unsplash.it/200/150/?random" /></SliderItem>
                         <SliderItem className="slider-item" ><img src="https://unsplash.it/300/150/?random" /></SliderItem>
                     </Slider>
-                
+
                 </div>
                 <Canvas className="canvas">
-                    
+
                     <Thumbnail url='https://unsplash.it/200/150/?random' onContextMenu={this._handleThumbnailContextMenu.bind(this)} />
                     <Thumbnail url='https://unsplash.it/200/200/?random' onContextMenu={this._handleThumbnailContextMenu.bind(this)} />
-                
+
                 </Canvas>
                 <UploadFile className= "upload-file filepicker dropzone"/>
                 <Button icon="cloud" floating primary className="floating-button" />

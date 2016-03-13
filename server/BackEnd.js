@@ -69,7 +69,7 @@ backend.post( '/createtag',
   }
 );
 
-backend.post( '/upload', upload.single( 'image' ),
+backend.post( '/upload', upload.single( 'file' ),
   function( request, response )
   {
     hexHack.onInsertImage( request.cookies.token, request.file.path,
@@ -120,6 +120,44 @@ backend.get( '/image',
         else
         {
           response.json( { status : "ERROR" } );
+        }
+      }
+    );
+  }
+);
+
+backend.get( '/imagelist',
+  function( request, response )
+  {
+    hexhack.fetchImages( request.cookies.token,
+      function( images )
+      {
+        if( images != null )
+        {
+          response.json({ status : "OK", image : images });
+        }
+        else
+        {
+          response.json({ status : "ERROR" });
+        }
+      }
+    );
+  }
+);
+
+backend.get( '/taglist',
+  function( request, response )
+  {
+    hexhack.fetchTags( request.cookies.token,
+      function( tags )
+      {
+        if( tags != null )
+        {
+          response.json({ status : "OK", tags : tags });
+        }
+        else
+        {
+          response.json({ status : "ERROR" });
         }
       }
     );

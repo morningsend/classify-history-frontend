@@ -98,4 +98,40 @@ HexHack.prototype.tagImage = function( token, imageID, tagID, callback )
   );
 }
 
+HexHack.prototype.fetchTags = function( token, callback )
+{
+  var self = this;
+  this.db.lookupUserWithToken( token,
+    function( user )
+    {
+      if( user != null )
+      {
+        self.db.getTagList( callback );
+      }
+      else
+      {
+        callback( null );
+      }
+    }
+  );
+}
+
+HexHack.prototype.fetchImages = function( token, callback )
+{
+  var self = this;
+  this.db.lookupUserWithToken( token,
+    function( user )
+    {
+      if( user != null )
+      {
+        self.db.getImageList( callback );
+      }
+      else
+      {
+        callback( null );
+      }
+    }
+  );
+}
+
 module.exports = HexHack;

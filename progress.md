@@ -7,7 +7,7 @@ Progress Sheet
 |----|-----|-----|
 |**UI design and implementation**|
 |Design and Implement the login component| DONE |**Zaiyang Li** |
-|The login screen allows the user to log into the system|||
+|The login screen allows the user to log into the system|DONE|**Jake**|
 |The user profile page is designed|||
 |The user profile page is implemented|||
 |The backend persists user profile data|||

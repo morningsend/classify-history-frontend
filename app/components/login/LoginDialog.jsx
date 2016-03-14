@@ -13,7 +13,7 @@ export class LoginDialog extends React.Component {
             password: "",
         };
     }
-    
+
     render(){
         return <Dialog active={this.props.active} {...this.props} className="login-dialog" onOverlayClick={this._handleCancel.bind(this)}>
             <p className='login-title'>Log In To Your Account</p>
@@ -23,7 +23,7 @@ export class LoginDialog extends React.Component {
         </Dialog>
     }
     _handlePasswordChange(e){
-        
+
         this.setState({
             password: e,
         });
@@ -41,7 +41,7 @@ export class LoginDialog extends React.Component {
     }
     doLogin(username, password){
         if(this.props.onLogin){
-            this.props.onLogin(username, password);
+            this.props.onLogin(this.state.username, this.state.password);
         }
     }
 }

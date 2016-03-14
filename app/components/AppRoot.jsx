@@ -141,6 +141,8 @@ class AppRoot extends React.Component {
             top: 0,
             showLogin: false
         }
+
+        this.backend = new Backend( "http://localhost:8080" );
     }
     _onDrop(){
         //  var req = request.post('/upload');
@@ -163,13 +165,18 @@ class AppRoot extends React.Component {
     }
     _loginComplete(){
         this.setState({
-            
-        })
+            showLogin:false
+        });
+    }
+    _loginFailed(){
+
     }
     _handleLogin(username, password){
-        this.setState({
-            showLogin:false,
-        })
+        var self = this;
+        this.backend.login( username, password ).then(
+          function( result ) { self.__loginComplete(); },
+          function( error ){ self._loginFailed(); }
+        );
     }
     render () {
 

@@ -1,4 +1,5 @@
 import $ from 'jquery';
+//import Promise from 'promise';
 
 var Backend = function( backendURL )
 {
@@ -13,7 +14,7 @@ var Backend = function( backendURL )
           },
           function( data )
           {
-            if( data.status == "OK" )
+            if( (data.status != null) && (data.status == "OK") )
             {
               resolve( data );
             }

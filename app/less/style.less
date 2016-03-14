@@ -138,9 +138,12 @@ button > [data-react-toolbox="button"]{
     margin-top: 40px;
 }
 .app-container {
-
+    
 }
 
-
-
+div[data-react-toolbox="overlay"] {
+    > div {
+        z-index: 10000 !important;
+    }
+}
 

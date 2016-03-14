@@ -13,8 +13,10 @@ import Slider, {SliderItem} from './slider/Slider';
 import Thumbnail from './image/Thumbnail';
 import Canvas from './canvas/Canvas';
 import { ContextMenu, ThumbnailContextMenu } from './menu/ContextMenu';
-import Backend from './Backend';
+import LoginDialog from './login/LoginDialog';
 
+
+import Backend from './Backend';
 InjectTapPlugin();
 
 class UploadFile extends React.Component{
@@ -136,7 +138,8 @@ class AppRoot extends React.Component {
         this.state={
             show:false,
             left: 0,
-            top: 0
+            top: 0,
+            showLogin: false
         }
     }
     _onDrop(){
@@ -147,8 +150,26 @@ class AppRoot extends React.Component {
         // req.end(callback);
         console.log("receive file ")
     }
-    _handleLogin() {
+    _showLogin() {
+        this.setState({
+            showLogin: true
+        });
         console.log("hehahahah");
+    }
+    _loginCancelled(){
+        this.setState({
+            showLogin:false
+        });
+    }
+    _loginComplete(){
+        this.setState({
+            
+        })
+    }
+    _handleLogin(username, password){
+        this.setState({
+            showLogin:false,
+        })
     }
     render () {
 
@@ -165,7 +186,7 @@ class AppRoot extends React.Component {
                         </Navigation>
                         <Navigation className="navbar-group float-right" >
                             <Button label="Settings" inverse/>
-                            <Button label="Log in" inverse primary onClick={this._handleLogin}/>
+                            <Button label="Log in" inverse primary onClick={this._showLogin.bind(this)}/>
                         </Navigation >
                     </AppBar>
                     <AppBar className="navbar-main">
@@ -209,6 +230,7 @@ class AppRoot extends React.Component {
                 <Button icon="cloud" floating primary className="floating-button" />
                 <FloatingToolbar className="floating-toolbar dock-bottom" />
                 <ThumbnailContextMenu left={this.state.left} top={this.state.top} show={this.state.show} onHide={this._handleThumbnailContextMenuClose.bind(this)} />
+                <LoginDialog active={this.state.showLogin} onLogin={this._handleLogin.bind(this)} onCancel={this._loginCancelled.bind(this)}/>
             </div>;
     }
     _handleThumbnailContextMenu(e){

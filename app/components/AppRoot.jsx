@@ -7,20 +7,112 @@ import ProgressBar from 'react-toolbox/lib/progress_bar';
 import Autocomplete from 'react-toolbox/lib/autocomplete';
 
 import InjectTapPlugin from 'react-tap-event-plugin';
-
+import Dropzone from 'react-dropzone';
+import DropzoneComponent from 'react-dropzone-component';
 import Slider, {SliderItem} from './slider/Slider';
 import Thumbnail from './image/Thumbnail';
 import Canvas from './canvas/Canvas';
 import { ContextMenu, ThumbnailContextMenu } from './menu/ContextMenu';
+import Backend from './Backend';
 
 InjectTapPlugin();
 
+class UploadFile extends React.Component{
+
+    constructor(props){
+        super(props)
+        this.state = {txt:''}
+        this.update = this.update.bind(this)
+        this.backend = new Backend( "http://localhost:8080" );
+    }
+    onDrop (files) {
+      console.log('Received files: ', files);
+    }
+    update(e){
+        this.setState({txt:e.target.value})
+    }
+    render(){
+        var componentConfig = {
+            iconFiletypes: ['.jpg', '.png', '.gif'],
+            showFiletypeIcon: true,
+            //postUrl: '/uploadHandler'
+            postUrl: this.backend.getImageUploadURL()
+            // Notice how there's no postUrl set here
+        };
+        var djsConfig = {
+            addRemoveLinks: true,
+            acceptedFiles: "image/jpeg,image/png,image/gif"
+        };
+        var callbackArray = [
+            function () {
+                console.log('Look Ma, I\'m a callback in an array!');
+            },
+            function () {
+                console.log('Wooooow!');
+            }
+        ];
+        var eventHandlers = {
+            // All of these receive the event as first parameter:
+            drop: callbackArray,
+            dragstart: null,
+            dragend: null,
+            dragenter: null,
+            dragover: null,
+            dragleave: null,
+            // All of these receive the file as first parameter:
+            addedfile: simpleCallBack,
+            removedfile: null,
+            thumbnail: null,
+            error: null,
+            processing: null,
+            uploadprogress: null,
+            sending: null,
+            success: null,
+            complete: null,
+            canceled: null,
+            maxfilesreached: null,
+            maxfilesexceeded: null,
+            // All of these receive a list of files as first parameter
+            // and are only called if the uploadMultiple option
+            // in djsConfig is true:
+            processingmultiple: null,
+            sendingmultiple: null,
+            successmultiple: null,
+            completemultiple: null,
+            canceledmultiple: null,
+            // Special Events
+            totaluploadprogress: null,
+            reset: null,
+            queuecompleted: null
+        }
+        var simpleCallBack = function () {
+            console.log('I\'m a simple callback');
+        };
+
+        return<div {...this.props}>
+            {/* <DropzoneComponent onDrop={this.onDrop}>
+               <div>Try dropping some files here, or click to select files to upload.</div>
+             </Dropzone>*/}
+            <DropzoneComponent config={componentConfig}
+            djsConfig = {djsConfig} eventHandlers = {eventHandlers}
+                    />
+          </div>
+    }
+}
+// stateless child
+const UploadCanvas = (props) =>{
+    return <div>
+               <input type = "text"
+               onChange = {props.update} />
+               <h1>{props.txt}</h1>
+          </div>
+}
 class FloatingToolbar extends React.Component {
     constructor (props) {
         super(props);
     }
     render() {
-       
+
         return <div {... this.props}>
             <IconButton icon="undo" />
             <IconButton icon="redo" />
@@ -32,7 +124,7 @@ class FloatingToolbar extends React.Component {
             <IconButton icon="fullscreen" />
             <IconButton icon="screen_rotation" />
         </div>
-        
+
     }
 }
 
@@ -47,17 +139,26 @@ class AppRoot extends React.Component {
             top: 0
         }
     }
-
+    _onDrop(){
+        //  var req = request.post('/upload');
+        // files.forEach((file)=> {
+        //     req.attach(file.name, file);
+        // });
+        // req.end(callback);
+        console.log("receive file ")
+    }
     _handleLogin() {
         console.log("hehahahah");
     }
     render () {
-        
+
         return <div className="app-container">
+
+
                 <div className="header">
                     <ProgressBar type="linear" mode="indeterminate" className="progress-bar" />
                     <AppBar  className="navbar-main">
-                        <h1 className="navbar-title">Classify History</h1>
+                        <h1 className="navbar-title">Classify Hisry</h1>
                         <Navigation className="navbar-group">
                             <Link href="" label="My Projects" className="navbar-link" active/>
                             <Link href="" label="Image Collection" className="navbar-link" />
@@ -85,7 +186,7 @@ class AppRoot extends React.Component {
                             />
                         </Navigation >
                     </AppBar>
-                    
+
                     <Slider className="slider" >
                         <SliderItem className="slider-item" ><img src="https://unsplash.it/200/150/?random" /></SliderItem>
                         <SliderItem className="slider-item" ><img src="https://unsplash.it/300/150/?random" /></SliderItem>
@@ -96,12 +197,15 @@ class AppRoot extends React.Component {
                         <SliderItem className="slider-item" ><img src="https://unsplash.it/200/150/?random" /></SliderItem>
                         <SliderItem className="slider-item" ><img src="https://unsplash.it/300/150/?random" /></SliderItem>
                     </Slider>
-                
+
                 </div>
-                <Canvas className='canvas'>
+                <Canvas className="canvas">
+
                     <Thumbnail url='https://unsplash.it/200/150/?random' onContextMenu={this._handleThumbnailContextMenu.bind(this)} />
                     <Thumbnail url='https://unsplash.it/200/200/?random' onContextMenu={this._handleThumbnailContextMenu.bind(this)} />
+
                 </Canvas>
+                <UploadFile className= "upload-file filepicker dropzone"/>
                 <Button icon="cloud" floating primary className="floating-button" />
                 <FloatingToolbar className="floating-toolbar dock-bottom" />
                 <ThumbnailContextMenu left={this.state.left} top={this.state.top} show={this.state.show} onHide={this._handleThumbnailContextMenuClose.bind(this)} />

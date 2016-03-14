@@ -190,4 +190,42 @@ MySQLWrapper.prototype.lookupImageTags = function( id, callback )
   );
 }
 
+DatabaseWrapper.prototype.getTagList = function( callback )
+{
+  this.connection.query
+  (
+    'select Tags.id, Tags.name from Tags;', [],
+    function( error, result, fields )
+    {
+      if( !error && ( result.length > 0 ) )
+      {
+        callback( result );
+      }
+      else
+      {
+        callback( null );
+      }
+    }
+  );
+}
+
+DatabaseWrapper.prototype.getImageList = function( callback )
+{
+  this.connection.query
+  (
+    'select Images.id from Images;', [],
+    function( error, result, fields )
+    {
+      if( !error && ( result.length > 0 ) )
+      {
+        callback( result );
+      }
+      else
+      {
+        callback( null );
+      }
+    }
+  );
+}
+
 module.exports = MySQLWrapper;

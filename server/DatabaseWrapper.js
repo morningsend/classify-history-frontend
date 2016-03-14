@@ -40,4 +40,14 @@ DatabaseWrapper.prototype.lookupImageTags = function( id, callback )
   callback( null );
 }
 
+DatabaseWrapper.prototype.getTagList = function( callback )
+{
+  callback( null );
+}
+
+DatabaseWrapper.prototype.getImageList = function( callback )
+{
+  callback( null );
+}
+
 module.exports = DatabaseWrapper;

@@ -25,9 +25,9 @@ DROP TABLE IF EXISTS `hexhack`.`Users` ;
 
 CREATE TABLE IF NOT EXISTS `hexhack`.`Users` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `username` VARCHAR(45) NOT NULL,
-  `password` VARCHAR(45) NOT NULL,
-  `token` VARCHAR(45) NULL,
+  `username` VARCHAR(128) NOT NULL,
+  `password` VARCHAR(128) NOT NULL,
+  `token` VARCHAR(128) NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `username_UNIQUE` (`username` ASC))
 ENGINE = InnoDB;
@@ -40,7 +40,7 @@ DROP TABLE IF EXISTS `hexhack`.`Images` ;
 
 CREATE TABLE IF NOT EXISTS `hexhack`.`Images` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `path` VARCHAR(45) NOT NULL,
+  `path` VARCHAR(128) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `path_UNIQUE` (`path` ASC))
 ENGINE = InnoDB;
@@ -53,7 +53,7 @@ DROP TABLE IF EXISTS `hexhack`.`Tags` ;
 
 CREATE TABLE IF NOT EXISTS `hexhack`.`Tags` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(45) NOT NULL,
+  `name` VARCHAR(128) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `name_UNIQUE` (`name` ASC))
 ENGINE = InnoDB;

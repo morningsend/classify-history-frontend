@@ -4,6 +4,7 @@ import { Button } from 'react-toolbox/lib/button';
 import ClassNames from 'classnames';
 
 import './style.less';
+import CanvasDraggableEnhancer from '../canvas/CanvasDraggableEnhancer';
 export class Thumbnail extends React.Component {
     
     
@@ -14,6 +15,7 @@ export class Thumbnail extends React.Component {
         }
     }
     render (){
+        
         var cssClass = ClassNames(this.props.className, 'image-thumbnail' , { 'selected': !this.state.selected } );
         return <Card className={cssClass} {...this.props} >
                     <CardMedia
@@ -33,4 +35,8 @@ Thumbnail.propTypes = {
     menu: React.PropTypes.element,
 }
 
+
+
+
 export default Thumbnail;
+export const DraggableThumbnail = CanvasDraggableEnhancer(Thumbnail);

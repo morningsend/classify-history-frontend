@@ -10,7 +10,7 @@ import InjectTapPlugin from 'react-tap-event-plugin';
 import Dropzone from 'react-dropzone';
 import DropzoneComponent from 'react-dropzone-component';
 import Slider, {SliderItem} from './slider/Slider';
-import Thumbnail from './image/Thumbnail';
+import Thumbnail, { DraggableThumbnail } from './image/Thumbnail';
 import Canvas from './canvas/Canvas';
 import { ContextMenu, ThumbnailContextMenu } from './menu/ContextMenu';
 import LoginDialog from './login/LoginDialog';
@@ -139,7 +139,8 @@ class AppRoot extends React.Component {
             show:false,
             left: 0,
             top: 0,
-            showLogin: false
+            showLogin: false,
+            images: this.getImages(10)
         }
 
         this.backend = new Backend( "http://localhost:8080" );
@@ -181,8 +182,6 @@ class AppRoot extends React.Component {
     render () {
 
         return <div className="app-container">
-
-
                 <div className="header">
                     <ProgressBar type="linear" mode="indeterminate" className="progress-bar" />
                     <AppBar  className="navbar-main">
@@ -227,18 +226,27 @@ class AppRoot extends React.Component {
                     </Slider>
 
                 </div>
-                <Canvas className="canvas">
-
-                    <Thumbnail url='https://unsplash.it/200/150/?random' onContextMenu={this._handleThumbnailContextMenu.bind(this)} />
-                    <Thumbnail url='https://unsplash.it/200/200/?random' onContextMenu={this._handleThumbnailContextMenu.bind(this)} />
-
-                </Canvas>
-                <UploadFile className= "upload-file filepicker dropzone"/>
+                <Canvas className="canvas" images={this.state.images} />
                 <Button icon="cloud" floating primary className="floating-button" />
                 <FloatingToolbar className="floating-toolbar dock-bottom" />
                 <ThumbnailContextMenu left={this.state.left} top={this.state.top} show={this.state.show} onHide={this._handleThumbnailContextMenuClose.bind(this)} />
                 <LoginDialog active={this.state.showLogin} onLogin={this._handleLogin.bind(this)} onCancel={this._loginCancelled.bind(this)}/>
             </div>;
+    }
+    getImages(n){
+        if(n < 0) return null;
+        var images = [];
+        for(var i = 0; i< n; i++){
+            images.push({
+                id:i,
+                url: "https://unsplash.it/200/200?random&"+i,
+                top: Math.random()*300,
+                left: Math.random()*500
+                
+            })
+        }
+        
+        return images;
     }
     _handleThumbnailContextMenu(e){
         this.setState({

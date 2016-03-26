@@ -1030,7 +1030,7 @@
   padding-right: 0.8rem;
   padding-left: 0.8rem;
   margin-left: 0.8rem; }
-.login-dialog{background-color:#333;z-index:9999999;width:450px}.login-dialog .login-title{font-size:1.6rem;font-family:Hammersmith One}.login-dialog .login-button{width:100%;border:3px solid #666;color:#666!important;font-family:Hammersmith One!important}.style__root___20TVI {
+.login-dialog{background-color:#333;z-index:9999999;width:450px}.login-dialog .login-title{font-size:1.6rem;font-family:Hammersmith One}.login-dialog .login-button{width:100%;border:3px solid #666;color:#666!important;font-family:Hammersmith One!important}.app-container{height:100vh;transition:transform .3s ease-in-out}.style__root___20TVI {
   position: absolute;
   top: 0;
   left: 0;

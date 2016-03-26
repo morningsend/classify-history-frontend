@@ -19742,6 +19742,8 @@
 
 	var _LoginDialog2 = _interopRequireDefault(_LoginDialog);
 
+	__webpack_require__(252);
+
 	var _Backend = __webpack_require__(246);
 
 	var _Backend2 = _interopRequireDefault(_Backend);
@@ -19756,118 +19758,8 @@
 
 	(0, _reactTapEventPlugin2.default)();
 
-	var UploadFile = function (_React$Component) {
-	    _inherits(UploadFile, _React$Component);
-
-	    function UploadFile(props) {
-	        _classCallCheck(this, UploadFile);
-
-	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(UploadFile).call(this, props));
-
-	        _this.state = { txt: '' };
-	        _this.update = _this.update.bind(_this);
-	        _this.backend = new _Backend2.default("http://localhost:8080");
-	        return _this;
-	    }
-
-	    _createClass(UploadFile, [{
-	        key: "onDrop",
-	        value: function onDrop(files) {
-	            console.log('Received files: ', files);
-	        }
-	    }, {
-	        key: "update",
-	        value: function update(e) {
-	            this.setState({ txt: e.target.value });
-	        }
-	    }, {
-	        key: "render",
-	        value: function render() {
-	            var componentConfig = {
-	                iconFiletypes: ['.jpg', '.png', '.gif'],
-	                showFiletypeIcon: true,
-	                //postUrl: '/uploadHandler'
-	                postUrl: this.backend.getImageUploadURL()
-	                // Notice how there's no postUrl set here
-	            };
-	            var djsConfig = {
-	                addRemoveLinks: true,
-	                acceptedFiles: "image/jpeg,image/png,image/gif"
-	            };
-	            var callbackArray = [function () {
-	                console.log('Look Ma, I\'m a callback in an array!');
-	            }, function () {
-	                console.log('Wooooow!');
-	            }];
-	            var eventHandlers = {
-	                // All of these receive the event as first parameter:
-	                drop: callbackArray,
-	                dragstart: null,
-	                dragend: null,
-	                dragenter: null,
-	                dragover: null,
-	                dragleave: null,
-	                // All of these receive the file as first parameter:
-	                addedfile: simpleCallBack,
-	                removedfile: null,
-	                thumbnail: null,
-	                error: null,
-	                processing: null,
-	                uploadprogress: null,
-	                sending: null,
-	                success: null,
-	                complete: null,
-	                canceled: null,
-	                maxfilesreached: null,
-	                maxfilesexceeded: null,
-	                // All of these receive a list of files as first parameter
-	                // and are only called if the uploadMultiple option
-	                // in djsConfig is true:
-	                processingmultiple: null,
-	                sendingmultiple: null,
-	                successmultiple: null,
-	                completemultiple: null,
-	                canceledmultiple: null,
-	                // Special Events
-	                totaluploadprogress: null,
-	                reset: null,
-	                queuecompleted: null
-	            };
-	            var simpleCallBack = function simpleCallBack() {
-	                console.log('I\'m a simple callback');
-	            };
-
-	            return _react2.default.createElement(
-	                "div",
-	                this.props,
-	                _react2.default.createElement(_reactDropzoneComponent2.default, { config: componentConfig,
-	                    djsConfig: djsConfig, eventHandlers: eventHandlers
-	                })
-	            );
-	        }
-	    }]);
-
-	    return UploadFile;
-	}(_react2.default.Component);
-	// stateless child
-
-
-	var UploadCanvas = function UploadCanvas(props) {
-	    return _react2.default.createElement(
-	        "div",
-	        null,
-	        _react2.default.createElement("input", { type: "text",
-	            onChange: props.update }),
-	        _react2.default.createElement(
-	            "h1",
-	            null,
-	            props.txt
-	        )
-	    );
-	};
-
-	var FloatingToolbar = function (_React$Component2) {
-	    _inherits(FloatingToolbar, _React$Component2);
+	var FloatingToolbar = function (_React$Component) {
+	    _inherits(FloatingToolbar, _React$Component);
 
 	    function FloatingToolbar(props) {
 	        _classCallCheck(this, FloatingToolbar);
@@ -19882,15 +19774,15 @@
 	            return _react2.default.createElement(
 	                "div",
 	                this.props,
-	                _react2.default.createElement(_button.IconButton, { icon: "undo" }),
-	                _react2.default.createElement(_button.IconButton, { icon: "redo" }),
-	                _react2.default.createElement(_button.IconButton, { icon: "zoom_in" }),
-	                _react2.default.createElement(_button.IconButton, { icon: "zoom_out" }),
-	                _react2.default.createElement(_button.IconButton, { icon: "add_box" }),
-	                _react2.default.createElement(_button.IconButton, { icon: "content_copy" }),
-	                _react2.default.createElement(_button.IconButton, { icon: "content_paste" }),
-	                _react2.default.createElement(_button.IconButton, { icon: "fullscreen" }),
-	                _react2.default.createElement(_button.IconButton, { icon: "screen_rotation" })
+	                _react2.default.createElement(_button.IconButton, { icon: "undo", onClick: this.props.onUndo }),
+	                _react2.default.createElement(_button.IconButton, { icon: "redo", onClick: this.props.onRedo }),
+	                _react2.default.createElement(_button.IconButton, { icon: "zoom_in", onClick: this.props.onZoomIn }),
+	                _react2.default.createElement(_button.IconButton, { icon: "zoom_out", onClick: this.props.onZoomOut }),
+	                _react2.default.createElement(_button.IconButton, { icon: "add_box", onClick: this.props.onAdd }),
+	                _react2.default.createElement(_button.IconButton, { icon: "content_copy", onClick: this.props.onCopy }),
+	                _react2.default.createElement(_button.IconButton, { icon: "content_paste", onClick: this.props.onPaste }),
+	                _react2.default.createElement(_button.IconButton, { icon: "fullscreen", onClick: this.props.onFullScreen }),
+	                _react2.default.createElement(_button.IconButton, { icon: "screen_rotation", onClick: this.props.onOrientationChange })
 	            );
 	        }
 	    }]);
@@ -19898,24 +19790,26 @@
 	    return FloatingToolbar;
 	}(_react2.default.Component);
 
-	var AppRoot = function (_React$Component3) {
-	    _inherits(AppRoot, _React$Component3);
+	var AppRoot = function (_React$Component2) {
+	    _inherits(AppRoot, _React$Component2);
 
 	    function AppRoot(props) {
 	        _classCallCheck(this, AppRoot);
 
-	        var _this3 = _possibleConstructorReturn(this, Object.getPrototypeOf(AppRoot).call(this, props));
+	        var _this2 = _possibleConstructorReturn(this, Object.getPrototypeOf(AppRoot).call(this, props));
 
-	        _this3.state = {
+	        _this2.state = {
 	            show: false,
 	            left: 0,
 	            top: 0,
 	            showLogin: false,
-	            images: _this3.getImages(10)
+	            images: _this2.getImages(10),
+	            inverted: false,
+	            zoom: 1.0
 	        };
 
-	        _this3.backend = new _Backend2.default("http://localhost:8080");
-	        return _this3;
+	        _this2.backend = new _Backend2.default("http://localhost:8080");
+	        return _this2;
 	    }
 
 	    _createClass(AppRoot, [{
@@ -19966,10 +19860,12 @@
 	    }, {
 	        key: "render",
 	        value: function render() {
-
+	            var invertedTransform = this.state.inverted ? {
+	                transform: "rotate(180deg)"
+	            } : null;
 	            return _react2.default.createElement(
 	                "div",
-	                { className: "app-container" },
+	                { className: "app-container", style: invertedTransform },
 	                _react2.default.createElement(
 	                    "div",
 	                    { className: "header" },
@@ -20066,10 +19962,19 @@
 	                ),
 	                _react2.default.createElement(_Canvas2.default, { className: "canvas", images: this.state.images }),
 	                _react2.default.createElement(_button.Button, { icon: "cloud", floating: true, primary: true, className: "floating-button" }),
-	                _react2.default.createElement(FloatingToolbar, { className: "floating-toolbar dock-bottom" }),
+	                _react2.default.createElement(FloatingToolbar, { className: "floating-toolbar dock-bottom",
+	                    onOrientationChange: this.invertOrientation.bind(this)
+	                }),
 	                _react2.default.createElement(_ContextMenu.ThumbnailContextMenu, { left: this.state.left, top: this.state.top, show: this.state.show, onHide: this._handleThumbnailContextMenuClose.bind(this) }),
 	                _react2.default.createElement(_LoginDialog2.default, { active: this.state.showLogin, onLogin: this._handleLogin.bind(this), onCancel: this._loginCancelled.bind(this) })
 	            );
+	        }
+	    }, {
+	        key: "invertOrientation",
+	        value: function invertOrientation() {
+	            this.setState({
+	                inverted: !this.state.inverted
+	            });
 	        }
 	    }, {
 	        key: "getImages",
@@ -41925,6 +41830,12 @@
 
 /***/ },
 /* 251 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 252 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

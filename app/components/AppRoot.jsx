@@ -15,116 +15,28 @@ import Canvas from './canvas/Canvas';
 import { ContextMenu, ThumbnailContextMenu } from './menu/ContextMenu';
 import LoginDialog from './login/LoginDialog';
 
+import './RootStyle';
 
 import Backend from './Backend';
 InjectTapPlugin();
 
-class UploadFile extends React.Component{
 
-    constructor(props){
-        super(props)
-        this.state = {txt:''}
-        this.update = this.update.bind(this)
-        this.backend = new Backend( "http://localhost:8080" );
-    }
-    onDrop (files) {
-      console.log('Received files: ', files);
-    }
-    update(e){
-        this.setState({txt:e.target.value})
-    }
-    render(){
-        var componentConfig = {
-            iconFiletypes: ['.jpg', '.png', '.gif'],
-            showFiletypeIcon: true,
-            //postUrl: '/uploadHandler'
-            postUrl: this.backend.getImageUploadURL()
-            // Notice how there's no postUrl set here
-        };
-        var djsConfig = {
-            addRemoveLinks: true,
-            acceptedFiles: "image/jpeg,image/png,image/gif"
-        };
-        var callbackArray = [
-            function () {
-                console.log('Look Ma, I\'m a callback in an array!');
-            },
-            function () {
-                console.log('Wooooow!');
-            }
-        ];
-        var eventHandlers = {
-            // All of these receive the event as first parameter:
-            drop: callbackArray,
-            dragstart: null,
-            dragend: null,
-            dragenter: null,
-            dragover: null,
-            dragleave: null,
-            // All of these receive the file as first parameter:
-            addedfile: simpleCallBack,
-            removedfile: null,
-            thumbnail: null,
-            error: null,
-            processing: null,
-            uploadprogress: null,
-            sending: null,
-            success: null,
-            complete: null,
-            canceled: null,
-            maxfilesreached: null,
-            maxfilesexceeded: null,
-            // All of these receive a list of files as first parameter
-            // and are only called if the uploadMultiple option
-            // in djsConfig is true:
-            processingmultiple: null,
-            sendingmultiple: null,
-            successmultiple: null,
-            completemultiple: null,
-            canceledmultiple: null,
-            // Special Events
-            totaluploadprogress: null,
-            reset: null,
-            queuecompleted: null
-        }
-        var simpleCallBack = function () {
-            console.log('I\'m a simple callback');
-        };
-
-        return<div {...this.props}>
-            {/* <DropzoneComponent onDrop={this.onDrop}>
-               <div>Try dropping some files here, or click to select files to upload.</div>
-             </Dropzone>*/}
-            <DropzoneComponent config={componentConfig}
-            djsConfig = {djsConfig} eventHandlers = {eventHandlers}
-                    />
-          </div>
-    }
-}
-// stateless child
-const UploadCanvas = (props) =>{
-    return <div>
-               <input type = "text"
-               onChange = {props.update} />
-               <h1>{props.txt}</h1>
-          </div>
-}
 class FloatingToolbar extends React.Component {
     constructor (props) {
         super(props);
     }
     render() {
-
+        
         return <div {... this.props}>
-            <IconButton icon="undo" />
-            <IconButton icon="redo" />
-            <IconButton icon="zoom_in" />
-            <IconButton icon="zoom_out" />
-            <IconButton icon="add_box" />
-            <IconButton icon="content_copy" />
-            <IconButton icon="content_paste" />
-            <IconButton icon="fullscreen" />
-            <IconButton icon="screen_rotation" />
+            <IconButton icon="undo" onClick={this.props.onUndo}/>
+            <IconButton icon="redo" onClick={this.props.onRedo}/>
+            <IconButton icon="zoom_in" onClick={this.props.onZoomIn}/>
+            <IconButton icon="zoom_out" onClick={this.props.onZoomOut}/>
+            <IconButton icon="add_box" onClick={this.props.onAdd}/>
+            <IconButton icon="content_copy" onClick={this.props.onCopy} />
+            <IconButton icon="content_paste" onClick={this.props.onPaste}/>
+            <IconButton icon="fullscreen" onClick={this.props.onFullScreen}/>
+            <IconButton icon="screen_rotation" onClick={this.props.onOrientationChange} />
         </div>
 
     }
@@ -140,7 +52,9 @@ class AppRoot extends React.Component {
             left: 0,
             top: 0,
             showLogin: false,
-            images: this.getImages(10)
+            images: this.getImages(10),
+            inverted: false,
+            zoom: 1.0,            
         }
 
         this.backend = new Backend( "http://localhost:8080" );
@@ -180,8 +94,10 @@ class AppRoot extends React.Component {
         );
     }
     render () {
-
-        return <div className="app-container">
+        var invertedTransform = this.state.inverted ? {
+            transform: "rotate(180deg)",
+        } : null;
+        return <div className="app-container" style={invertedTransform} >
                 <div className="header">
                     <ProgressBar type="linear" mode="indeterminate" className="progress-bar" />
                     <AppBar  className="navbar-main">
@@ -228,10 +144,17 @@ class AppRoot extends React.Component {
                 </div>
                 <Canvas className="canvas" images={this.state.images} />
                 <Button icon="cloud" floating primary className="floating-button" />
-                <FloatingToolbar className="floating-toolbar dock-bottom" />
+                <FloatingToolbar className="floating-toolbar dock-bottom" 
+                    onOrientationChange={this.invertOrientation.bind(this)}
+                />
                 <ThumbnailContextMenu left={this.state.left} top={this.state.top} show={this.state.show} onHide={this._handleThumbnailContextMenuClose.bind(this)} />
                 <LoginDialog active={this.state.showLogin} onLogin={this._handleLogin.bind(this)} onCancel={this._loginCancelled.bind(this)}/>
             </div>;
+    }
+    invertOrientation(){
+        this.setState({
+            inverted: !this.state.inverted
+        });
     }
     getImages(n){
         if(n < 0) return null;

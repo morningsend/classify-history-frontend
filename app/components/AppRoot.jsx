@@ -1,4 +1,4 @@
-import React  from "react";
+                                                                                                                                                                                                                                                                                                                import React  from "react";
 import AppBar from "react-toolbox/lib/app_bar";
 import Navigation from "react-toolbox/lib/navigation";
 import {Button, IconButton} from 'react-toolbox/lib/button';
@@ -48,7 +48,8 @@ class AppRoot extends React.Component {
     constructor(props ) {
         super(props);
         this.state={
-            show:false,
+            showThumbnailContextMenu:false,
+            showImageCollectionViewer: false,
             left: 0,
             top: 0,
             showLogin: false,
@@ -93,6 +94,17 @@ class AppRoot extends React.Component {
           function( error ){ self._loginFailed(); }
         );
     }
+    showImageCollections(e){
+        e.preventDefault();
+        this.setState({
+            showImageCollectionViewer: true,
+        });
+    }
+    hideImageCollections() {
+        this.setState({
+            showImageCollectionViewer: false
+        });
+    }
     render () {
         var invertedTransform = this.state.inverted ? {
             transform: "rotate(180deg)",
@@ -104,7 +116,7 @@ class AppRoot extends React.Component {
                         <h1 className="navbar-title">Classify Hisry</h1>
                         <Navigation className="navbar-group">
                             <Link href="" label="My Projects" className="navbar-link" active/>
-                            <Link href="" label="Image Collection" className="navbar-link" />
+                            <Link href="" label="Image Collection" className="navbar-link" onClick={this.showImageCollections.bind(this)}/>
                         </Navigation>
                         <Navigation className="navbar-group float-right" >
                             <Button label="Settings" inverse/>
@@ -147,7 +159,7 @@ class AppRoot extends React.Component {
                 <FloatingToolbar className="floating-toolbar dock-bottom" 
                     onOrientationChange={this.invertOrientation.bind(this)}
                 />
-                <ThumbnailContextMenu left={this.state.left} top={this.state.top} show={this.state.show} onHide={this._handleThumbnailContextMenuClose.bind(this)} />
+                <ThumbnailContextMenu left={this.state.left} top={this.state.top} show={this.state.showThumbnailContextMenu} onHide={this._handleThumbnailContextMenuClose.bind(this)} />
                 <LoginDialog active={this.state.showLogin} onLogin={this._handleLogin.bind(this)} onCancel={this._loginCancelled.bind(this)}/>
             </div>;
     }
@@ -173,14 +185,14 @@ class AppRoot extends React.Component {
     }
     _handleThumbnailContextMenu(e){
         this.setState({
-            show: true,
+            showThumbnailContextMenu: true,
             left:e.clientX,
             top: e.clientY
         });
         e.preventDefault();
     }
     _handleThumbnailContextMenuClose(...args){
-        this.setState({show:false});
+        this.setState({showThumbnailContextMenu:false});
     }
 }
 

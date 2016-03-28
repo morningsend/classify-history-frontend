@@ -1,10 +1,10 @@
-import React from 'react'
-import { Card, CardMedia, CardTitle, CardText, CardActions } from 'react-toolbox/lib/card';
-import { Button } from 'react-toolbox/lib/button';
-import ClassNames from 'classnames';
+import React from "react"
+import { Card, CardMedia, CardTitle, CardText, CardActions } from "react-toolbox/lib/card";
+import { Button } from "react-toolbox/lib/button";
+import ClassNames from "classnames";
 
-import './style.less';
-import CanvasDraggableEnhancer from '../canvas/CanvasDraggableEnhancer';
+import "./style.less";
+import CanvasDraggableEnhancer from "../canvas/CanvasDraggableEnhancer";
 export class Thumbnail extends React.Component {
     
     
@@ -16,10 +16,10 @@ export class Thumbnail extends React.Component {
     }
     render (){
         
-        var cssClass = ClassNames(this.props.className, 'image-thumbnail' , { 'selected': !this.state.selected } );
+        var cssClass = ClassNames(this.props.className, "image-thumbnail" , { "selected": !this.state.selected } );
         return <Card className={cssClass} {...this.props} >
                     <CardMedia
-                            aspectRatio='wide'
+                            aspectRatio="square"
                             image={this.props.url}
                             contentOverlay={true}
                      />

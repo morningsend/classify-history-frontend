@@ -58,19 +58,30 @@
 
 	var _AppRoot2 = _interopRequireDefault(_AppRoot);
 
-	var _app = __webpack_require__(251);
+	var _app = __webpack_require__(205);
 
 	var _app2 = _interopRequireDefault(_app);
 
+	var _reactRedux = __webpack_require__(208);
+
+	var _redux = __webpack_require__(214);
+
+	var _AppRoot3 = __webpack_require__(229);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	__webpack_require__(254);
+	__webpack_require__(230);
+
+	var store = (0, _redux.createStore)(_AppRoot3.AppRoot);
 
 	_reactDom2.default.render(_react2.default.createElement(
-	    _app2.default,
-	    null,
-	    " ",
-	    _react2.default.createElement(_AppRoot2.default, null)
+	    _reactRedux.Provider,
+	    { store: store },
+	    _react2.default.createElement(
+	        _app2.default,
+	        null,
+	        _react2.default.createElement(_AppRoot2.default, null)
+	    )
 	), document.querySelector("#wrapper"));
 
 /***/ },
@@ -19708,47 +19719,21 @@
 
 	var _progress_bar2 = _interopRequireDefault(_progress_bar);
 
-	var _autocomplete = __webpack_require__(183);
+	var _CanvasDraggableEnhancer = __webpack_require__(183);
 
-	var _autocomplete2 = _interopRequireDefault(_autocomplete);
+	var _CanvasDraggableEnhancer2 = _interopRequireDefault(_CanvasDraggableEnhancer);
 
-	var _reactTapEventPlugin = __webpack_require__(190);
+	var _reactTapEventPlugin = __webpack_require__(186);
 
 	var _reactTapEventPlugin2 = _interopRequireDefault(_reactTapEventPlugin);
 
-	var _reactDropzone = __webpack_require__(195);
-
-	var _reactDropzone2 = _interopRequireDefault(_reactDropzone);
-
-	var _reactDropzoneComponent = __webpack_require__(197);
-
-	var _reactDropzoneComponent2 = _interopRequireDefault(_reactDropzoneComponent);
-
-	var _Slider = __webpack_require__(204);
-
-	var _Slider2 = _interopRequireDefault(_Slider);
-
-	var _Thumbnail = __webpack_require__(206);
-
-	var _Thumbnail2 = _interopRequireDefault(_Thumbnail);
-
-	var _Canvas = __webpack_require__(221);
-
-	var _Canvas2 = _interopRequireDefault(_Canvas);
-
-	var _ContextMenu = __webpack_require__(223);
-
-	var _LoginDialog = __webpack_require__(238);
+	var _LoginDialog = __webpack_require__(191);
 
 	var _LoginDialog2 = _interopRequireDefault(_LoginDialog);
 
-	var _FloatingToolbar = __webpack_require__(246);
+	__webpack_require__(202);
 
-	var _FloatingToolbar2 = _interopRequireDefault(_FloatingToolbar);
-
-	__webpack_require__(248);
-
-	var _Backend = __webpack_require__(249);
+	var _Backend = __webpack_require__(203);
 
 	var _Backend2 = _interopRequireDefault(_Backend);
 
@@ -19771,14 +19756,8 @@
 	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(AppRoot).call(this, props));
 
 	        _this.state = {
-	            showThumbnailContextMenu: false,
-	            showImageCollectionViewer: false,
-	            left: 0,
-	            top: 0,
-	            showLogin: false,
-	            images: _this.getImages(10),
-	            inverted: false,
-	            zoom: 1.0
+
+	            showLogin: false
 	        };
 
 	        _this.backend = new _Backend2.default("http://localhost:8080");
@@ -19786,14 +19765,12 @@
 	    }
 
 	    _createClass(AppRoot, [{
-	        key: "_onDrop",
-	        value: function _onDrop() {
-	            //  var req = request.post('/upload');
-	            // files.forEach((file)=> {
-	            //     req.attach(file.name, file);
-	            // });
-	            // req.end(callback);
-	            console.log("receive file ");
+	        key: "showImageCollections",
+	        value: function showImageCollections(e) {
+	            e.preventDefault();
+	            this.setState({
+	                showImageCollectionViewer: true
+	            });
 	        }
 	    }, {
 	        key: "_showLogin",
@@ -19831,21 +19808,6 @@
 	            });
 	        }
 	    }, {
-	        key: "showImageCollections",
-	        value: function showImageCollections(e) {
-	            e.preventDefault();
-	            this.setState({
-	                showImageCollectionViewer: true
-	            });
-	        }
-	    }, {
-	        key: "hideImageCollections",
-	        value: function hideImageCollections() {
-	            this.setState({
-	                showImageCollectionViewer: false
-	            });
-	        }
-	    }, {
 	        key: "render",
 	        value: function render() {
 	            var invertedTransform = this.state.inverted ? {
@@ -19855,7 +19817,7 @@
 	                "div",
 	                { className: "app-container", style: invertedTransform },
 	                _react2.default.createElement(
-	                    "div",
+	                    "header",
 	                    { className: "header" },
 	                    _react2.default.createElement(_progress_bar2.default, { type: "linear", mode: "indeterminate", className: "progress-bar" }),
 	                    _react2.default.createElement(
@@ -19869,8 +19831,9 @@
 	                        _react2.default.createElement(
 	                            _navigation2.default,
 	                            { className: "navbar-group" },
-	                            _react2.default.createElement(_link2.default, { href: "", label: "My Projects", className: "navbar-link", active: true }),
-	                            _react2.default.createElement(_link2.default, { href: "", label: "Image Collection", className: "navbar-link", onClick: this.showImageCollections.bind(this) })
+	                            _react2.default.createElement(_link2.default, { href: "/", label: "Dashboard", className: "navbar-link" }),
+	                            _react2.default.createElement(_link2.default, { href: "/workspace", label: "Work space", className: "navbar-link", active: true }),
+	                            _react2.default.createElement(_link2.default, { href: "/image-collections", label: "Image Collection", className: "navbar-link" })
 	                        ),
 	                        _react2.default.createElement(
 	                            _navigation2.default,
@@ -19878,83 +19841,18 @@
 	                            _react2.default.createElement(_button.Button, { label: "Settings", inverse: true }),
 	                            _react2.default.createElement(_button.Button, { label: "Log in", inverse: true, primary: true, onClick: this._showLogin.bind(this) })
 	                        )
-	                    ),
-	                    _react2.default.createElement(
-	                        _app_bar2.default,
-	                        { className: "navbar-main" },
-	                        _react2.default.createElement(
-	                            _navigation2.default,
-	                            { className: "navbar-group" },
-	                            _react2.default.createElement(_button.Button, { label: "Edit", icon: "edit", inverse: true })
-	                        ),
-	                        _react2.default.createElement(
-	                            _navigation2.default,
-	                            { className: "navbar-group float-right" },
-	                            _react2.default.createElement(_button.Button, { label: "shanghai", icon: "gavel", inverse: true }),
-	                            _react2.default.createElement(_autocomplete2.default, {
-	                                direction: "right",
-	                                label: "Find Tags",
-	                                name: "countries",
-	                                onChange: null,
-	                                source: { "china": "china" },
-	                                value: "coutry",
-	                                icon: "search",
-	                                className: "tag-search-box"
-	                            })
-	                        )
-	                    ),
-	                    _react2.default.createElement(
-	                        _Slider2.default,
-	                        { className: "slider" },
-	                        _react2.default.createElement(
-	                            _Slider.SliderItem,
-	                            { className: "slider-item" },
-	                            _react2.default.createElement("img", { src: "https://unsplash.it/200/150/?random" })
-	                        ),
-	                        _react2.default.createElement(
-	                            _Slider.SliderItem,
-	                            { className: "slider-item" },
-	                            _react2.default.createElement("img", { src: "https://unsplash.it/300/150/?random" })
-	                        ),
-	                        _react2.default.createElement(
-	                            _Slider.SliderItem,
-	                            { className: "slider-item" },
-	                            _react2.default.createElement("img", { src: "https://unsplash.it/200/200/?random" })
-	                        ),
-	                        _react2.default.createElement(
-	                            _Slider.SliderItem,
-	                            { className: "slider-item" },
-	                            _react2.default.createElement("img", { src: "https://unsplash.it/300/150/?random" })
-	                        ),
-	                        _react2.default.createElement(
-	                            _Slider.SliderItem,
-	                            { className: "slider-item" },
-	                            _react2.default.createElement("img", { src: "https://unsplash.it/200/150/?random" })
-	                        ),
-	                        _react2.default.createElement(
-	                            _Slider.SliderItem,
-	                            { className: "slider-item" },
-	                            _react2.default.createElement("img", { src: "https://unsplash.it/300/150/?random" })
-	                        ),
-	                        _react2.default.createElement(
-	                            _Slider.SliderItem,
-	                            { className: "slider-item" },
-	                            _react2.default.createElement("img", { src: "https://unsplash.it/200/150/?random" })
-	                        ),
-	                        _react2.default.createElement(
-	                            _Slider.SliderItem,
-	                            { className: "slider-item" },
-	                            _react2.default.createElement("img", { src: "https://unsplash.it/300/150/?random" })
-	                        )
 	                    )
 	                ),
-	                _react2.default.createElement(_Canvas2.default, { className: "canvas", images: this.state.images }),
-	                _react2.default.createElement(_button.Button, { icon: "cloud", floating: true, primary: true, className: "floating-button" }),
-	                _react2.default.createElement(_FloatingToolbar2.default, { className: "floating-toolbar dock-bottom",
-	                    onOrientationChange: this.invertOrientation.bind(this)
-	                }),
-	                _react2.default.createElement(_ContextMenu.ThumbnailContextMenu, { left: this.state.left, top: this.state.top, show: this.state.showThumbnailContextMenu, onHide: this._handleThumbnailContextMenuClose.bind(this) }),
-	                _react2.default.createElement(_LoginDialog2.default, { active: this.state.showLogin, onLogin: this._handleLogin.bind(this), onCancel: this._loginCancelled.bind(this) })
+	                _react2.default.createElement(
+	                    "main",
+	                    { className: "main-content" },
+	                    this.props.children
+	                ),
+	                _react2.default.createElement(
+	                    "div",
+	                    { className: "hidden" },
+	                    _react2.default.createElement(_LoginDialog2.default, { active: this.state.showLogin, onLogin: this._handleLogin.bind(this), onCancel: this._loginCancelled.bind(this) })
+	                )
 	            );
 	        }
 	    }, {
@@ -19963,38 +19861,6 @@
 	            this.setState({
 	                inverted: !this.state.inverted
 	            });
-	        }
-	    }, {
-	        key: "getImages",
-	        value: function getImages(n) {
-	            if (n < 0) return null;
-	            var images = [];
-	            for (var i = 0; i < n; i++) {
-	                images.push({
-	                    id: i,
-	                    url: "https://unsplash.it/200/200?random&" + i,
-	                    top: Math.random() * 300,
-	                    left: Math.random() * 500
-
-	                });
-	            }
-
-	            return images;
-	        }
-	    }, {
-	        key: "_handleThumbnailContextMenu",
-	        value: function _handleThumbnailContextMenu(e) {
-	            this.setState({
-	                showThumbnailContextMenu: true,
-	                left: e.clientX,
-	                top: e.clientY
-	            });
-	            e.preventDefault();
-	        }
-	    }, {
-	        key: "_handleThumbnailContextMenuClose",
-	        value: function _handleThumbnailContextMenuClose() {
-	            this.setState({ showThumbnailContextMenu: false });
 	        }
 	    }]);
 
@@ -21162,6268 +21028,6 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.default = undefined;
-
-	var _Autocomplete = __webpack_require__(184);
-
-	var _Autocomplete2 = _interopRequireDefault(_Autocomplete);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	exports.default = _Autocomplete2.default;
-
-/***/ },
-/* 184 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactDom = __webpack_require__(158);
-
-	var _reactDom2 = _interopRequireDefault(_reactDom);
-
-	var _classnames = __webpack_require__(162);
-
-	var _classnames2 = _interopRequireDefault(_classnames);
-
-	var _input = __webpack_require__(185);
-
-	var _input2 = _interopRequireDefault(_input);
-
-	var _events = __webpack_require__(188);
-
-	var _events2 = _interopRequireDefault(_events);
-
-	var _style = __webpack_require__(189);
-
-	var _style2 = _interopRequireDefault(_style);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var POSITION = {
-	  AUTO: 'auto',
-	  DOWN: 'down',
-	  UP: 'up'
-	};
-
-	var Autocomplete = function (_React$Component) {
-	  _inherits(Autocomplete, _React$Component);
-
-	  function Autocomplete() {
-	    var _Object$getPrototypeO;
-
-	    var _temp, _this, _ret;
-
-	    _classCallCheck(this, Autocomplete);
-
-	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	      args[_key] = arguments[_key];
-	    }
-
-	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Autocomplete)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.state = {
-	      direction: _this.props.direction,
-	      focus: false,
-	      query: _this.query(_this.props.value)
-	    }, _this.handleChange = function (keys, event) {
-	      var key = _this.props.multiple ? keys : keys[0];
-	      var query = _this.query(key);
-	      if (_this.props.onChange) _this.props.onChange(key, event);
-	      _this.setState({ focus: false, query: query }, function () {
-	        _this.refs.input.blur();
-	      });
-	    }, _this.handleQueryBlur = function () {
-	      if (_this.state.focus) _this.setState({ focus: false });
-	    }, _this.handleQueryChange = function (value) {
-	      _this.setState({ query: value });
-	    }, _this.handleQueryFocus = function () {
-	      _this.refs.suggestions.scrollTop = 0;
-	      _this.setState({ active: '', focus: true });
-	    }, _this.handleQueryKeyUp = function (event) {
-	      if (event.which === 13 && _this.state.active) _this.select(_this.state.active, event);
-	      if (event.which === 27) _this.refs.input.blur();
-	      if ([40, 38].indexOf(event.which) !== -1) {
-	        var suggestionsKeys = [].concat(_toConsumableArray(_this.suggestions().keys()));
-	        var index = suggestionsKeys.indexOf(_this.state.active) + (event.which === 40 ? +1 : -1);
-	        if (index < 0) index = suggestionsKeys.length - 1;
-	        if (index >= suggestionsKeys.length) index = 0;
-	        _this.setState({ active: suggestionsKeys[index] });
-	      }
-	    }, _this.handleSuggestionHover = function (key) {
-	      _this.setState({ active: key });
-	    }, _temp), _possibleConstructorReturn(_this, _ret);
-	  }
-
-	  _createClass(Autocomplete, [{
-	    key: 'componentWillReceiveProps',
-	    value: function componentWillReceiveProps(nextProps) {
-	      if (!this.props.multiple) {
-	        this.setState({ query: nextProps.value });
-	      }
-	    }
-	  }, {
-	    key: 'shouldComponentUpdate',
-	    value: function shouldComponentUpdate(nextProps, nextState) {
-	      if (!this.state.focus && nextState.focus && this.props.direction === POSITION.AUTO) {
-	        var direction = this.calculateDirection();
-	        if (this.state.direction !== direction) {
-	          this.setState({ direction: direction });
-	          return false;
-	        }
-	      }
-	      return true;
-	    }
-	  }, {
-	    key: 'calculateDirection',
-	    value: function calculateDirection() {
-	      if (this.props.direction === 'auto') {
-	        var client = _reactDom2.default.findDOMNode(this.refs.input).getBoundingClientRect();
-	        var screen_height = window.innerHeight || document.documentElement.offsetHeight;
-	        var up = client.top > screen_height / 2 + client.height;
-	        return up ? 'up' : 'down';
-	      } else {
-	        return this.props.direction;
-	      }
-	    }
-	  }, {
-	    key: 'query',
-	    value: function query(key) {
-	      return !this.props.multiple && this.props.value ? this.source().get(key) : '';
-	    }
-	  }, {
-	    key: 'suggestions',
-	    value: function suggestions() {
-	      var suggest = new Map();
-	      var query = this.state.query.toLowerCase().trim() || '';
-	      var values = this.values();
-	      var _iteratorNormalCompletion = true;
-	      var _didIteratorError = false;
-	      var _iteratorError = undefined;
-
-	      try {
-	        for (var _iterator = this.source()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-	          var _step$value = _slicedToArray(_step.value, 2);
-
-	          var key = _step$value[0];
-	          var value = _step$value[1];
-
-	          if (!values.has(key) && value.toLowerCase().trim().startsWith(query)) {
-	            suggest.set(key, value);
-	          }
-	        }
-	      } catch (err) {
-	        _didIteratorError = true;
-	        _iteratorError = err;
-	      } finally {
-	        try {
-	          if (!_iteratorNormalCompletion && _iterator.return) {
-	            _iterator.return();
-	          }
-	        } finally {
-	          if (_didIteratorError) {
-	            throw _iteratorError;
-	          }
-	        }
-	      }
-
-	      return suggest;
-	    }
-	  }, {
-	    key: 'source',
-	    value: function source() {
-	      var src = this.props.source;
-
-	      if (src.hasOwnProperty('length')) {
-	        return new Map(src.map(function (item) {
-	          return Array.isArray(item) ? [].concat(_toConsumableArray(item)) : [item, item];
-	        }));
-	      } else {
-	        return new Map(Object.keys(src).map(function (key) {
-	          return [key, src[key]];
-	        }));
-	      }
-	    }
-	  }, {
-	    key: 'values',
-	    value: function values() {
-	      var valueMap = new Map();
-	      var vals = this.props.multiple ? this.props.value : [this.props.value];
-	      var _iteratorNormalCompletion2 = true;
-	      var _didIteratorError2 = false;
-	      var _iteratorError2 = undefined;
-
-	      try {
-	        for (var _iterator2 = this.source()[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-	          var _step2$value = _slicedToArray(_step2.value, 2);
-
-	          var k = _step2$value[0];
-	          var v = _step2$value[1];
-
-	          if (vals.indexOf(k) !== -1) valueMap.set(k, v);
-	        }
-	      } catch (err) {
-	        _didIteratorError2 = true;
-	        _iteratorError2 = err;
-	      } finally {
-	        try {
-	          if (!_iteratorNormalCompletion2 && _iterator2.return) {
-	            _iterator2.return();
-	          }
-	        } finally {
-	          if (_didIteratorError2) {
-	            throw _iteratorError2;
-	          }
-	        }
-	      }
-
-	      return valueMap;
-	    }
-	  }, {
-	    key: 'select',
-	    value: function select(key, event) {
-	      _events2.default.pauseEvent(event);
-	      var values = this.values(this.props.value);
-	      this.handleChange([key].concat(_toConsumableArray(values.keys())), event);
-	    }
-	  }, {
-	    key: 'unselect',
-	    value: function unselect(key, event) {
-	      var values = this.values(this.props.value);
-	      values.delete(key);
-	      this.handleChange([].concat(_toConsumableArray(values.keys())), event);
-	    }
-	  }, {
-	    key: 'renderSelected',
-	    value: function renderSelected() {
-	      var _this2 = this;
-
-	      if (this.props.multiple) {
-	        var selectedItems = [].concat(_toConsumableArray(this.values())).map(function (_ref) {
-	          var _ref2 = _slicedToArray(_ref, 2);
-
-	          var key = _ref2[0];
-	          var value = _ref2[1];
-
-	          return _react2.default.createElement(
-	            'li',
-	            { key: key, className: _style2.default.value, onClick: _this2.unselect.bind(_this2, key) },
-	            value
-	          );
-	        });
-
-	        return _react2.default.createElement(
-	          'ul',
-	          { className: _style2.default.values },
-	          selectedItems
-	        );
-	      }
-	    }
-	  }, {
-	    key: 'renderSuggestions',
-	    value: function renderSuggestions() {
-	      var _this3 = this;
-
-	      var suggestions = [].concat(_toConsumableArray(this.suggestions())).map(function (_ref3) {
-	        var _ref4 = _slicedToArray(_ref3, 2);
-
-	        var key = _ref4[0];
-	        var value = _ref4[1];
-
-	        var className = (0, _classnames2.default)(_style2.default.suggestion, _defineProperty({}, _style2.default.active, _this3.state.active === key));
-	        return _react2.default.createElement(
-	          'li',
-	          {
-	            key: key,
-	            className: className,
-	            onMouseDown: _this3.select.bind(_this3, key),
-	            onMouseOver: _this3.handleSuggestionHover.bind(_this3, key)
-	          },
-	          value
-	        );
-	      });
-
-	      var className = (0, _classnames2.default)(_style2.default.suggestions, _defineProperty({}, _style2.default.up, this.state.direction === 'up'));
-	      return _react2.default.createElement(
-	        'ul',
-	        { ref: 'suggestions', className: className },
-	        suggestions
-	      );
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _props = this.props;
-	      var error = _props.error;
-	      var label = _props.label;
-
-	      var other = _objectWithoutProperties(_props, ['error', 'label']);
-
-	      var className = (0, _classnames2.default)(_style2.default.root, _defineProperty({}, _style2.default.focus, this.state.focus), this.props.className);
-
-	      return _react2.default.createElement(
-	        'div',
-	        { 'data-react-toolbox': 'autocomplete', className: className },
-	        this.renderSelected(),
-	        _react2.default.createElement(_input2.default, _extends({}, other, {
-	          ref: 'input',
-	          className: _style2.default.input,
-	          error: error,
-	          label: label,
-	          onBlur: this.handleQueryBlur,
-	          onChange: this.handleQueryChange,
-	          onFocus: this.handleQueryFocus,
-	          onKeyUp: this.handleQueryKeyUp,
-	          value: this.state.query
-	        })),
-	        this.renderSuggestions()
-	      );
-	    }
-	  }]);
-
-	  return Autocomplete;
-	}(_react2.default.Component);
-
-	Autocomplete.propTypes = {
-	  className: _react2.default.PropTypes.string,
-	  direction: _react2.default.PropTypes.oneOf(['auto', 'up', 'down']),
-	  disabled: _react2.default.PropTypes.bool,
-	  error: _react2.default.PropTypes.string,
-	  label: _react2.default.PropTypes.string,
-	  multiple: _react2.default.PropTypes.bool,
-	  onChange: _react2.default.PropTypes.func,
-	  source: _react2.default.PropTypes.any,
-	  value: _react2.default.PropTypes.any
-	};
-	Autocomplete.defaultProps = {
-	  className: '',
-	  direction: 'auto',
-	  multiple: true,
-	  source: {}
-	};
-	exports.default = Autocomplete;
-
-/***/ },
-/* 185 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.default = undefined;
-
-	var _Input = __webpack_require__(186);
-
-	var _Input2 = _interopRequireDefault(_Input);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	exports.default = _Input2.default;
-
-/***/ },
-/* 186 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _classnames = __webpack_require__(162);
-
-	var _classnames2 = _interopRequireDefault(_classnames);
-
-	var _font_icon = __webpack_require__(169);
-
-	var _font_icon2 = _interopRequireDefault(_font_icon);
-
-	var _style = __webpack_require__(187);
-
-	var _style2 = _interopRequireDefault(_style);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Input = function (_React$Component) {
-	  _inherits(Input, _React$Component);
-
-	  function Input() {
-	    var _Object$getPrototypeO;
-
-	    var _temp, _this, _ret;
-
-	    _classCallCheck(this, Input);
-
-	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	      args[_key] = arguments[_key];
-	    }
-
-	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Input)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.handleChange = function (event) {
-	      if (_this.props.onChange) _this.props.onChange(event.target.value, event);
-	    }, _temp), _possibleConstructorReturn(_this, _ret);
-	  }
-
-	  _createClass(Input, [{
-	    key: 'blur',
-	    value: function blur() {
-	      this.refs.input.blur();
-	    }
-	  }, {
-	    key: 'focus',
-	    value: function focus() {
-	      this.refs.input.focus();
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _ClassNames2;
-
-	      var _props = this.props;
-	      var children = _props.children;
-	      var disabled = _props.disabled;
-	      var error = _props.error;
-	      var floating = _props.floating;
-	      var icon = _props.icon;
-	      var labelText = _props.label;
-	      var maxLength = _props.maxLength;
-	      var multiline = _props.multiline;
-	      var type = _props.type;
-	      var value = _props.value;
-
-	      var others = _objectWithoutProperties(_props, ['children', 'disabled', 'error', 'floating', 'icon', 'label', 'maxLength', 'multiline', 'type', 'value']);
-
-	      var length = maxLength && value ? value.length : 0;
-	      var labelClassName = (0, _classnames2.default)(_style2.default.label, _defineProperty({}, _style2.default.fixed, !floating));
-
-	      var className = (0, _classnames2.default)(_style2.default.root, (_ClassNames2 = {}, _defineProperty(_ClassNames2, _style2.default.disabled, disabled), _defineProperty(_ClassNames2, _style2.default.errored, error), _defineProperty(_ClassNames2, _style2.default.hidden, type === 'hidden'), _defineProperty(_ClassNames2, _style2.default.withIcon, icon), _ClassNames2), this.props.className);
-
-	      var InputElement = _react2.default.createElement(multiline ? 'textarea' : 'input', _extends({}, others, {
-	        className: (0, _classnames2.default)(_style2.default.input, _defineProperty({}, _style2.default.filled, value)),
-	        onChange: this.handleChange,
-	        ref: 'input',
-	        role: 'input',
-	        disabled: disabled,
-	        type: type,
-	        value: value,
-	        maxLength: maxLength
-	      }));
-
-	      return _react2.default.createElement(
-	        'div',
-	        { 'data-react-toolbox': 'input', className: className },
-	        InputElement,
-	        icon ? _react2.default.createElement(_font_icon2.default, { className: _style2.default.icon, value: icon }) : null,
-	        _react2.default.createElement('span', { className: _style2.default.bar }),
-	        labelText ? _react2.default.createElement(
-	          'label',
-	          { className: labelClassName },
-	          labelText
-	        ) : null,
-	        error ? _react2.default.createElement(
-	          'span',
-	          { className: _style2.default.error },
-	          error
-	        ) : null,
-	        maxLength ? _react2.default.createElement(
-	          'span',
-	          { className: _style2.default.counter },
-	          length,
-	          '/',
-	          maxLength
-	        ) : null,
-	        children
-	      );
-	    }
-	  }]);
-
-	  return Input;
-	}(_react2.default.Component);
-
-	Input.propTypes = {
-	  children: _react2.default.PropTypes.any,
-	  className: _react2.default.PropTypes.string,
-	  disabled: _react2.default.PropTypes.bool,
-	  error: _react2.default.PropTypes.node,
-	  floating: _react2.default.PropTypes.bool,
-	  icon: _react2.default.PropTypes.any,
-	  label: _react2.default.PropTypes.string,
-	  maxLength: _react2.default.PropTypes.number,
-	  multiline: _react2.default.PropTypes.bool,
-	  onBlur: _react2.default.PropTypes.func,
-	  onChange: _react2.default.PropTypes.func,
-	  onFocus: _react2.default.PropTypes.func,
-	  onKeyPress: _react2.default.PropTypes.func,
-	  required: _react2.default.PropTypes.bool,
-	  type: _react2.default.PropTypes.string,
-	  value: _react2.default.PropTypes.any
-	};
-	Input.defaultProps = {
-	  className: '',
-	  disabled: false,
-	  floating: true,
-	  multiline: false,
-	  required: false,
-	  type: 'text'
-	};
-	exports.default = Input;
-
-/***/ },
-/* 187 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-	module.exports = {"root":"style__root___mvZgg","withIcon":"style__withIcon___l-VGA","icon":"style__icon___u0lkM","input":"style__input___2CW85","bar":"style__bar___3JfC1","label":"style__label___1ZZZb","fixed":"style__fixed___UEXes","filled":"style__filled___2qouG","error":"style__error___NYYg3","counter":"style__counter___2IQJy","disabled":"style__disabled___2UayE","errored":"style__errored___1U0HK","hidden":"style__hidden___3ZWXC"};
-
-/***/ },
-/* 188 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.default = {
-	  getMousePosition: function getMousePosition(event) {
-	    return {
-	      x: event.pageX,
-	      y: event.pageY
-	    };
-	  },
-	  getTouchPosition: function getTouchPosition(event) {
-	    return {
-	      x: event.touches[0].pageX,
-	      y: event.touches[0].pageY
-	    };
-	  },
-	  pauseEvent: function pauseEvent(event) {
-	    event.stopPropagation();
-	    event.preventDefault();
-	    event.returnValue = false;
-	    event.cancelBubble = true;
-	  },
-	  addEventsToDocument: function addEventsToDocument(eventMap) {
-	    for (var key in eventMap) {
-	      document.addEventListener(key, eventMap[key], false);
-	    }
-	  },
-	  removeEventsFromDocument: function removeEventsFromDocument(eventMap) {
-	    for (var key in eventMap) {
-	      document.removeEventListener(key, eventMap[key], false);
-	    }
-	  },
-	  targetIsDescendant: function targetIsDescendant(event, parent) {
-	    var node = event.target;
-	    while (node !== null) {
-	      if (node === parent) return true;
-	      node = node.parentNode;
-	    }
-	    return false;
-	  }
-	};
-
-/***/ },
-/* 189 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-	module.exports = {"root":"style__root___1y-LS","focus":"style__focus___1x0fV","label":"style__label___90fx0","suggestions":"style__suggestions___2usow","values":"style__values___QLg6S","value":"style__value___3BLWH","up":"style__up___2r0vz","suggestion":"style__suggestion___3RdMN","active":"style__active___3bOSn","input":"style__input___10lYa"};
-
-/***/ },
-/* 190 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var defaultClickRejectionStrategy = __webpack_require__(191);
-
-	module.exports = function injectTapEventPlugin (strategyOverrides) {
-	  strategyOverrides = strategyOverrides || {}
-	  var shouldRejectClick = strategyOverrides.shouldRejectClick || defaultClickRejectionStrategy;
-
-	  __webpack_require__(31).injection.injectEventPluginsByName({
-	    "TapEventPlugin":       __webpack_require__(192)(shouldRejectClick)
-	  });
-	};
-
-
-/***/ },
-/* 191 */
-/***/ function(module, exports) {
-
-	module.exports = function(lastTouchEvent, clickTimestamp) {
-	  if (lastTouchEvent && (clickTimestamp - lastTouchEvent) < 750) {
-	    return true;
-	  }
-	};
-
-
-/***/ },
-/* 192 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-2014 Facebook, Inc.
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 *
-	 * @providesModule TapEventPlugin
-	 * @typechecks static-only
-	 */
-
-	"use strict";
-
-	var EventConstants = __webpack_require__(30);
-	var EventPluginUtils = __webpack_require__(33);
-	var EventPropagators = __webpack_require__(73);
-	var SyntheticUIEvent = __webpack_require__(87);
-	var TouchEventUtils = __webpack_require__(193);
-	var ViewportMetrics = __webpack_require__(38);
-
-	var keyOf = __webpack_require__(194);
-	var topLevelTypes = EventConstants.topLevelTypes;
-
-	var isStartish = EventPluginUtils.isStartish;
-	var isEndish = EventPluginUtils.isEndish;
-
-	var isTouch = function(topLevelType) {
-	  var touchTypes = [
-	    topLevelTypes.topTouchCancel,
-	    topLevelTypes.topTouchEnd,
-	    topLevelTypes.topTouchStart,
-	    topLevelTypes.topTouchMove
-	  ];
-	  return touchTypes.indexOf(topLevelType) >= 0;
-	}
-
-	/**
-	 * Number of pixels that are tolerated in between a `touchStart` and `touchEnd`
-	 * in order to still be considered a 'tap' event.
-	 */
-	var tapMoveThreshold = 10;
-	var ignoreMouseThreshold = 750;
-	var startCoords = {x: null, y: null};
-	var lastTouchEvent = null;
-
-	var Axis = {
-	  x: {page: 'pageX', client: 'clientX', envScroll: 'currentPageScrollLeft'},
-	  y: {page: 'pageY', client: 'clientY', envScroll: 'currentPageScrollTop'}
-	};
-
-	function getAxisCoordOfEvent(axis, nativeEvent) {
-	  var singleTouch = TouchEventUtils.extractSingleTouch(nativeEvent);
-	  if (singleTouch) {
-	    return singleTouch[axis.page];
-	  }
-	  return axis.page in nativeEvent ?
-	    nativeEvent[axis.page] :
-	    nativeEvent[axis.client] + ViewportMetrics[axis.envScroll];
-	}
-
-	function getDistance(coords, nativeEvent) {
-	  var pageX = getAxisCoordOfEvent(Axis.x, nativeEvent);
-	  var pageY = getAxisCoordOfEvent(Axis.y, nativeEvent);
-	  return Math.pow(
-	    Math.pow(pageX - coords.x, 2) + Math.pow(pageY - coords.y, 2),
-	    0.5
-	  );
-	}
-
-	var touchEvents = [
-	  topLevelTypes.topTouchStart,
-	  topLevelTypes.topTouchCancel,
-	  topLevelTypes.topTouchEnd,
-	  topLevelTypes.topTouchMove,
-	];
-
-	var dependencies = [
-	  topLevelTypes.topMouseDown,
-	  topLevelTypes.topMouseMove,
-	  topLevelTypes.topMouseUp,
-	].concat(touchEvents);
-
-	var eventTypes = {
-	  touchTap: {
-	    phasedRegistrationNames: {
-	      bubbled: keyOf({onTouchTap: null}),
-	      captured: keyOf({onTouchTapCapture: null})
-	    },
-	    dependencies: dependencies
-	  }
-	};
-
-	var now = (function() {
-	  if (Date.now) {
-	    return Date.now;
-	  } else {
-	    // IE8 support: http://stackoverflow.com/questions/9430357/please-explain-why-and-how-new-date-works-as-workaround-for-date-now-in
-	    return function () {
-	      return +new Date;
-	    }
-	  }
-	})();
-
-	function createTapEventPlugin(shouldRejectClick) {
-	  return {
-
-	    tapMoveThreshold: tapMoveThreshold,
-
-	    ignoreMouseThreshold: ignoreMouseThreshold,
-
-	    eventTypes: eventTypes,
-
-	    /**
-	     * @param {string} topLevelType Record from `EventConstants`.
-	     * @param {DOMEventTarget} topLevelTarget The listening component root node.
-	     * @param {string} topLevelTargetID ID of `topLevelTarget`.
-	     * @param {object} nativeEvent Native browser event.
-	     * @return {*} An accumulation of synthetic events.
-	     * @see {EventPluginHub.extractEvents}
-	     */
-	    extractEvents: function(
-	        topLevelType,
-	        topLevelTarget,
-	        topLevelTargetID,
-	        nativeEvent,
-	        nativeEventTarget) {
-
-	      if (isTouch(topLevelType)) {
-	        lastTouchEvent = now();
-	      } else {
-	        if (shouldRejectClick(lastTouchEvent, now())) {
-	          return null;
-	        }
-	      }
-
-	      if (!isStartish(topLevelType) && !isEndish(topLevelType)) {
-	        return null;
-	      }
-	      var event = null;
-	      var distance = getDistance(startCoords, nativeEvent);
-	      if (isEndish(topLevelType) && distance < tapMoveThreshold) {
-	        event = SyntheticUIEvent.getPooled(
-	          eventTypes.touchTap,
-	          topLevelTargetID,
-	          nativeEvent,
-	          nativeEventTarget
-	        );
-	      }
-	      if (isStartish(topLevelType)) {
-	        startCoords.x = getAxisCoordOfEvent(Axis.x, nativeEvent);
-	        startCoords.y = getAxisCoordOfEvent(Axis.y, nativeEvent);
-	      } else if (isEndish(topLevelType)) {
-	        startCoords.x = 0;
-	        startCoords.y = 0;
-	      }
-	      EventPropagators.accumulateTwoPhaseDispatches(event);
-	      return event;
-	    }
-
-	  };
-	}
-
-	module.exports = createTapEventPlugin;
-
-
-/***/ },
-/* 193 */
-/***/ function(module, exports) {
-
-	/**
-	 * Copyright 2013-2014 Facebook, Inc.
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 *
-	 * @providesModule TouchEventUtils
-	 */
-
-	var TouchEventUtils = {
-	  /**
-	   * Utility function for common case of extracting out the primary touch from a
-	   * touch event.
-	   * - `touchEnd` events usually do not have the `touches` property.
-	   *   http://stackoverflow.com/questions/3666929/
-	   *   mobile-sarai-touchend-event-not-firing-when-last-touch-is-removed
-	   *
-	   * @param {Event} nativeEvent Native event that may or may not be a touch.
-	   * @return {TouchesObject?} an object with pageX and pageY or null.
-	   */
-	  extractSingleTouch: function(nativeEvent) {
-	    var touches = nativeEvent.touches;
-	    var changedTouches = nativeEvent.changedTouches;
-	    var hasTouches = touches && touches.length > 0;
-	    var hasChangedTouches = changedTouches && changedTouches.length > 0;
-
-	    return !hasTouches && hasChangedTouches ? changedTouches[0] :
-	           hasTouches ? touches[0] :
-	           nativeEvent;
-	  }
-	};
-
-	module.exports = TouchEventUtils;
-
-
-/***/ },
-/* 194 */
-/***/ function(module, exports) {
-
-	/**
-	 * Copyright 2013-2015, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule keyOf
-	 */
-
-	/**
-	 * Allows extraction of a minified key. Let's the build system minify keys
-	 * without losing the ability to dynamically use key strings as values
-	 * themselves. Pass in an object with a single key/val pair and it will return
-	 * you the string key of that single record. Suppose you want to grab the
-	 * value for a key 'className' inside of an object. Key/val minification may
-	 * have aliased that key to be 'xa12'. keyOf({className: null}) will return
-	 * 'xa12' in that case. Resolve keys you want to use once at startup time, then
-	 * reuse those resolutions.
-	 */
-	"use strict";
-
-	var keyOf = function (oneKeyObj) {
-	  var key;
-	  for (key in oneKeyObj) {
-	    if (!oneKeyObj.hasOwnProperty(key)) {
-	      continue;
-	    }
-	    return key;
-	  }
-	  return null;
-	};
-
-	module.exports = keyOf;
-
-/***/ },
-/* 195 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	exports.__esModule = true;
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var _attrAccept = __webpack_require__(196);
-
-	var _attrAccept2 = _interopRequireDefault(_attrAccept);
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var supportMultiple = typeof document !== 'undefined' && document && document.createElement ? 'multiple' in document.createElement('input') : true;
-
-	var Dropzone = (function (_React$Component) {
-	  _inherits(Dropzone, _React$Component);
-
-	  function Dropzone(props, context) {
-	    _classCallCheck(this, Dropzone);
-
-	    _React$Component.call(this, props, context);
-	    this.onClick = this.onClick.bind(this);
-	    this.onDragEnter = this.onDragEnter.bind(this);
-	    this.onDragLeave = this.onDragLeave.bind(this);
-	    this.onDragOver = this.onDragOver.bind(this);
-	    this.onDrop = this.onDrop.bind(this);
-
-	    this.state = {
-	      isDragActive: false
-	    };
-	  }
-
-	  Dropzone.prototype.componentDidMount = function componentDidMount() {
-	    this.enterCounter = 0;
-	  };
-
-	  Dropzone.prototype.onDragEnter = function onDragEnter(e) {
-	    e.preventDefault();
-
-	    // Count the dropzone and any children that are entered.
-	    ++this.enterCounter;
-
-	    // This is tricky. During the drag even the dataTransfer.files is null
-	    // But Chrome implements some drag store, which is accesible via dataTransfer.items
-	    var dataTransferItems = e.dataTransfer && e.dataTransfer.items ? e.dataTransfer.items : [];
-
-	    // Now we need to convert the DataTransferList to Array
-	    var allFilesAccepted = this.allFilesAccepted(Array.prototype.slice.call(dataTransferItems));
-
-	    this.setState({
-	      isDragActive: allFilesAccepted,
-	      isDragReject: !allFilesAccepted
-	    });
-
-	    if (this.props.onDragEnter) {
-	      this.props.onDragEnter.call(this, e);
-	    }
-	  };
-
-	  Dropzone.prototype.onDragOver = function onDragOver(e) {
-	    e.preventDefault();
-	    e.stopPropagation();
-	    return false;
-	  };
-
-	  Dropzone.prototype.onDragLeave = function onDragLeave(e) {
-	    e.preventDefault();
-
-	    // Only deactivate once the dropzone and all children was left.
-	    if (--this.enterCounter > 0) {
-	      return;
-	    }
-
-	    this.setState({
-	      isDragActive: false,
-	      isDragReject: false
-	    });
-
-	    if (this.props.onDragLeave) {
-	      this.props.onDragLeave.call(this, e);
-	    }
-	  };
-
-	  Dropzone.prototype.onDrop = function onDrop(e) {
-	    e.preventDefault();
-
-	    // Reset the counter along with the drag on a drop.
-	    this.enterCounter = 0;
-
-	    this.setState({
-	      isDragActive: false,
-	      isDragReject: false
-	    });
-
-	    var droppedFiles = e.dataTransfer ? e.dataTransfer.files : e.target.files;
-	    var max = this.props.multiple ? droppedFiles.length : 1;
-	    var files = [];
-
-	    for (var i = 0; i < max; i++) {
-	      var file = droppedFiles[i];
-	      // We might want to disable the preview creation to support big files
-	      if (!this.props.disablePreview) {
-	        file.preview = window.URL.createObjectURL(file);
-	      }
-	      files.push(file);
-	    }
-
-	    if (this.props.onDrop) {
-	      this.props.onDrop.call(this, files, e);
-	    }
-
-	    if (this.allFilesAccepted(files)) {
-	      if (this.props.onDropAccepted) {
-	        this.props.onDropAccepted.call(this, files, e);
-	      }
-	    } else {
-	      if (this.props.onDropRejected) {
-	        this.props.onDropRejected.call(this, files, e);
-	      }
-	    }
-	  };
-
-	  Dropzone.prototype.onClick = function onClick() {
-	    if (!this.props.disableClick) {
-	      this.open();
-	    }
-	  };
-
-	  Dropzone.prototype.allFilesAccepted = function allFilesAccepted(files) {
-	    var _this = this;
-
-	    return files.every(function (file) {
-	      return _attrAccept2['default'](file, _this.props.accept);
-	    });
-	  };
-
-	  Dropzone.prototype.open = function open() {
-	    this.fileInputEl.value = null;
-	    this.fileInputEl.click();
-	  };
-
-	  Dropzone.prototype.render = function render() {
-	    var _this2 = this;
-
-	    var _props = this.props;
-	    var accept = _props.accept;
-	    var activeClassName = _props.activeClassName;
-	    var inputProps = _props.inputProps;
-	    var multiple = _props.multiple;
-	    var name = _props.name;
-	    var rejectClassName = _props.rejectClassName;
-
-	    var rest = _objectWithoutProperties(_props, ['accept', 'activeClassName', 'inputProps', 'multiple', 'name', 'rejectClassName']);
-
-	    var activeStyle = // eslint-disable-line prefer-const
-	    rest.activeStyle;
-	    var className = rest.className;
-	    var rejectStyle = rest.rejectStyle;
-	    var style = rest.style;
-
-	    var props = _objectWithoutProperties(rest, ['activeStyle', 'className', 'rejectStyle', 'style']);
-
-	    var _state = this.state;
-	    var isDragActive = _state.isDragActive;
-	    var isDragReject = _state.isDragReject;
-
-	    className = className || '';
-
-	    if (isDragActive && activeClassName) {
-	      className += ' ' + activeClassName;
-	    }
-	    if (isDragReject && rejectClassName) {
-	      className += ' ' + rejectClassName;
-	    }
-
-	    if (!className && !style && !activeStyle && !rejectStyle) {
-	      style = {
-	        width: 200,
-	        height: 200,
-	        borderWidth: 2,
-	        borderColor: '#666',
-	        borderStyle: 'dashed',
-	        borderRadius: 5
-	      };
-	      activeStyle = {
-	        borderStyle: 'solid',
-	        backgroundColor: '#eee'
-	      };
-	      rejectStyle = {
-	        borderStyle: 'solid',
-	        backgroundColor: '#ffdddd'
-	      };
-	    }
-
-	    var appliedStyle = undefined;
-	    if (activeStyle && isDragActive) {
-	      appliedStyle = _extends({}, style, activeStyle);
-	    } else if (rejectStyle && isDragReject) {
-	      appliedStyle = _extends({}, style, rejectStyle);
-	    } else {
-	      appliedStyle = _extends({}, style);
-	    }
-
-	    var inputAttributes = {
-	      accept: accept,
-	      type: 'file',
-	      style: { display: 'none' },
-	      multiple: supportMultiple && multiple,
-	      ref: function ref(el) {
-	        return _this2.fileInputEl = el;
-	      },
-	      onChange: this.onDrop
-	    };
-
-	    if (name && name.length) {
-	      inputAttributes.name = name;
-	    }
-
-	    return _react2['default'].createElement(
-	      'div',
-	      _extends({
-	        className: className,
-	        style: appliedStyle
-	      }, props, /* expand user provided props first so event handlers are never overridden */{
-	        onClick: this.onClick,
-	        onDragEnter: this.onDragEnter,
-	        onDragOver: this.onDragOver,
-	        onDragLeave: this.onDragLeave,
-	        onDrop: this.onDrop
-	      }),
-	      this.props.children,
-	      _react2['default'].createElement('input', _extends({}, inputProps, /* expand user provided inputProps first so inputAttributes override them */inputAttributes))
-	    );
-	  };
-
-	  return Dropzone;
-	})(_react2['default'].Component);
-
-	Dropzone.defaultProps = {
-	  disablePreview: false,
-	  disableClick: false,
-	  multiple: true
-	};
-
-	Dropzone.propTypes = {
-	  onDrop: _react2['default'].PropTypes.func,
-	  onDropAccepted: _react2['default'].PropTypes.func,
-	  onDropRejected: _react2['default'].PropTypes.func,
-	  onDragEnter: _react2['default'].PropTypes.func,
-	  onDragLeave: _react2['default'].PropTypes.func,
-
-	  children: _react2['default'].PropTypes.node,
-	  style: _react2['default'].PropTypes.object,
-	  activeStyle: _react2['default'].PropTypes.object,
-	  rejectStyle: _react2['default'].PropTypes.object,
-	  className: _react2['default'].PropTypes.string,
-	  activeClassName: _react2['default'].PropTypes.string,
-	  rejectClassName: _react2['default'].PropTypes.string,
-
-	  disablePreview: _react2['default'].PropTypes.bool,
-	  disableClick: _react2['default'].PropTypes.bool,
-
-	  inputProps: _react2['default'].PropTypes.object,
-	  multiple: _react2['default'].PropTypes.bool,
-	  accept: _react2['default'].PropTypes.string,
-	  name: _react2['default'].PropTypes.string
-	};
-
-	exports['default'] = Dropzone;
-	module.exports = exports['default'];
-
-/***/ },
-/* 196 */
-/***/ function(module, exports) {
-
-	module.exports=function(t){function n(e){if(r[e])return r[e].exports;var o=r[e]={exports:{},id:e,loaded:!1};return t[e].call(o.exports,o,o.exports,n),o.loaded=!0,o.exports}var r={};return n.m=t,n.c=r,n.p="",n(0)}([function(t,n,r){"use strict";n.__esModule=!0,r(8),r(9),n["default"]=function(t,n){if(t&&n){var r=function(){var r=n.split(","),e=t.name||"",o=t.type||"",i=o.replace(/\/.*$/,"");return{v:r.some(function(t){var n=t.trim();return"."===n.charAt(0)?e.toLowerCase().endsWith(n.toLowerCase()):/\/\*$/.test(n)?i===n.replace(/\/.*$/,""):o===n})}}();if("object"==typeof r)return r.v}return!0},t.exports=n["default"]},function(t,n){var r=t.exports={version:"1.2.2"};"number"==typeof __e&&(__e=r)},function(t,n){var r=t.exports="undefined"!=typeof window&&window.Math==Math?window:"undefined"!=typeof self&&self.Math==Math?self:Function("return this")();"number"==typeof __g&&(__g=r)},function(t,n,r){var e=r(2),o=r(1),i=r(4),u=r(19),c="prototype",f=function(t,n){return function(){return t.apply(n,arguments)}},s=function(t,n,r){var a,p,l,d,y=t&s.G,h=t&s.P,v=y?e:t&s.S?e[n]||(e[n]={}):(e[n]||{})[c],x=y?o:o[n]||(o[n]={});y&&(r=n);for(a in r)p=!(t&s.F)&&v&&a in v,l=(p?v:r)[a],d=t&s.B&&p?f(l,e):h&&"function"==typeof l?f(Function.call,l):l,v&&!p&&u(v,a,l),x[a]!=l&&i(x,a,d),h&&((x[c]||(x[c]={}))[a]=l)};e.core=o,s.F=1,s.G=2,s.S=4,s.P=8,s.B=16,s.W=32,t.exports=s},function(t,n,r){var e=r(5),o=r(18);t.exports=r(22)?function(t,n,r){return e.setDesc(t,n,o(1,r))}:function(t,n,r){return t[n]=r,t}},function(t,n){var r=Object;t.exports={create:r.create,getProto:r.getPrototypeOf,isEnum:{}.propertyIsEnumerable,getDesc:r.getOwnPropertyDescriptor,setDesc:r.defineProperty,setDescs:r.defineProperties,getKeys:r.keys,getNames:r.getOwnPropertyNames,getSymbols:r.getOwnPropertySymbols,each:[].forEach}},function(t,n){var r=0,e=Math.random();t.exports=function(t){return"Symbol(".concat(void 0===t?"":t,")_",(++r+e).toString(36))}},function(t,n,r){var e=r(20)("wks"),o=r(2).Symbol;t.exports=function(t){return e[t]||(e[t]=o&&o[t]||(o||r(6))("Symbol."+t))}},function(t,n,r){r(26),t.exports=r(1).Array.some},function(t,n,r){r(25),t.exports=r(1).String.endsWith},function(t,n){t.exports=function(t){if("function"!=typeof t)throw TypeError(t+" is not a function!");return t}},function(t,n){var r={}.toString;t.exports=function(t){return r.call(t).slice(8,-1)}},function(t,n,r){var e=r(10);t.exports=function(t,n,r){if(e(t),void 0===n)return t;switch(r){case 1:return function(r){return t.call(n,r)};case 2:return function(r,e){return t.call(n,r,e)};case 3:return function(r,e,o){return t.call(n,r,e,o)}}return function(){return t.apply(n,arguments)}}},function(t,n){t.exports=function(t){if(void 0==t)throw TypeError("Can't call method on  "+t);return t}},function(t,n,r){t.exports=function(t){var n=/./;try{"/./"[t](n)}catch(e){try{return n[r(7)("match")]=!1,!"/./"[t](n)}catch(o){}}return!0}},function(t,n){t.exports=function(t){try{return!!t()}catch(n){return!0}}},function(t,n){t.exports=function(t){return"object"==typeof t?null!==t:"function"==typeof t}},function(t,n,r){var e=r(16),o=r(11),i=r(7)("match");t.exports=function(t){var n;return e(t)&&(void 0!==(n=t[i])?!!n:"RegExp"==o(t))}},function(t,n){t.exports=function(t,n){return{enumerable:!(1&t),configurable:!(2&t),writable:!(4&t),value:n}}},function(t,n,r){var e=r(2),o=r(4),i=r(6)("src"),u="toString",c=Function[u],f=(""+c).split(u);r(1).inspectSource=function(t){return c.call(t)},(t.exports=function(t,n,r,u){"function"==typeof r&&(o(r,i,t[n]?""+t[n]:f.join(String(n))),"name"in r||(r.name=n)),t===e?t[n]=r:(u||delete t[n],o(t,n,r))})(Function.prototype,u,function(){return"function"==typeof this&&this[i]||c.call(this)})},function(t,n,r){var e=r(2),o="__core-js_shared__",i=e[o]||(e[o]={});t.exports=function(t){return i[t]||(i[t]={})}},function(t,n,r){var e=r(17),o=r(13);t.exports=function(t,n,r){if(e(n))throw TypeError("String#"+r+" doesn't accept regex!");return String(o(t))}},function(t,n,r){t.exports=!r(15)(function(){return 7!=Object.defineProperty({},"a",{get:function(){return 7}}).a})},function(t,n){var r=Math.ceil,e=Math.floor;t.exports=function(t){return isNaN(t=+t)?0:(t>0?e:r)(t)}},function(t,n,r){var e=r(23),o=Math.min;t.exports=function(t){return t>0?o(e(t),9007199254740991):0}},function(t,n,r){"use strict";var e=r(3),o=r(24),i=r(21),u="endsWith",c=""[u];e(e.P+e.F*r(14)(u),"String",{endsWith:function(t){var n=i(this,t,u),r=arguments,e=r.length>1?r[1]:void 0,f=o(n.length),s=void 0===e?f:Math.min(o(e),f),a=String(t);return c?c.call(n,a,s):n.slice(s-a.length,s)===a}})},function(t,n,r){var e=r(5),o=r(3),i=r(1).Array||Array,u={},c=function(t,n){e.each.call(t.split(","),function(t){void 0==n&&t in i?u[t]=i[t]:t in[]&&(u[t]=r(12)(Function.call,[][t],n))})};c("pop,reverse,shift,keys,values,entries",1),c("indexOf,every,some,forEach,map,filter,find,findIndex,includes",3),c("join,slice,concat,push,splice,unshift,sort,lastIndexOf,reduce,reduceRight,copyWithin,fill"),o(o.S,"Array",u)}]);
-
-/***/ },
-/* 197 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var exported;
-
-	if (__webpack_require__(1) && __webpack_require__(158)) {
-	    exported = __webpack_require__(198);
-	} else {
-	    exported = __webpack_require__(203);
-	}
-
-	module.exports = exported;
-
-/***/ },
-/* 198 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var React = __webpack_require__(1),
-	    ReactDOM = __webpack_require__(158),
-	    Helpers = __webpack_require__(199),
-	    IconComponent = __webpack_require__(200),
-	    Dropzone, DropzoneComponent;
-
-	DropzoneComponent = React.createClass({displayName: "DropzoneComponent",
-	    /**
-	     * Ensure we always have props to work with.
-	     */
-	    getDefaultProps: function () {
-	        return {
-	          djsConfig: {},
-	          config: {},
-	          eventHandlers: {}
-	        }
-	    },
-
-	    /**
-	     * Configuration of Dropzone.js. Defaults are
-	     * overriden overriden by the 'djsConfig' property
-	     * For a full list of possible configurations,
-	     * please consult
-	     * http://www.dropzonejs.com/#configuration
-	     */
-	    getDjsConfig: function () {
-	        var options,
-	            defaults = {
-	                url: this.props.config.postUrl ? this.props.config.postUrl : null
-	            };
-
-	        if (this.props.djsConfig) {
-	            options = Helpers.extend(true, {}, defaults, this.props.djsConfig);
-	        } else {
-	            options = defaults;
-	        }
-
-	        return options;
-	    },
-
-	    /**
-	     * React 'componentDidMount' method
-	     * Sets up dropzone.js with the component.
-	     */
-	    componentDidMount: function () {
-	        var self = this,
-	            options = this.getDjsConfig();
-
-	        Dropzone = Dropzone || __webpack_require__(201);
-	        Dropzone.autoDiscover = false;
-
-	        if (!this.props.config.postUrl && !this.props.eventHandlers.drop) {
-	            console.info('Neither postUrl nor a "drop" eventHandler specified, the React-Dropzone component might misbehave.');
-	        }
-
-	        this.dropzone = new Dropzone(ReactDOM.findDOMNode(self), options);
-	        this.setupEvents();
-	    },
-
-	    /**
-	     * React 'componentWillUnmount'
-	     * Removes dropzone.js (and all its globals) if the component is being unmounted
-	     */
-	    componentWillUnmount: function () {
-	        if (this.dropzone) {
-	            var files = this.dropzone.getActiveFiles();
-
-	            if (files.length > 0) {
-	                // Well, seems like we still have stuff uploading.
-	                // This is dirty, but let's keep trying to get rid
-	                // of the dropzone until we're done here.
-	                this.queueDestroy = true;
-
-	                var destroyInterval = window.setInterval(function()  {
-	                    if (this.queueDestroy = false) {
-	                        return window.clearInterval(destroyInterval);
-	                    }
-
-	                    if (this.dropzone.getActiveFiles().length === 0) {
-	                        this.dropzone = this.dropzone.destroy();
-	                        return window.clearInterval(destroyInterval);
-	                    }
-	                }.bind(this), 500);
-	            } else {
-	                this.dropzone = this.dropzone.destroy();
-	            }
-	        }
-	    },
-
-	    /**
-	     * React 'componentDidUpdate'
-	     * If the Dropzone hasn't been created, create it
-	     */
-	    componentDidUpdate: function () {
-	        this.queueDestroy = false;
-
-	        if (!this.dropzone) {
-	            this.dropzone = new Dropzone(ReactDOM.findDOMNode(this), this.getDjsConfig());
-	        }
-	    },
-
-	    /**
-	     * React 'componentWillUpdate'
-	     * Update Dropzone options each time the component updates.
-	     */
-	    componentWillUpdate: function() {
-	        this.dropzone.options = Helpers.extend(true, {}, this.props.djsConfig, this.dropzone.options);
-	    },
-
-	    /**
-	     * React 'render'
-	     */
-	    render: function () {
-	        var icons = [],
-	            files = this.state.files,
-	            config = this.props.config,
-	            className = (this.props.className) ? 'filepicker dropzone ' + this.props.className : 'filepicker dropzone';
-
-	        if (config.showFiletypeIcon && config.iconFiletypes && (!files || files.length < 1)) {
-	            for (var i = 0; i < this.props.config.iconFiletypes.length; i = i + 1) {
-	                icons.push(React.createElement(IconComponent, {filetype: this.props.config.iconFiletypes[i], key: "icon-component" + i}));
-	            }
-	        }
-
-	        if (!this.props.config.postUrl && this.props.action) {
-	            return (
-	                React.createElement("form", {action: this.props.action, className: className}, 
-	                    icons, 
-	                    this.props.children
-	                )
-	            );
-	        } else {
-	            return (
-	                React.createElement("div", {className: className}, 
-	                    icons, 
-	                    this.props.children
-	                )
-	            );
-	        }
-	    },
-
-	    /**
-	     * React 'getInitialState' method, setting the initial state
-	     * @return {object}
-	     */
-	    getInitialState: function () {
-	        return {
-	            files: []
-	        }
-	    },
-
-	    /**
-	     * Takes event handlers in this.props.eventHandlers
-	     * and binds them to dropzone.js events
-	     */
-	    setupEvents: function () {
-	        var eventHandlers = this.props.eventHandlers;
-
-	        if (!this.dropzone || !eventHandlers) {
-	            return;
-	        }
-
-	        for (var eventHandler in eventHandlers) {
-	            if (eventHandlers.hasOwnProperty(eventHandler) && eventHandlers[eventHandler]) {
-	                // Check if there's an array of event handlers
-	                if (Object.prototype.toString.call(eventHandlers[eventHandler]) === '[object Array]') {
-	                    for (var i = 0; i < eventHandlers[eventHandler].length; i = i + 1) {
-	                        // Check if it's an init handler
-	                        if (eventHandler === 'init') {
-	                            eventHandlers[eventHandler][i](this.dropzone);
-	                        } else {
-	                            this.dropzone.on(eventHandler, eventHandlers[eventHandler][i]);
-	                        }
-	                    }
-	                } else {
-	                    if (eventHandler === 'init') {
-	                        eventHandlers[eventHandler](this.dropzone);
-	                    } else {
-	                        this.dropzone.on(eventHandler, eventHandlers[eventHandler]);
-	                    }
-	                }
-	            }
-	        }
-
-	        this.dropzone.on('addedfile', function(file)  {
-	            if (file) {
-	                var files = this.state.files;
-
-	                if (!files) {
-	                    files = [];
-	                }
-
-	                files.push(file)
-
-	                this.setState({files: files});
-	            }
-	        }.bind(this));
-
-	        this.dropzone.on('removedfile', function(file)  {
-	            if (file) {
-	                var files = this.state.files;
-
-	                if (files && files.length > 0) {
-	                    for (var i = 0; i < files.length; i++) {
-	                        if (files[i].name === file.name && files[i].size === file.size) {
-	                            files.splice(i, 1);
-	                        }
-	                    }
-
-	                    this.setState({files: files});
-	                }
-	            }
-	        }.bind(this));
-	    }
-	});
-
-	module.exports = DropzoneComponent;
-
-
-/***/ },
-/* 199 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	var Helpers = {
-	    /**
-	     * Clone of jQuery's extend
-	     * Usage: extend(true, {}, obj1, obj2)
-	     */
-	    extend: function () {
-	        var options, name, src, copy, copyIsArray, clone, self = this,
-	            target = arguments[0] || {},
-	            i = 1,
-	            length = arguments.length,
-	            deep = false,
-	            // helper which replicates the jquery internal functions
-	            objectHelper = {
-	                hasOwn: Object.prototype.hasOwnProperty,
-	                class2type: {},
-
-	                type: function (obj) {
-	                    return obj == null ?
-	                        String(obj) :
-	                        objectHelper.class2type[Object.prototype.toString.call(obj)] || 'object';
-	                },
-
-	                isPlainObject: function (obj) {
-	                    var key;
-
-	                    if (!obj || objectHelper.type(obj) !== 'object' || obj.nodeType || objectHelper.isWindow(obj)) {
-	                        return false;
-	                    }
-
-	                    try {
-	                        if (obj.constructor &&
-	                            !objectHelper.hasOwn.call(obj, 'constructor') &&
-	                            !objectHelper.hasOwn.call(obj.constructor.prototype, 'isPrototypeOf')) {
-	                            return false;
-	                        }
-	                    } catch (e) {
-	                        return false;
-	                    }
-
-	                    return key === undefined || objectHelper.hasOwn.call(obj, key);
-	                },
-
-	                isArray: Array.isArray || function (obj) {
-	                    return objectHelper.type(obj) === 'array';
-	                },
-
-	                isFunction: function (obj) {
-	                    return objectHelper.type(obj) === 'function';
-	                },
-
-	                isWindow: function (obj) {
-	                    return obj != null && obj == obj.window;
-	                }
-	            };
-
-	        // Handle a deep copy situation
-	        if (typeof target === 'boolean') {
-	            deep = target;
-	            target = arguments[1] || {};
-	            // skip the boolean and the target
-	            i = 2;
-	        }
-
-	        // Handle case when target is a string or something (possible in deep copy)
-	        if (typeof target !== 'object' && !objectHelper.isFunction(target)) {
-	            target = {};
-	        }
-
-	        // If no second argument is used then this can extend an object that is using this method
-	        if (length === i) {
-	            target = self;
-	            --i;
-	        }
-
-	        for (; i < length; i = i + 1) {
-	            if ((options = arguments[i]) != null) {
-	                for (name in options) {
-	                    src = target[name];
-	                    copy = options[name];
-
-	                    if (target === copy) {
-	                        continue;
-	                    }
-
-	                    if (deep && copy && (objectHelper.isPlainObject(copy) || (copyIsArray = objectHelper.isArray(copy)))) {
-	                        if (copyIsArray) {
-	                            copyIsArray = false;
-	                            clone = src && objectHelper.isArray(src) ? src : [];
-	                        } else {
-	                            clone = src && objectHelper.isPlainObject(src) ? src : {};
-	                        }
-
-	                        target[name] = this.extend(deep, clone, copy);
-	                    } else if (copy !== undefined) {
-	                        target[name] = copy;
-	                    }
-	                }
-	            }
-	        }
-
-	        return target;
-	    }
-	}
-
-	module.exports = Helpers;
-
-
-/***/ },
-/* 200 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var React = __webpack_require__(1);
-	    
-	var Icon = React.createClass({displayName: "Icon",
-	    render: function () {
-	        return (
-	            React.createElement("div", {"data-filetype": this.props.filetype, className: "filepicker-file-icon"})
-	        );
-	    }
-	});
-
-	module.exports = Icon;
-
-
-/***/ },
-/* 201 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(module) {
-	/*
-	 *
-	 * More info at [www.dropzonejs.com](http://www.dropzonejs.com)
-	 *
-	 * Copyright (c) 2012, Matias Meno
-	 *
-	 * Permission is hereby granted, free of charge, to any person obtaining a copy
-	 * of this software and associated documentation files (the "Software"), to deal
-	 * in the Software without restriction, including without limitation the rights
-	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	 * copies of the Software, and to permit persons to whom the Software is
-	 * furnished to do so, subject to the following conditions:
-	 *
-	 * The above copyright notice and this permission notice shall be included in
-	 * all copies or substantial portions of the Software.
-	 *
-	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	 * THE SOFTWARE.
-	 *
-	 */
-
-	(function() {
-	  var Dropzone, Emitter, camelize, contentLoaded, detectVerticalSquash, drawImageIOSFix, noop, without,
-	    __slice = [].slice,
-	    __hasProp = {}.hasOwnProperty,
-	    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-
-	  noop = function() {};
-
-	  Emitter = (function() {
-	    function Emitter() {}
-
-	    Emitter.prototype.addEventListener = Emitter.prototype.on;
-
-	    Emitter.prototype.on = function(event, fn) {
-	      this._callbacks = this._callbacks || {};
-	      if (!this._callbacks[event]) {
-	        this._callbacks[event] = [];
-	      }
-	      this._callbacks[event].push(fn);
-	      return this;
-	    };
-
-	    Emitter.prototype.emit = function() {
-	      var args, callback, callbacks, event, _i, _len;
-	      event = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
-	      this._callbacks = this._callbacks || {};
-	      callbacks = this._callbacks[event];
-	      if (callbacks) {
-	        for (_i = 0, _len = callbacks.length; _i < _len; _i++) {
-	          callback = callbacks[_i];
-	          callback.apply(this, args);
-	        }
-	      }
-	      return this;
-	    };
-
-	    Emitter.prototype.removeListener = Emitter.prototype.off;
-
-	    Emitter.prototype.removeAllListeners = Emitter.prototype.off;
-
-	    Emitter.prototype.removeEventListener = Emitter.prototype.off;
-
-	    Emitter.prototype.off = function(event, fn) {
-	      var callback, callbacks, i, _i, _len;
-	      if (!this._callbacks || arguments.length === 0) {
-	        this._callbacks = {};
-	        return this;
-	      }
-	      callbacks = this._callbacks[event];
-	      if (!callbacks) {
-	        return this;
-	      }
-	      if (arguments.length === 1) {
-	        delete this._callbacks[event];
-	        return this;
-	      }
-	      for (i = _i = 0, _len = callbacks.length; _i < _len; i = ++_i) {
-	        callback = callbacks[i];
-	        if (callback === fn) {
-	          callbacks.splice(i, 1);
-	          break;
-	        }
-	      }
-	      return this;
-	    };
-
-	    return Emitter;
-
-	  })();
-
-	  Dropzone = (function(_super) {
-	    var extend, resolveOption;
-
-	    __extends(Dropzone, _super);
-
-	    Dropzone.prototype.Emitter = Emitter;
-
-
-	    /*
-	    This is a list of all available events you can register on a dropzone object.
-	    
-	    You can register an event handler like this:
-	    
-	        dropzone.on("dragEnter", function() { });
-	     */
-
-	    Dropzone.prototype.events = ["drop", "dragstart", "dragend", "dragenter", "dragover", "dragleave", "addedfile", "addedfiles", "removedfile", "thumbnail", "error", "errormultiple", "processing", "processingmultiple", "uploadprogress", "totaluploadprogress", "sending", "sendingmultiple", "success", "successmultiple", "canceled", "canceledmultiple", "complete", "completemultiple", "reset", "maxfilesexceeded", "maxfilesreached", "queuecomplete"];
-
-	    Dropzone.prototype.defaultOptions = {
-	      url: null,
-	      method: "post",
-	      withCredentials: false,
-	      parallelUploads: 2,
-	      uploadMultiple: false,
-	      maxFilesize: 256,
-	      paramName: "file",
-	      createImageThumbnails: true,
-	      maxThumbnailFilesize: 10,
-	      thumbnailWidth: 120,
-	      thumbnailHeight: 120,
-	      filesizeBase: 1000,
-	      maxFiles: null,
-	      params: {},
-	      clickable: true,
-	      ignoreHiddenFiles: true,
-	      acceptedFiles: null,
-	      acceptedMimeTypes: null,
-	      autoProcessQueue: true,
-	      autoQueue: true,
-	      addRemoveLinks: false,
-	      previewsContainer: null,
-	      hiddenInputContainer: "body",
-	      capture: null,
-	      renameFilename: null,
-	      dictDefaultMessage: "Drop files here to upload",
-	      dictFallbackMessage: "Your browser does not support drag'n'drop file uploads.",
-	      dictFallbackText: "Please use the fallback form below to upload your files like in the olden days.",
-	      dictFileTooBig: "File is too big ({{filesize}}MiB). Max filesize: {{maxFilesize}}MiB.",
-	      dictInvalidFileType: "You can't upload files of this type.",
-	      dictResponseError: "Server responded with {{statusCode}} code.",
-	      dictCancelUpload: "Cancel upload",
-	      dictCancelUploadConfirmation: "Are you sure you want to cancel this upload?",
-	      dictRemoveFile: "Remove file",
-	      dictRemoveFileConfirmation: null,
-	      dictMaxFilesExceeded: "You can not upload any more files.",
-	      accept: function(file, done) {
-	        return done();
-	      },
-	      init: function() {
-	        return noop;
-	      },
-	      forceFallback: false,
-	      fallback: function() {
-	        var child, messageElement, span, _i, _len, _ref;
-	        this.element.className = "" + this.element.className + " dz-browser-not-supported";
-	        _ref = this.element.getElementsByTagName("div");
-	        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-	          child = _ref[_i];
-	          if (/(^| )dz-message($| )/.test(child.className)) {
-	            messageElement = child;
-	            child.className = "dz-message";
-	            continue;
-	          }
-	        }
-	        if (!messageElement) {
-	          messageElement = Dropzone.createElement("<div class=\"dz-message\"><span></span></div>");
-	          this.element.appendChild(messageElement);
-	        }
-	        span = messageElement.getElementsByTagName("span")[0];
-	        if (span) {
-	          if (span.textContent != null) {
-	            span.textContent = this.options.dictFallbackMessage;
-	          } else if (span.innerText != null) {
-	            span.innerText = this.options.dictFallbackMessage;
-	          }
-	        }
-	        return this.element.appendChild(this.getFallbackForm());
-	      },
-	      resize: function(file) {
-	        var info, srcRatio, trgRatio;
-	        info = {
-	          srcX: 0,
-	          srcY: 0,
-	          srcWidth: file.width,
-	          srcHeight: file.height
-	        };
-	        srcRatio = file.width / file.height;
-	        info.optWidth = this.options.thumbnailWidth;
-	        info.optHeight = this.options.thumbnailHeight;
-	        if ((info.optWidth == null) && (info.optHeight == null)) {
-	          info.optWidth = info.srcWidth;
-	          info.optHeight = info.srcHeight;
-	        } else if (info.optWidth == null) {
-	          info.optWidth = srcRatio * info.optHeight;
-	        } else if (info.optHeight == null) {
-	          info.optHeight = (1 / srcRatio) * info.optWidth;
-	        }
-	        trgRatio = info.optWidth / info.optHeight;
-	        if (file.height < info.optHeight || file.width < info.optWidth) {
-	          info.trgHeight = info.srcHeight;
-	          info.trgWidth = info.srcWidth;
-	        } else {
-	          if (srcRatio > trgRatio) {
-	            info.srcHeight = file.height;
-	            info.srcWidth = info.srcHeight * trgRatio;
-	          } else {
-	            info.srcWidth = file.width;
-	            info.srcHeight = info.srcWidth / trgRatio;
-	          }
-	        }
-	        info.srcX = (file.width - info.srcWidth) / 2;
-	        info.srcY = (file.height - info.srcHeight) / 2;
-	        return info;
-	      },
-
-	      /*
-	      Those functions register themselves to the events on init and handle all
-	      the user interface specific stuff. Overwriting them won't break the upload
-	      but can break the way it's displayed.
-	      You can overwrite them if you don't like the default behavior. If you just
-	      want to add an additional event handler, register it on the dropzone object
-	      and don't overwrite those options.
-	       */
-	      drop: function(e) {
-	        return this.element.classList.remove("dz-drag-hover");
-	      },
-	      dragstart: noop,
-	      dragend: function(e) {
-	        return this.element.classList.remove("dz-drag-hover");
-	      },
-	      dragenter: function(e) {
-	        return this.element.classList.add("dz-drag-hover");
-	      },
-	      dragover: function(e) {
-	        return this.element.classList.add("dz-drag-hover");
-	      },
-	      dragleave: function(e) {
-	        return this.element.classList.remove("dz-drag-hover");
-	      },
-	      paste: noop,
-	      reset: function() {
-	        return this.element.classList.remove("dz-started");
-	      },
-	      addedfile: function(file) {
-	        var node, removeFileEvent, removeLink, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2, _results;
-	        if (this.element === this.previewsContainer) {
-	          this.element.classList.add("dz-started");
-	        }
-	        if (this.previewsContainer) {
-	          file.previewElement = Dropzone.createElement(this.options.previewTemplate.trim());
-	          file.previewTemplate = file.previewElement;
-	          this.previewsContainer.appendChild(file.previewElement);
-	          _ref = file.previewElement.querySelectorAll("[data-dz-name]");
-	          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-	            node = _ref[_i];
-	            node.textContent = this._renameFilename(file.name);
-	          }
-	          _ref1 = file.previewElement.querySelectorAll("[data-dz-size]");
-	          for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-	            node = _ref1[_j];
-	            node.innerHTML = this.filesize(file.size);
-	          }
-	          if (this.options.addRemoveLinks) {
-	            file._removeLink = Dropzone.createElement("<a class=\"dz-remove\" href=\"javascript:undefined;\" data-dz-remove>" + this.options.dictRemoveFile + "</a>");
-	            file.previewElement.appendChild(file._removeLink);
-	          }
-	          removeFileEvent = (function(_this) {
-	            return function(e) {
-	              e.preventDefault();
-	              e.stopPropagation();
-	              if (file.status === Dropzone.UPLOADING) {
-	                return Dropzone.confirm(_this.options.dictCancelUploadConfirmation, function() {
-	                  return _this.removeFile(file);
-	                });
-	              } else {
-	                if (_this.options.dictRemoveFileConfirmation) {
-	                  return Dropzone.confirm(_this.options.dictRemoveFileConfirmation, function() {
-	                    return _this.removeFile(file);
-	                  });
-	                } else {
-	                  return _this.removeFile(file);
-	                }
-	              }
-	            };
-	          })(this);
-	          _ref2 = file.previewElement.querySelectorAll("[data-dz-remove]");
-	          _results = [];
-	          for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
-	            removeLink = _ref2[_k];
-	            _results.push(removeLink.addEventListener("click", removeFileEvent));
-	          }
-	          return _results;
-	        }
-	      },
-	      removedfile: function(file) {
-	        var _ref;
-	        if (file.previewElement) {
-	          if ((_ref = file.previewElement) != null) {
-	            _ref.parentNode.removeChild(file.previewElement);
-	          }
-	        }
-	        return this._updateMaxFilesReachedClass();
-	      },
-	      thumbnail: function(file, dataUrl) {
-	        var thumbnailElement, _i, _len, _ref;
-	        if (file.previewElement) {
-	          file.previewElement.classList.remove("dz-file-preview");
-	          _ref = file.previewElement.querySelectorAll("[data-dz-thumbnail]");
-	          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-	            thumbnailElement = _ref[_i];
-	            thumbnailElement.alt = file.name;
-	            thumbnailElement.src = dataUrl;
-	          }
-	          return setTimeout(((function(_this) {
-	            return function() {
-	              return file.previewElement.classList.add("dz-image-preview");
-	            };
-	          })(this)), 1);
-	        }
-	      },
-	      error: function(file, message) {
-	        var node, _i, _len, _ref, _results;
-	        if (file.previewElement) {
-	          file.previewElement.classList.add("dz-error");
-	          if (typeof message !== "String" && message.error) {
-	            message = message.error;
-	          }
-	          _ref = file.previewElement.querySelectorAll("[data-dz-errormessage]");
-	          _results = [];
-	          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-	            node = _ref[_i];
-	            _results.push(node.textContent = message);
-	          }
-	          return _results;
-	        }
-	      },
-	      errormultiple: noop,
-	      processing: function(file) {
-	        if (file.previewElement) {
-	          file.previewElement.classList.add("dz-processing");
-	          if (file._removeLink) {
-	            return file._removeLink.textContent = this.options.dictCancelUpload;
-	          }
-	        }
-	      },
-	      processingmultiple: noop,
-	      uploadprogress: function(file, progress, bytesSent) {
-	        var node, _i, _len, _ref, _results;
-	        if (file.previewElement) {
-	          _ref = file.previewElement.querySelectorAll("[data-dz-uploadprogress]");
-	          _results = [];
-	          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-	            node = _ref[_i];
-	            if (node.nodeName === 'PROGRESS') {
-	              _results.push(node.value = progress);
-	            } else {
-	              _results.push(node.style.width = "" + progress + "%");
-	            }
-	          }
-	          return _results;
-	        }
-	      },
-	      totaluploadprogress: noop,
-	      sending: noop,
-	      sendingmultiple: noop,
-	      success: function(file) {
-	        if (file.previewElement) {
-	          return file.previewElement.classList.add("dz-success");
-	        }
-	      },
-	      successmultiple: noop,
-	      canceled: function(file) {
-	        return this.emit("error", file, "Upload canceled.");
-	      },
-	      canceledmultiple: noop,
-	      complete: function(file) {
-	        if (file._removeLink) {
-	          file._removeLink.textContent = this.options.dictRemoveFile;
-	        }
-	        if (file.previewElement) {
-	          return file.previewElement.classList.add("dz-complete");
-	        }
-	      },
-	      completemultiple: noop,
-	      maxfilesexceeded: noop,
-	      maxfilesreached: noop,
-	      queuecomplete: noop,
-	      addedfiles: noop,
-	      previewTemplate: "<div class=\"dz-preview dz-file-preview\">\n  <div class=\"dz-image\"><img data-dz-thumbnail /></div>\n  <div class=\"dz-details\">\n    <div class=\"dz-size\"><span data-dz-size></span></div>\n    <div class=\"dz-filename\"><span data-dz-name></span></div>\n  </div>\n  <div class=\"dz-progress\"><span class=\"dz-upload\" data-dz-uploadprogress></span></div>\n  <div class=\"dz-error-message\"><span data-dz-errormessage></span></div>\n  <div class=\"dz-success-mark\">\n    <svg width=\"54px\" height=\"54px\" viewBox=\"0 0 54 54\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:sketch=\"http://www.bohemiancoding.com/sketch/ns\">\n      <title>Check</title>\n      <defs></defs>\n      <g id=\"Page-1\" stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\" sketch:type=\"MSPage\">\n        <path d=\"M23.5,31.8431458 L17.5852419,25.9283877 C16.0248253,24.3679711 13.4910294,24.366835 11.9289322,25.9289322 C10.3700136,27.4878508 10.3665912,30.0234455 11.9283877,31.5852419 L20.4147581,40.0716123 C20.5133999,40.1702541 20.6159315,40.2626649 20.7218615,40.3488435 C22.2835669,41.8725651 24.794234,41.8626202 26.3461564,40.3106978 L43.3106978,23.3461564 C44.8771021,21.7797521 44.8758057,19.2483887 43.3137085,17.6862915 C41.7547899,16.1273729 39.2176035,16.1255422 37.6538436,17.6893022 L23.5,31.8431458 Z M27,53 C41.3594035,53 53,41.3594035 53,27 C53,12.6405965 41.3594035,1 27,1 C12.6405965,1 1,12.6405965 1,27 C1,41.3594035 12.6405965,53 27,53 Z\" id=\"Oval-2\" stroke-opacity=\"0.198794158\" stroke=\"#747474\" fill-opacity=\"0.816519475\" fill=\"#FFFFFF\" sketch:type=\"MSShapeGroup\"></path>\n      </g>\n    </svg>\n  </div>\n  <div class=\"dz-error-mark\">\n    <svg width=\"54px\" height=\"54px\" viewBox=\"0 0 54 54\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:sketch=\"http://www.bohemiancoding.com/sketch/ns\">\n      <title>Error</title>\n      <defs></defs>\n      <g id=\"Page-1\" stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\" sketch:type=\"MSPage\">\n        <g id=\"Check-+-Oval-2\" sketch:type=\"MSLayerGroup\" stroke=\"#747474\" stroke-opacity=\"0.198794158\" fill=\"#FFFFFF\" fill-opacity=\"0.816519475\">\n          <path d=\"M32.6568542,29 L38.3106978,23.3461564 C39.8771021,21.7797521 39.8758057,19.2483887 38.3137085,17.6862915 C36.7547899,16.1273729 34.2176035,16.1255422 32.6538436,17.6893022 L27,23.3431458 L21.3461564,17.6893022 C19.7823965,16.1255422 17.2452101,16.1273729 15.6862915,17.6862915 C14.1241943,19.2483887 14.1228979,21.7797521 15.6893022,23.3461564 L21.3431458,29 L15.6893022,34.6538436 C14.1228979,36.2202479 14.1241943,38.7516113 15.6862915,40.3137085 C17.2452101,41.8726271 19.7823965,41.8744578 21.3461564,40.3106978 L27,34.6568542 L32.6538436,40.3106978 C34.2176035,41.8744578 36.7547899,41.8726271 38.3137085,40.3137085 C39.8758057,38.7516113 39.8771021,36.2202479 38.3106978,34.6538436 L32.6568542,29 Z M27,53 C41.3594035,53 53,41.3594035 53,27 C53,12.6405965 41.3594035,1 27,1 C12.6405965,1 1,12.6405965 1,27 C1,41.3594035 12.6405965,53 27,53 Z\" id=\"Oval-2\" sketch:type=\"MSShapeGroup\"></path>\n        </g>\n      </g>\n    </svg>\n  </div>\n</div>"
-	    };
-
-	    extend = function() {
-	      var key, object, objects, target, val, _i, _len;
-	      target = arguments[0], objects = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
-	      for (_i = 0, _len = objects.length; _i < _len; _i++) {
-	        object = objects[_i];
-	        for (key in object) {
-	          val = object[key];
-	          target[key] = val;
-	        }
-	      }
-	      return target;
-	    };
-
-	    function Dropzone(element, options) {
-	      var elementOptions, fallback, _ref;
-	      this.element = element;
-	      this.version = Dropzone.version;
-	      this.defaultOptions.previewTemplate = this.defaultOptions.previewTemplate.replace(/\n*/g, "");
-	      this.clickableElements = [];
-	      this.listeners = [];
-	      this.files = [];
-	      if (typeof this.element === "string") {
-	        this.element = document.querySelector(this.element);
-	      }
-	      if (!(this.element && (this.element.nodeType != null))) {
-	        throw new Error("Invalid dropzone element.");
-	      }
-	      if (this.element.dropzone) {
-	        throw new Error("Dropzone already attached.");
-	      }
-	      Dropzone.instances.push(this);
-	      this.element.dropzone = this;
-	      elementOptions = (_ref = Dropzone.optionsForElement(this.element)) != null ? _ref : {};
-	      this.options = extend({}, this.defaultOptions, elementOptions, options != null ? options : {});
-	      if (this.options.forceFallback || !Dropzone.isBrowserSupported()) {
-	        return this.options.fallback.call(this);
-	      }
-	      if (this.options.url == null) {
-	        this.options.url = this.element.getAttribute("action");
-	      }
-	      if (!this.options.url) {
-	        throw new Error("No URL provided.");
-	      }
-	      if (this.options.acceptedFiles && this.options.acceptedMimeTypes) {
-	        throw new Error("You can't provide both 'acceptedFiles' and 'acceptedMimeTypes'. 'acceptedMimeTypes' is deprecated.");
-	      }
-	      if (this.options.acceptedMimeTypes) {
-	        this.options.acceptedFiles = this.options.acceptedMimeTypes;
-	        delete this.options.acceptedMimeTypes;
-	      }
-	      this.options.method = this.options.method.toUpperCase();
-	      if ((fallback = this.getExistingFallback()) && fallback.parentNode) {
-	        fallback.parentNode.removeChild(fallback);
-	      }
-	      if (this.options.previewsContainer !== false) {
-	        if (this.options.previewsContainer) {
-	          this.previewsContainer = Dropzone.getElement(this.options.previewsContainer, "previewsContainer");
-	        } else {
-	          this.previewsContainer = this.element;
-	        }
-	      }
-	      if (this.options.clickable) {
-	        if (this.options.clickable === true) {
-	          this.clickableElements = [this.element];
-	        } else {
-	          this.clickableElements = Dropzone.getElements(this.options.clickable, "clickable");
-	        }
-	      }
-	      this.init();
-	    }
-
-	    Dropzone.prototype.getAcceptedFiles = function() {
-	      var file, _i, _len, _ref, _results;
-	      _ref = this.files;
-	      _results = [];
-	      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-	        file = _ref[_i];
-	        if (file.accepted) {
-	          _results.push(file);
-	        }
-	      }
-	      return _results;
-	    };
-
-	    Dropzone.prototype.getRejectedFiles = function() {
-	      var file, _i, _len, _ref, _results;
-	      _ref = this.files;
-	      _results = [];
-	      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-	        file = _ref[_i];
-	        if (!file.accepted) {
-	          _results.push(file);
-	        }
-	      }
-	      return _results;
-	    };
-
-	    Dropzone.prototype.getFilesWithStatus = function(status) {
-	      var file, _i, _len, _ref, _results;
-	      _ref = this.files;
-	      _results = [];
-	      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-	        file = _ref[_i];
-	        if (file.status === status) {
-	          _results.push(file);
-	        }
-	      }
-	      return _results;
-	    };
-
-	    Dropzone.prototype.getQueuedFiles = function() {
-	      return this.getFilesWithStatus(Dropzone.QUEUED);
-	    };
-
-	    Dropzone.prototype.getUploadingFiles = function() {
-	      return this.getFilesWithStatus(Dropzone.UPLOADING);
-	    };
-
-	    Dropzone.prototype.getAddedFiles = function() {
-	      return this.getFilesWithStatus(Dropzone.ADDED);
-	    };
-
-	    Dropzone.prototype.getActiveFiles = function() {
-	      var file, _i, _len, _ref, _results;
-	      _ref = this.files;
-	      _results = [];
-	      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-	        file = _ref[_i];
-	        if (file.status === Dropzone.UPLOADING || file.status === Dropzone.QUEUED) {
-	          _results.push(file);
-	        }
-	      }
-	      return _results;
-	    };
-
-	    Dropzone.prototype.init = function() {
-	      var eventName, noPropagation, setupHiddenFileInput, _i, _len, _ref, _ref1;
-	      if (this.element.tagName === "form") {
-	        this.element.setAttribute("enctype", "multipart/form-data");
-	      }
-	      if (this.element.classList.contains("dropzone") && !this.element.querySelector(".dz-message")) {
-	        this.element.appendChild(Dropzone.createElement("<div class=\"dz-default dz-message\"><span>" + this.options.dictDefaultMessage + "</span></div>"));
-	      }
-	      if (this.clickableElements.length) {
-	        setupHiddenFileInput = (function(_this) {
-	          return function() {
-	            if (_this.hiddenFileInput) {
-	              _this.hiddenFileInput.parentNode.removeChild(_this.hiddenFileInput);
-	            }
-	            _this.hiddenFileInput = document.createElement("input");
-	            _this.hiddenFileInput.setAttribute("type", "file");
-	            if ((_this.options.maxFiles == null) || _this.options.maxFiles > 1) {
-	              _this.hiddenFileInput.setAttribute("multiple", "multiple");
-	            }
-	            _this.hiddenFileInput.className = "dz-hidden-input";
-	            if (_this.options.acceptedFiles != null) {
-	              _this.hiddenFileInput.setAttribute("accept", _this.options.acceptedFiles);
-	            }
-	            if (_this.options.capture != null) {
-	              _this.hiddenFileInput.setAttribute("capture", _this.options.capture);
-	            }
-	            _this.hiddenFileInput.style.visibility = "hidden";
-	            _this.hiddenFileInput.style.position = "absolute";
-	            _this.hiddenFileInput.style.top = "0";
-	            _this.hiddenFileInput.style.left = "0";
-	            _this.hiddenFileInput.style.height = "0";
-	            _this.hiddenFileInput.style.width = "0";
-	            document.querySelector(_this.options.hiddenInputContainer).appendChild(_this.hiddenFileInput);
-	            return _this.hiddenFileInput.addEventListener("change", function() {
-	              var file, files, _i, _len;
-	              files = _this.hiddenFileInput.files;
-	              if (files.length) {
-	                for (_i = 0, _len = files.length; _i < _len; _i++) {
-	                  file = files[_i];
-	                  _this.addFile(file);
-	                }
-	              }
-	              _this.emit("addedfiles", files);
-	              return setupHiddenFileInput();
-	            });
-	          };
-	        })(this);
-	        setupHiddenFileInput();
-	      }
-	      this.URL = (_ref = window.URL) != null ? _ref : window.webkitURL;
-	      _ref1 = this.events;
-	      for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-	        eventName = _ref1[_i];
-	        this.on(eventName, this.options[eventName]);
-	      }
-	      this.on("uploadprogress", (function(_this) {
-	        return function() {
-	          return _this.updateTotalUploadProgress();
-	        };
-	      })(this));
-	      this.on("removedfile", (function(_this) {
-	        return function() {
-	          return _this.updateTotalUploadProgress();
-	        };
-	      })(this));
-	      this.on("canceled", (function(_this) {
-	        return function(file) {
-	          return _this.emit("complete", file);
-	        };
-	      })(this));
-	      this.on("complete", (function(_this) {
-	        return function(file) {
-	          if (_this.getAddedFiles().length === 0 && _this.getUploadingFiles().length === 0 && _this.getQueuedFiles().length === 0) {
-	            return setTimeout((function() {
-	              return _this.emit("queuecomplete");
-	            }), 0);
-	          }
-	        };
-	      })(this));
-	      noPropagation = function(e) {
-	        e.stopPropagation();
-	        if (e.preventDefault) {
-	          return e.preventDefault();
-	        } else {
-	          return e.returnValue = false;
-	        }
-	      };
-	      this.listeners = [
-	        {
-	          element: this.element,
-	          events: {
-	            "dragstart": (function(_this) {
-	              return function(e) {
-	                return _this.emit("dragstart", e);
-	              };
-	            })(this),
-	            "dragenter": (function(_this) {
-	              return function(e) {
-	                noPropagation(e);
-	                return _this.emit("dragenter", e);
-	              };
-	            })(this),
-	            "dragover": (function(_this) {
-	              return function(e) {
-	                var efct;
-	                try {
-	                  efct = e.dataTransfer.effectAllowed;
-	                } catch (_error) {}
-	                e.dataTransfer.dropEffect = 'move' === efct || 'linkMove' === efct ? 'move' : 'copy';
-	                noPropagation(e);
-	                return _this.emit("dragover", e);
-	              };
-	            })(this),
-	            "dragleave": (function(_this) {
-	              return function(e) {
-	                return _this.emit("dragleave", e);
-	              };
-	            })(this),
-	            "drop": (function(_this) {
-	              return function(e) {
-	                noPropagation(e);
-	                return _this.drop(e);
-	              };
-	            })(this),
-	            "dragend": (function(_this) {
-	              return function(e) {
-	                return _this.emit("dragend", e);
-	              };
-	            })(this)
-	          }
-	        }
-	      ];
-	      this.clickableElements.forEach((function(_this) {
-	        return function(clickableElement) {
-	          return _this.listeners.push({
-	            element: clickableElement,
-	            events: {
-	              "click": function(evt) {
-	                if ((clickableElement !== _this.element) || (evt.target === _this.element || Dropzone.elementInside(evt.target, _this.element.querySelector(".dz-message")))) {
-	                  _this.hiddenFileInput.click();
-	                }
-	                return true;
-	              }
-	            }
-	          });
-	        };
-	      })(this));
-	      this.enable();
-	      return this.options.init.call(this);
-	    };
-
-	    Dropzone.prototype.destroy = function() {
-	      var _ref;
-	      this.disable();
-	      this.removeAllFiles(true);
-	      if ((_ref = this.hiddenFileInput) != null ? _ref.parentNode : void 0) {
-	        this.hiddenFileInput.parentNode.removeChild(this.hiddenFileInput);
-	        this.hiddenFileInput = null;
-	      }
-	      delete this.element.dropzone;
-	      return Dropzone.instances.splice(Dropzone.instances.indexOf(this), 1);
-	    };
-
-	    Dropzone.prototype.updateTotalUploadProgress = function() {
-	      var activeFiles, file, totalBytes, totalBytesSent, totalUploadProgress, _i, _len, _ref;
-	      totalBytesSent = 0;
-	      totalBytes = 0;
-	      activeFiles = this.getActiveFiles();
-	      if (activeFiles.length) {
-	        _ref = this.getActiveFiles();
-	        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-	          file = _ref[_i];
-	          totalBytesSent += file.upload.bytesSent;
-	          totalBytes += file.upload.total;
-	        }
-	        totalUploadProgress = 100 * totalBytesSent / totalBytes;
-	      } else {
-	        totalUploadProgress = 100;
-	      }
-	      return this.emit("totaluploadprogress", totalUploadProgress, totalBytes, totalBytesSent);
-	    };
-
-	    Dropzone.prototype._getParamName = function(n) {
-	      if (typeof this.options.paramName === "function") {
-	        return this.options.paramName(n);
-	      } else {
-	        return "" + this.options.paramName + (this.options.uploadMultiple ? "[" + n + "]" : "");
-	      }
-	    };
-
-	    Dropzone.prototype._renameFilename = function(name) {
-	      if (typeof this.options.renameFilename !== "function") {
-	        return name;
-	      }
-	      return this.options.renameFilename(name);
-	    };
-
-	    Dropzone.prototype.getFallbackForm = function() {
-	      var existingFallback, fields, fieldsString, form;
-	      if (existingFallback = this.getExistingFallback()) {
-	        return existingFallback;
-	      }
-	      fieldsString = "<div class=\"dz-fallback\">";
-	      if (this.options.dictFallbackText) {
-	        fieldsString += "<p>" + this.options.dictFallbackText + "</p>";
-	      }
-	      fieldsString += "<input type=\"file\" name=\"" + (this._getParamName(0)) + "\" " + (this.options.uploadMultiple ? 'multiple="multiple"' : void 0) + " /><input type=\"submit\" value=\"Upload!\"></div>";
-	      fields = Dropzone.createElement(fieldsString);
-	      if (this.element.tagName !== "FORM") {
-	        form = Dropzone.createElement("<form action=\"" + this.options.url + "\" enctype=\"multipart/form-data\" method=\"" + this.options.method + "\"></form>");
-	        form.appendChild(fields);
-	      } else {
-	        this.element.setAttribute("enctype", "multipart/form-data");
-	        this.element.setAttribute("method", this.options.method);
-	      }
-	      return form != null ? form : fields;
-	    };
-
-	    Dropzone.prototype.getExistingFallback = function() {
-	      var fallback, getFallback, tagName, _i, _len, _ref;
-	      getFallback = function(elements) {
-	        var el, _i, _len;
-	        for (_i = 0, _len = elements.length; _i < _len; _i++) {
-	          el = elements[_i];
-	          if (/(^| )fallback($| )/.test(el.className)) {
-	            return el;
-	          }
-	        }
-	      };
-	      _ref = ["div", "form"];
-	      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-	        tagName = _ref[_i];
-	        if (fallback = getFallback(this.element.getElementsByTagName(tagName))) {
-	          return fallback;
-	        }
-	      }
-	    };
-
-	    Dropzone.prototype.setupEventListeners = function() {
-	      var elementListeners, event, listener, _i, _len, _ref, _results;
-	      _ref = this.listeners;
-	      _results = [];
-	      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-	        elementListeners = _ref[_i];
-	        _results.push((function() {
-	          var _ref1, _results1;
-	          _ref1 = elementListeners.events;
-	          _results1 = [];
-	          for (event in _ref1) {
-	            listener = _ref1[event];
-	            _results1.push(elementListeners.element.addEventListener(event, listener, false));
-	          }
-	          return _results1;
-	        })());
-	      }
-	      return _results;
-	    };
-
-	    Dropzone.prototype.removeEventListeners = function() {
-	      var elementListeners, event, listener, _i, _len, _ref, _results;
-	      _ref = this.listeners;
-	      _results = [];
-	      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-	        elementListeners = _ref[_i];
-	        _results.push((function() {
-	          var _ref1, _results1;
-	          _ref1 = elementListeners.events;
-	          _results1 = [];
-	          for (event in _ref1) {
-	            listener = _ref1[event];
-	            _results1.push(elementListeners.element.removeEventListener(event, listener, false));
-	          }
-	          return _results1;
-	        })());
-	      }
-	      return _results;
-	    };
-
-	    Dropzone.prototype.disable = function() {
-	      var file, _i, _len, _ref, _results;
-	      this.clickableElements.forEach(function(element) {
-	        return element.classList.remove("dz-clickable");
-	      });
-	      this.removeEventListeners();
-	      _ref = this.files;
-	      _results = [];
-	      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-	        file = _ref[_i];
-	        _results.push(this.cancelUpload(file));
-	      }
-	      return _results;
-	    };
-
-	    Dropzone.prototype.enable = function() {
-	      this.clickableElements.forEach(function(element) {
-	        return element.classList.add("dz-clickable");
-	      });
-	      return this.setupEventListeners();
-	    };
-
-	    Dropzone.prototype.filesize = function(size) {
-	      var cutoff, i, selectedSize, selectedUnit, unit, units, _i, _len;
-	      selectedSize = 0;
-	      selectedUnit = "b";
-	      if (size > 0) {
-	        units = ['TB', 'GB', 'MB', 'KB', 'b'];
-	        for (i = _i = 0, _len = units.length; _i < _len; i = ++_i) {
-	          unit = units[i];
-	          cutoff = Math.pow(this.options.filesizeBase, 4 - i) / 10;
-	          if (size >= cutoff) {
-	            selectedSize = size / Math.pow(this.options.filesizeBase, 4 - i);
-	            selectedUnit = unit;
-	            break;
-	          }
-	        }
-	        selectedSize = Math.round(10 * selectedSize) / 10;
-	      }
-	      return "<strong>" + selectedSize + "</strong> " + selectedUnit;
-	    };
-
-	    Dropzone.prototype._updateMaxFilesReachedClass = function() {
-	      if ((this.options.maxFiles != null) && this.getAcceptedFiles().length >= this.options.maxFiles) {
-	        if (this.getAcceptedFiles().length === this.options.maxFiles) {
-	          this.emit('maxfilesreached', this.files);
-	        }
-	        return this.element.classList.add("dz-max-files-reached");
-	      } else {
-	        return this.element.classList.remove("dz-max-files-reached");
-	      }
-	    };
-
-	    Dropzone.prototype.drop = function(e) {
-	      var files, items;
-	      if (!e.dataTransfer) {
-	        return;
-	      }
-	      this.emit("drop", e);
-	      files = e.dataTransfer.files;
-	      this.emit("addedfiles", files);
-	      if (files.length) {
-	        items = e.dataTransfer.items;
-	        if (items && items.length && (items[0].webkitGetAsEntry != null)) {
-	          this._addFilesFromItems(items);
-	        } else {
-	          this.handleFiles(files);
-	        }
-	      }
-	    };
-
-	    Dropzone.prototype.paste = function(e) {
-	      var items, _ref;
-	      if ((e != null ? (_ref = e.clipboardData) != null ? _ref.items : void 0 : void 0) == null) {
-	        return;
-	      }
-	      this.emit("paste", e);
-	      items = e.clipboardData.items;
-	      if (items.length) {
-	        return this._addFilesFromItems(items);
-	      }
-	    };
-
-	    Dropzone.prototype.handleFiles = function(files) {
-	      var file, _i, _len, _results;
-	      _results = [];
-	      for (_i = 0, _len = files.length; _i < _len; _i++) {
-	        file = files[_i];
-	        _results.push(this.addFile(file));
-	      }
-	      return _results;
-	    };
-
-	    Dropzone.prototype._addFilesFromItems = function(items) {
-	      var entry, item, _i, _len, _results;
-	      _results = [];
-	      for (_i = 0, _len = items.length; _i < _len; _i++) {
-	        item = items[_i];
-	        if ((item.webkitGetAsEntry != null) && (entry = item.webkitGetAsEntry())) {
-	          if (entry.isFile) {
-	            _results.push(this.addFile(item.getAsFile()));
-	          } else if (entry.isDirectory) {
-	            _results.push(this._addFilesFromDirectory(entry, entry.name));
-	          } else {
-	            _results.push(void 0);
-	          }
-	        } else if (item.getAsFile != null) {
-	          if ((item.kind == null) || item.kind === "file") {
-	            _results.push(this.addFile(item.getAsFile()));
-	          } else {
-	            _results.push(void 0);
-	          }
-	        } else {
-	          _results.push(void 0);
-	        }
-	      }
-	      return _results;
-	    };
-
-	    Dropzone.prototype._addFilesFromDirectory = function(directory, path) {
-	      var dirReader, errorHandler, readEntries;
-	      dirReader = directory.createReader();
-	      errorHandler = function(error) {
-	        return typeof console !== "undefined" && console !== null ? typeof console.log === "function" ? console.log(error) : void 0 : void 0;
-	      };
-	      readEntries = (function(_this) {
-	        return function() {
-	          return dirReader.readEntries(function(entries) {
-	            var entry, _i, _len;
-	            if (entries.length > 0) {
-	              for (_i = 0, _len = entries.length; _i < _len; _i++) {
-	                entry = entries[_i];
-	                if (entry.isFile) {
-	                  entry.file(function(file) {
-	                    if (_this.options.ignoreHiddenFiles && file.name.substring(0, 1) === '.') {
-	                      return;
-	                    }
-	                    file.fullPath = "" + path + "/" + file.name;
-	                    return _this.addFile(file);
-	                  });
-	                } else if (entry.isDirectory) {
-	                  _this._addFilesFromDirectory(entry, "" + path + "/" + entry.name);
-	                }
-	              }
-	              readEntries();
-	            }
-	            return null;
-	          }, errorHandler);
-	        };
-	      })(this);
-	      return readEntries();
-	    };
-
-	    Dropzone.prototype.accept = function(file, done) {
-	      if (file.size > this.options.maxFilesize * 1024 * 1024) {
-	        return done(this.options.dictFileTooBig.replace("{{filesize}}", Math.round(file.size / 1024 / 10.24) / 100).replace("{{maxFilesize}}", this.options.maxFilesize));
-	      } else if (!Dropzone.isValidFile(file, this.options.acceptedFiles)) {
-	        return done(this.options.dictInvalidFileType);
-	      } else if ((this.options.maxFiles != null) && this.getAcceptedFiles().length >= this.options.maxFiles) {
-	        done(this.options.dictMaxFilesExceeded.replace("{{maxFiles}}", this.options.maxFiles));
-	        return this.emit("maxfilesexceeded", file);
-	      } else {
-	        return this.options.accept.call(this, file, done);
-	      }
-	    };
-
-	    Dropzone.prototype.addFile = function(file) {
-	      file.upload = {
-	        progress: 0,
-	        total: file.size,
-	        bytesSent: 0
-	      };
-	      this.files.push(file);
-	      file.status = Dropzone.ADDED;
-	      this.emit("addedfile", file);
-	      this._enqueueThumbnail(file);
-	      return this.accept(file, (function(_this) {
-	        return function(error) {
-	          if (error) {
-	            file.accepted = false;
-	            _this._errorProcessing([file], error);
-	          } else {
-	            file.accepted = true;
-	            if (_this.options.autoQueue) {
-	              _this.enqueueFile(file);
-	            }
-	          }
-	          return _this._updateMaxFilesReachedClass();
-	        };
-	      })(this));
-	    };
-
-	    Dropzone.prototype.enqueueFiles = function(files) {
-	      var file, _i, _len;
-	      for (_i = 0, _len = files.length; _i < _len; _i++) {
-	        file = files[_i];
-	        this.enqueueFile(file);
-	      }
-	      return null;
-	    };
-
-	    Dropzone.prototype.enqueueFile = function(file) {
-	      if (file.status === Dropzone.ADDED && file.accepted === true) {
-	        file.status = Dropzone.QUEUED;
-	        if (this.options.autoProcessQueue) {
-	          return setTimeout(((function(_this) {
-	            return function() {
-	              return _this.processQueue();
-	            };
-	          })(this)), 0);
-	        }
-	      } else {
-	        throw new Error("This file can't be queued because it has already been processed or was rejected.");
-	      }
-	    };
-
-	    Dropzone.prototype._thumbnailQueue = [];
-
-	    Dropzone.prototype._processingThumbnail = false;
-
-	    Dropzone.prototype._enqueueThumbnail = function(file) {
-	      if (this.options.createImageThumbnails && file.type.match(/image.*/) && file.size <= this.options.maxThumbnailFilesize * 1024 * 1024) {
-	        this._thumbnailQueue.push(file);
-	        return setTimeout(((function(_this) {
-	          return function() {
-	            return _this._processThumbnailQueue();
-	          };
-	        })(this)), 0);
-	      }
-	    };
-
-	    Dropzone.prototype._processThumbnailQueue = function() {
-	      if (this._processingThumbnail || this._thumbnailQueue.length === 0) {
-	        return;
-	      }
-	      this._processingThumbnail = true;
-	      return this.createThumbnail(this._thumbnailQueue.shift(), (function(_this) {
-	        return function() {
-	          _this._processingThumbnail = false;
-	          return _this._processThumbnailQueue();
-	        };
-	      })(this));
-	    };
-
-	    Dropzone.prototype.removeFile = function(file) {
-	      if (file.status === Dropzone.UPLOADING) {
-	        this.cancelUpload(file);
-	      }
-	      this.files = without(this.files, file);
-	      this.emit("removedfile", file);
-	      if (this.files.length === 0) {
-	        return this.emit("reset");
-	      }
-	    };
-
-	    Dropzone.prototype.removeAllFiles = function(cancelIfNecessary) {
-	      var file, _i, _len, _ref;
-	      if (cancelIfNecessary == null) {
-	        cancelIfNecessary = false;
-	      }
-	      _ref = this.files.slice();
-	      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-	        file = _ref[_i];
-	        if (file.status !== Dropzone.UPLOADING || cancelIfNecessary) {
-	          this.removeFile(file);
-	        }
-	      }
-	      return null;
-	    };
-
-	    Dropzone.prototype.createThumbnail = function(file, callback) {
-	      var fileReader;
-	      fileReader = new FileReader;
-	      fileReader.onload = (function(_this) {
-	        return function() {
-	          if (file.type === "image/svg+xml") {
-	            _this.emit("thumbnail", file, fileReader.result);
-	            if (callback != null) {
-	              callback();
-	            }
-	            return;
-	          }
-	          return _this.createThumbnailFromUrl(file, fileReader.result, callback);
-	        };
-	      })(this);
-	      return fileReader.readAsDataURL(file);
-	    };
-
-	    Dropzone.prototype.createThumbnailFromUrl = function(file, imageUrl, callback, crossOrigin) {
-	      var img;
-	      img = document.createElement("img");
-	      if (crossOrigin) {
-	        img.crossOrigin = crossOrigin;
-	      }
-	      img.onload = (function(_this) {
-	        return function() {
-	          var canvas, ctx, resizeInfo, thumbnail, _ref, _ref1, _ref2, _ref3;
-	          file.width = img.width;
-	          file.height = img.height;
-	          resizeInfo = _this.options.resize.call(_this, file);
-	          if (resizeInfo.trgWidth == null) {
-	            resizeInfo.trgWidth = resizeInfo.optWidth;
-	          }
-	          if (resizeInfo.trgHeight == null) {
-	            resizeInfo.trgHeight = resizeInfo.optHeight;
-	          }
-	          canvas = document.createElement("canvas");
-	          ctx = canvas.getContext("2d");
-	          canvas.width = resizeInfo.trgWidth;
-	          canvas.height = resizeInfo.trgHeight;
-	          drawImageIOSFix(ctx, img, (_ref = resizeInfo.srcX) != null ? _ref : 0, (_ref1 = resizeInfo.srcY) != null ? _ref1 : 0, resizeInfo.srcWidth, resizeInfo.srcHeight, (_ref2 = resizeInfo.trgX) != null ? _ref2 : 0, (_ref3 = resizeInfo.trgY) != null ? _ref3 : 0, resizeInfo.trgWidth, resizeInfo.trgHeight);
-	          thumbnail = canvas.toDataURL("image/png");
-	          _this.emit("thumbnail", file, thumbnail);
-	          if (callback != null) {
-	            return callback();
-	          }
-	        };
-	      })(this);
-	      if (callback != null) {
-	        img.onerror = callback;
-	      }
-	      return img.src = imageUrl;
-	    };
-
-	    Dropzone.prototype.processQueue = function() {
-	      var i, parallelUploads, processingLength, queuedFiles;
-	      parallelUploads = this.options.parallelUploads;
-	      processingLength = this.getUploadingFiles().length;
-	      i = processingLength;
-	      if (processingLength >= parallelUploads) {
-	        return;
-	      }
-	      queuedFiles = this.getQueuedFiles();
-	      if (!(queuedFiles.length > 0)) {
-	        return;
-	      }
-	      if (this.options.uploadMultiple) {
-	        return this.processFiles(queuedFiles.slice(0, parallelUploads - processingLength));
-	      } else {
-	        while (i < parallelUploads) {
-	          if (!queuedFiles.length) {
-	            return;
-	          }
-	          this.processFile(queuedFiles.shift());
-	          i++;
-	        }
-	      }
-	    };
-
-	    Dropzone.prototype.processFile = function(file) {
-	      return this.processFiles([file]);
-	    };
-
-	    Dropzone.prototype.processFiles = function(files) {
-	      var file, _i, _len;
-	      for (_i = 0, _len = files.length; _i < _len; _i++) {
-	        file = files[_i];
-	        file.processing = true;
-	        file.status = Dropzone.UPLOADING;
-	        this.emit("processing", file);
-	      }
-	      if (this.options.uploadMultiple) {
-	        this.emit("processingmultiple", files);
-	      }
-	      return this.uploadFiles(files);
-	    };
-
-	    Dropzone.prototype._getFilesWithXhr = function(xhr) {
-	      var file, files;
-	      return files = (function() {
-	        var _i, _len, _ref, _results;
-	        _ref = this.files;
-	        _results = [];
-	        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-	          file = _ref[_i];
-	          if (file.xhr === xhr) {
-	            _results.push(file);
-	          }
-	        }
-	        return _results;
-	      }).call(this);
-	    };
-
-	    Dropzone.prototype.cancelUpload = function(file) {
-	      var groupedFile, groupedFiles, _i, _j, _len, _len1, _ref;
-	      if (file.status === Dropzone.UPLOADING) {
-	        groupedFiles = this._getFilesWithXhr(file.xhr);
-	        for (_i = 0, _len = groupedFiles.length; _i < _len; _i++) {
-	          groupedFile = groupedFiles[_i];
-	          groupedFile.status = Dropzone.CANCELED;
-	        }
-	        file.xhr.abort();
-	        for (_j = 0, _len1 = groupedFiles.length; _j < _len1; _j++) {
-	          groupedFile = groupedFiles[_j];
-	          this.emit("canceled", groupedFile);
-	        }
-	        if (this.options.uploadMultiple) {
-	          this.emit("canceledmultiple", groupedFiles);
-	        }
-	      } else if ((_ref = file.status) === Dropzone.ADDED || _ref === Dropzone.QUEUED) {
-	        file.status = Dropzone.CANCELED;
-	        this.emit("canceled", file);
-	        if (this.options.uploadMultiple) {
-	          this.emit("canceledmultiple", [file]);
-	        }
-	      }
-	      if (this.options.autoProcessQueue) {
-	        return this.processQueue();
-	      }
-	    };
-
-	    resolveOption = function() {
-	      var args, option;
-	      option = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
-	      if (typeof option === 'function') {
-	        return option.apply(this, args);
-	      }
-	      return option;
-	    };
-
-	    Dropzone.prototype.uploadFile = function(file) {
-	      return this.uploadFiles([file]);
-	    };
-
-	    Dropzone.prototype.uploadFiles = function(files) {
-	      var file, formData, handleError, headerName, headerValue, headers, i, input, inputName, inputType, key, method, option, progressObj, response, updateProgress, url, value, xhr, _i, _j, _k, _l, _len, _len1, _len2, _len3, _m, _ref, _ref1, _ref2, _ref3, _ref4, _ref5;
-	      xhr = new XMLHttpRequest();
-	      for (_i = 0, _len = files.length; _i < _len; _i++) {
-	        file = files[_i];
-	        file.xhr = xhr;
-	      }
-	      method = resolveOption(this.options.method, files);
-	      url = resolveOption(this.options.url, files);
-	      xhr.open(method, url, true);
-	      xhr.withCredentials = !!this.options.withCredentials;
-	      response = null;
-	      handleError = (function(_this) {
-	        return function() {
-	          var _j, _len1, _results;
-	          _results = [];
-	          for (_j = 0, _len1 = files.length; _j < _len1; _j++) {
-	            file = files[_j];
-	            _results.push(_this._errorProcessing(files, response || _this.options.dictResponseError.replace("{{statusCode}}", xhr.status), xhr));
-	          }
-	          return _results;
-	        };
-	      })(this);
-	      updateProgress = (function(_this) {
-	        return function(e) {
-	          var allFilesFinished, progress, _j, _k, _l, _len1, _len2, _len3, _results;
-	          if (e != null) {
-	            progress = 100 * e.loaded / e.total;
-	            for (_j = 0, _len1 = files.length; _j < _len1; _j++) {
-	              file = files[_j];
-	              file.upload = {
-	                progress: progress,
-	                total: e.total,
-	                bytesSent: e.loaded
-	              };
-	            }
-	          } else {
-	            allFilesFinished = true;
-	            progress = 100;
-	            for (_k = 0, _len2 = files.length; _k < _len2; _k++) {
-	              file = files[_k];
-	              if (!(file.upload.progress === 100 && file.upload.bytesSent === file.upload.total)) {
-	                allFilesFinished = false;
-	              }
-	              file.upload.progress = progress;
-	              file.upload.bytesSent = file.upload.total;
-	            }
-	            if (allFilesFinished) {
-	              return;
-	            }
-	          }
-	          _results = [];
-	          for (_l = 0, _len3 = files.length; _l < _len3; _l++) {
-	            file = files[_l];
-	            _results.push(_this.emit("uploadprogress", file, progress, file.upload.bytesSent));
-	          }
-	          return _results;
-	        };
-	      })(this);
-	      xhr.onload = (function(_this) {
-	        return function(e) {
-	          var _ref;
-	          if (files[0].status === Dropzone.CANCELED) {
-	            return;
-	          }
-	          if (xhr.readyState !== 4) {
-	            return;
-	          }
-	          response = xhr.responseText;
-	          if (xhr.getResponseHeader("content-type") && ~xhr.getResponseHeader("content-type").indexOf("application/json")) {
-	            try {
-	              response = JSON.parse(response);
-	            } catch (_error) {
-	              e = _error;
-	              response = "Invalid JSON response from server.";
-	            }
-	          }
-	          updateProgress();
-	          if (!((200 <= (_ref = xhr.status) && _ref < 300))) {
-	            return handleError();
-	          } else {
-	            return _this._finished(files, response, e);
-	          }
-	        };
-	      })(this);
-	      xhr.onerror = (function(_this) {
-	        return function() {
-	          if (files[0].status === Dropzone.CANCELED) {
-	            return;
-	          }
-	          return handleError();
-	        };
-	      })(this);
-	      progressObj = (_ref = xhr.upload) != null ? _ref : xhr;
-	      progressObj.onprogress = updateProgress;
-	      headers = {
-	        "Accept": "application/json",
-	        "Cache-Control": "no-cache",
-	        "X-Requested-With": "XMLHttpRequest"
-	      };
-	      if (this.options.headers) {
-	        extend(headers, this.options.headers);
-	      }
-	      for (headerName in headers) {
-	        headerValue = headers[headerName];
-	        if (headerValue) {
-	          xhr.setRequestHeader(headerName, headerValue);
-	        }
-	      }
-	      formData = new FormData();
-	      if (this.options.params) {
-	        _ref1 = this.options.params;
-	        for (key in _ref1) {
-	          value = _ref1[key];
-	          formData.append(key, value);
-	        }
-	      }
-	      for (_j = 0, _len1 = files.length; _j < _len1; _j++) {
-	        file = files[_j];
-	        this.emit("sending", file, xhr, formData);
-	      }
-	      if (this.options.uploadMultiple) {
-	        this.emit("sendingmultiple", files, xhr, formData);
-	      }
-	      if (this.element.tagName === "FORM") {
-	        _ref2 = this.element.querySelectorAll("input, textarea, select, button");
-	        for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
-	          input = _ref2[_k];
-	          inputName = input.getAttribute("name");
-	          inputType = input.getAttribute("type");
-	          if (input.tagName === "SELECT" && input.hasAttribute("multiple")) {
-	            _ref3 = input.options;
-	            for (_l = 0, _len3 = _ref3.length; _l < _len3; _l++) {
-	              option = _ref3[_l];
-	              if (option.selected) {
-	                formData.append(inputName, option.value);
-	              }
-	            }
-	          } else if (!inputType || ((_ref4 = inputType.toLowerCase()) !== "checkbox" && _ref4 !== "radio") || input.checked) {
-	            formData.append(inputName, input.value);
-	          }
-	        }
-	      }
-	      for (i = _m = 0, _ref5 = files.length - 1; 0 <= _ref5 ? _m <= _ref5 : _m >= _ref5; i = 0 <= _ref5 ? ++_m : --_m) {
-	        formData.append(this._getParamName(i), files[i], this._renameFilename(files[i].name));
-	      }
-	      return this.submitRequest(xhr, formData, files);
-	    };
-
-	    Dropzone.prototype.submitRequest = function(xhr, formData, files) {
-	      return xhr.send(formData);
-	    };
-
-	    Dropzone.prototype._finished = function(files, responseText, e) {
-	      var file, _i, _len;
-	      for (_i = 0, _len = files.length; _i < _len; _i++) {
-	        file = files[_i];
-	        file.status = Dropzone.SUCCESS;
-	        this.emit("success", file, responseText, e);
-	        this.emit("complete", file);
-	      }
-	      if (this.options.uploadMultiple) {
-	        this.emit("successmultiple", files, responseText, e);
-	        this.emit("completemultiple", files);
-	      }
-	      if (this.options.autoProcessQueue) {
-	        return this.processQueue();
-	      }
-	    };
-
-	    Dropzone.prototype._errorProcessing = function(files, message, xhr) {
-	      var file, _i, _len;
-	      for (_i = 0, _len = files.length; _i < _len; _i++) {
-	        file = files[_i];
-	        file.status = Dropzone.ERROR;
-	        this.emit("error", file, message, xhr);
-	        this.emit("complete", file);
-	      }
-	      if (this.options.uploadMultiple) {
-	        this.emit("errormultiple", files, message, xhr);
-	        this.emit("completemultiple", files);
-	      }
-	      if (this.options.autoProcessQueue) {
-	        return this.processQueue();
-	      }
-	    };
-
-	    return Dropzone;
-
-	  })(Emitter);
-
-	  Dropzone.version = "4.3.0";
-
-	  Dropzone.options = {};
-
-	  Dropzone.optionsForElement = function(element) {
-	    if (element.getAttribute("id")) {
-	      return Dropzone.options[camelize(element.getAttribute("id"))];
-	    } else {
-	      return void 0;
-	    }
-	  };
-
-	  Dropzone.instances = [];
-
-	  Dropzone.forElement = function(element) {
-	    if (typeof element === "string") {
-	      element = document.querySelector(element);
-	    }
-	    if ((element != null ? element.dropzone : void 0) == null) {
-	      throw new Error("No Dropzone found for given element. This is probably because you're trying to access it before Dropzone had the time to initialize. Use the `init` option to setup any additional observers on your Dropzone.");
-	    }
-	    return element.dropzone;
-	  };
-
-	  Dropzone.autoDiscover = true;
-
-	  Dropzone.discover = function() {
-	    var checkElements, dropzone, dropzones, _i, _len, _results;
-	    if (document.querySelectorAll) {
-	      dropzones = document.querySelectorAll(".dropzone");
-	    } else {
-	      dropzones = [];
-	      checkElements = function(elements) {
-	        var el, _i, _len, _results;
-	        _results = [];
-	        for (_i = 0, _len = elements.length; _i < _len; _i++) {
-	          el = elements[_i];
-	          if (/(^| )dropzone($| )/.test(el.className)) {
-	            _results.push(dropzones.push(el));
-	          } else {
-	            _results.push(void 0);
-	          }
-	        }
-	        return _results;
-	      };
-	      checkElements(document.getElementsByTagName("div"));
-	      checkElements(document.getElementsByTagName("form"));
-	    }
-	    _results = [];
-	    for (_i = 0, _len = dropzones.length; _i < _len; _i++) {
-	      dropzone = dropzones[_i];
-	      if (Dropzone.optionsForElement(dropzone) !== false) {
-	        _results.push(new Dropzone(dropzone));
-	      } else {
-	        _results.push(void 0);
-	      }
-	    }
-	    return _results;
-	  };
-
-	  Dropzone.blacklistedBrowsers = [/opera.*Macintosh.*version\/12/i];
-
-	  Dropzone.isBrowserSupported = function() {
-	    var capableBrowser, regex, _i, _len, _ref;
-	    capableBrowser = true;
-	    if (window.File && window.FileReader && window.FileList && window.Blob && window.FormData && document.querySelector) {
-	      if (!("classList" in document.createElement("a"))) {
-	        capableBrowser = false;
-	      } else {
-	        _ref = Dropzone.blacklistedBrowsers;
-	        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-	          regex = _ref[_i];
-	          if (regex.test(navigator.userAgent)) {
-	            capableBrowser = false;
-	            continue;
-	          }
-	        }
-	      }
-	    } else {
-	      capableBrowser = false;
-	    }
-	    return capableBrowser;
-	  };
-
-	  without = function(list, rejectedItem) {
-	    var item, _i, _len, _results;
-	    _results = [];
-	    for (_i = 0, _len = list.length; _i < _len; _i++) {
-	      item = list[_i];
-	      if (item !== rejectedItem) {
-	        _results.push(item);
-	      }
-	    }
-	    return _results;
-	  };
-
-	  camelize = function(str) {
-	    return str.replace(/[\-_](\w)/g, function(match) {
-	      return match.charAt(1).toUpperCase();
-	    });
-	  };
-
-	  Dropzone.createElement = function(string) {
-	    var div;
-	    div = document.createElement("div");
-	    div.innerHTML = string;
-	    return div.childNodes[0];
-	  };
-
-	  Dropzone.elementInside = function(element, container) {
-	    if (element === container) {
-	      return true;
-	    }
-	    while (element = element.parentNode) {
-	      if (element === container) {
-	        return true;
-	      }
-	    }
-	    return false;
-	  };
-
-	  Dropzone.getElement = function(el, name) {
-	    var element;
-	    if (typeof el === "string") {
-	      element = document.querySelector(el);
-	    } else if (el.nodeType != null) {
-	      element = el;
-	    }
-	    if (element == null) {
-	      throw new Error("Invalid `" + name + "` option provided. Please provide a CSS selector or a plain HTML element.");
-	    }
-	    return element;
-	  };
-
-	  Dropzone.getElements = function(els, name) {
-	    var e, el, elements, _i, _j, _len, _len1, _ref;
-	    if (els instanceof Array) {
-	      elements = [];
-	      try {
-	        for (_i = 0, _len = els.length; _i < _len; _i++) {
-	          el = els[_i];
-	          elements.push(this.getElement(el, name));
-	        }
-	      } catch (_error) {
-	        e = _error;
-	        elements = null;
-	      }
-	    } else if (typeof els === "string") {
-	      elements = [];
-	      _ref = document.querySelectorAll(els);
-	      for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
-	        el = _ref[_j];
-	        elements.push(el);
-	      }
-	    } else if (els.nodeType != null) {
-	      elements = [els];
-	    }
-	    if (!((elements != null) && elements.length)) {
-	      throw new Error("Invalid `" + name + "` option provided. Please provide a CSS selector, a plain HTML element or a list of those.");
-	    }
-	    return elements;
-	  };
-
-	  Dropzone.confirm = function(question, accepted, rejected) {
-	    if (window.confirm(question)) {
-	      return accepted();
-	    } else if (rejected != null) {
-	      return rejected();
-	    }
-	  };
-
-	  Dropzone.isValidFile = function(file, acceptedFiles) {
-	    var baseMimeType, mimeType, validType, _i, _len;
-	    if (!acceptedFiles) {
-	      return true;
-	    }
-	    acceptedFiles = acceptedFiles.split(",");
-	    mimeType = file.type;
-	    baseMimeType = mimeType.replace(/\/.*$/, "");
-	    for (_i = 0, _len = acceptedFiles.length; _i < _len; _i++) {
-	      validType = acceptedFiles[_i];
-	      validType = validType.trim();
-	      if (validType.charAt(0) === ".") {
-	        if (file.name.toLowerCase().indexOf(validType.toLowerCase(), file.name.length - validType.length) !== -1) {
-	          return true;
-	        }
-	      } else if (/\/\*$/.test(validType)) {
-	        if (baseMimeType === validType.replace(/\/.*$/, "")) {
-	          return true;
-	        }
-	      } else {
-	        if (mimeType === validType) {
-	          return true;
-	        }
-	      }
-	    }
-	    return false;
-	  };
-
-	  if (typeof jQuery !== "undefined" && jQuery !== null) {
-	    jQuery.fn.dropzone = function(options) {
-	      return this.each(function() {
-	        return new Dropzone(this, options);
-	      });
-	    };
-	  }
-
-	  if (typeof module !== "undefined" && module !== null) {
-	    module.exports = Dropzone;
-	  } else {
-	    window.Dropzone = Dropzone;
-	  }
-
-	  Dropzone.ADDED = "added";
-
-	  Dropzone.QUEUED = "queued";
-
-	  Dropzone.ACCEPTED = Dropzone.QUEUED;
-
-	  Dropzone.UPLOADING = "uploading";
-
-	  Dropzone.PROCESSING = Dropzone.UPLOADING;
-
-	  Dropzone.CANCELED = "canceled";
-
-	  Dropzone.ERROR = "error";
-
-	  Dropzone.SUCCESS = "success";
-
-
-	  /*
-	  
-	  Bugfix for iOS 6 and 7
-	  Source: http://stackoverflow.com/questions/11929099/html5-canvas-drawimage-ratio-bug-ios
-	  based on the work of https://github.com/stomita/ios-imagefile-megapixel
-	   */
-
-	  detectVerticalSquash = function(img) {
-	    var alpha, canvas, ctx, data, ey, ih, iw, py, ratio, sy;
-	    iw = img.naturalWidth;
-	    ih = img.naturalHeight;
-	    canvas = document.createElement("canvas");
-	    canvas.width = 1;
-	    canvas.height = ih;
-	    ctx = canvas.getContext("2d");
-	    ctx.drawImage(img, 0, 0);
-	    data = ctx.getImageData(0, 0, 1, ih).data;
-	    sy = 0;
-	    ey = ih;
-	    py = ih;
-	    while (py > sy) {
-	      alpha = data[(py - 1) * 4 + 3];
-	      if (alpha === 0) {
-	        ey = py;
-	      } else {
-	        sy = py;
-	      }
-	      py = (ey + sy) >> 1;
-	    }
-	    ratio = py / ih;
-	    if (ratio === 0) {
-	      return 1;
-	    } else {
-	      return ratio;
-	    }
-	  };
-
-	  drawImageIOSFix = function(ctx, img, sx, sy, sw, sh, dx, dy, dw, dh) {
-	    var vertSquashRatio;
-	    vertSquashRatio = detectVerticalSquash(img);
-	    return ctx.drawImage(img, sx, sy, sw, sh, dx, dy, dw, dh / vertSquashRatio);
-	  };
-
-
-	  /*
-	   * contentloaded.js
-	   *
-	   * Author: Diego Perini (diego.perini at gmail.com)
-	   * Summary: cross-browser wrapper for DOMContentLoaded
-	   * Updated: 20101020
-	   * License: MIT
-	   * Version: 1.2
-	   *
-	   * URL:
-	   * http://javascript.nwbox.com/ContentLoaded/
-	   * http://javascript.nwbox.com/ContentLoaded/MIT-LICENSE
-	   */
-
-	  contentLoaded = function(win, fn) {
-	    var add, doc, done, init, poll, pre, rem, root, top;
-	    done = false;
-	    top = true;
-	    doc = win.document;
-	    root = doc.documentElement;
-	    add = (doc.addEventListener ? "addEventListener" : "attachEvent");
-	    rem = (doc.addEventListener ? "removeEventListener" : "detachEvent");
-	    pre = (doc.addEventListener ? "" : "on");
-	    init = function(e) {
-	      if (e.type === "readystatechange" && doc.readyState !== "complete") {
-	        return;
-	      }
-	      (e.type === "load" ? win : doc)[rem](pre + e.type, init, false);
-	      if (!done && (done = true)) {
-	        return fn.call(win, e.type || e);
-	      }
-	    };
-	    poll = function() {
-	      var e;
-	      try {
-	        root.doScroll("left");
-	      } catch (_error) {
-	        e = _error;
-	        setTimeout(poll, 50);
-	        return;
-	      }
-	      return init("poll");
-	    };
-	    if (doc.readyState !== "complete") {
-	      if (doc.createEventObject && root.doScroll) {
-	        try {
-	          top = !win.frameElement;
-	        } catch (_error) {}
-	        if (top) {
-	          poll();
-	        }
-	      }
-	      doc[add](pre + "DOMContentLoaded", init, false);
-	      doc[add](pre + "readystatechange", init, false);
-	      return win[add](pre + "load", init, false);
-	    }
-	  };
-
-	  Dropzone._autoDiscoverFunction = function() {
-	    if (Dropzone.autoDiscover) {
-	      return Dropzone.discover();
-	    }
-	  };
-
-	  contentLoaded(window, Dropzone._autoDiscoverFunction);
-
-	}).call(this);
-
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(202)(module)))
-
-/***/ },
-/* 202 */
-/***/ function(module, exports) {
-
-	module.exports = function(module) {
-		if(!module.webpackPolyfill) {
-			module.deprecate = function() {};
-			module.paths = [];
-			// module.parent = undefined by default
-			module.children = [];
-			module.webpackPolyfill = 1;
-		}
-		return module;
-	}
-
-
-/***/ },
-/* 203 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var require;var require;/* WEBPACK VAR INJECTION */(function(global) {/*!
-	 * react-dropzone-component 0.9.1 (dev build at Sat, 12 Mar 2016 05:39:19 GMT) - 
-	 * MIT Licensed
-	 */
-	(function(f){if(true){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.ReactDropzone = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return require(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-	'use strict';
-
-	var React = (typeof window !== "undefined" ? window['React'] : typeof global !== "undefined" ? global['React'] : null),
-	    ReactDOM = (typeof window !== "undefined" ? window['ReactDOM'] : typeof global !== "undefined" ? global['ReactDOM'] : null),
-	    Helpers = require('./helpers'),
-	    IconComponent = require('./icon'),
-	    Dropzone, DropzoneComponent;
-
-	DropzoneComponent = React.createClass({displayName: "DropzoneComponent",
-	    /**
-	     * Ensure we always have props to work with.
-	     */
-	    getDefaultProps: function () {
-	        return {
-	          djsConfig: {},
-	          config: {},
-	          eventHandlers: {}
-	        }
-	    },
-
-	    /**
-	     * Configuration of Dropzone.js. Defaults are
-	     * overriden overriden by the 'djsConfig' property
-	     * For a full list of possible configurations,
-	     * please consult
-	     * http://www.dropzonejs.com/#configuration
-	     */
-	    getDjsConfig: function () {
-	        var options,
-	            defaults = {
-	                url: this.props.config.postUrl ? this.props.config.postUrl : null
-	            };
-
-	        if (this.props.djsConfig) {
-	            options = Helpers.extend(true, {}, defaults, this.props.djsConfig);
-	        } else {
-	            options = defaults;
-	        }
-
-	        return options;
-	    },
-
-	    /**
-	     * React 'componentDidMount' method
-	     * Sets up dropzone.js with the component.
-	     */
-	    componentDidMount: function () {
-	        var self = this,
-	            options = this.getDjsConfig();
-
-	        Dropzone = Dropzone || require('dropzone');
-	        Dropzone.autoDiscover = false;
-
-	        if (!this.props.config.postUrl && !this.props.eventHandlers.drop) {
-	            console.info('Neither postUrl nor a "drop" eventHandler specified, the React-Dropzone component might misbehave.');
-	        }
-
-	        this.dropzone = new Dropzone(ReactDOM.findDOMNode(self), options);
-	        this.setupEvents();
-	    },
-
-	    /**
-	     * React 'componentWillUnmount'
-	     * Removes dropzone.js (and all its globals) if the component is being unmounted
-	     */
-	    componentWillUnmount: function () {
-	        if (this.dropzone) {
-	            var files = this.dropzone.getActiveFiles();
-
-	            if (files.length > 0) {
-	                // Well, seems like we still have stuff uploading.
-	                // This is dirty, but let's keep trying to get rid
-	                // of the dropzone until we're done here.
-	                this.queueDestroy = true;
-
-	                var destroyInterval = window.setInterval(function()  {
-	                    if (this.queueDestroy = false) {
-	                        return window.clearInterval(destroyInterval);
-	                    }
-
-	                    if (this.dropzone.getActiveFiles().length === 0) {
-	                        this.dropzone = this.dropzone.destroy();
-	                        return window.clearInterval(destroyInterval);
-	                    }
-	                }.bind(this), 500);
-	            } else {
-	                this.dropzone = this.dropzone.destroy();
-	            }
-	        }
-	    },
-
-	    /**
-	     * React 'componentDidUpdate'
-	     * If the Dropzone hasn't been created, create it
-	     */
-	    componentDidUpdate: function () {
-	        this.queueDestroy = false;
-
-	        if (!this.dropzone) {
-	            this.dropzone = new Dropzone(ReactDOM.findDOMNode(this), this.getDjsConfig());
-	        }
-	    },
-
-	    /**
-	     * React 'componentWillUpdate'
-	     * Update Dropzone options each time the component updates.
-	     */
-	    componentWillUpdate: function() {
-	        this.dropzone.options = Helpers.extend(true, {}, this.props.djsConfig, this.dropzone.options);
-	    },
-
-	    /**
-	     * React 'render'
-	     */
-	    render: function () {
-	        var icons = [],
-	            files = this.state.files,
-	            config = this.props.config,
-	            className = (this.props.className) ? 'filepicker dropzone ' + this.props.className : 'filepicker dropzone';
-
-	        if (config.showFiletypeIcon && config.iconFiletypes && (!files || files.length < 1)) {
-	            for (var i = 0; i < this.props.config.iconFiletypes.length; i = i + 1) {
-	                icons.push(React.createElement(IconComponent, {filetype: this.props.config.iconFiletypes[i], key: "icon-component" + i}));
-	            }
-	        }
-
-	        if (!this.props.config.postUrl && this.props.action) {
-	            return (
-	                React.createElement("form", {action: this.props.action, className: className}, 
-	                    icons, 
-	                    this.props.children
-	                )
-	            );
-	        } else {
-	            return (
-	                React.createElement("div", {className: className}, 
-	                    icons, 
-	                    this.props.children
-	                )
-	            );
-	        }
-	    },
-
-	    /**
-	     * React 'getInitialState' method, setting the initial state
-	     * @return {object}
-	     */
-	    getInitialState: function () {
-	        return {
-	            files: []
-	        }
-	    },
-
-	    /**
-	     * Takes event handlers in this.props.eventHandlers
-	     * and binds them to dropzone.js events
-	     */
-	    setupEvents: function () {
-	        var eventHandlers = this.props.eventHandlers;
-
-	        if (!this.dropzone || !eventHandlers) {
-	            return;
-	        }
-
-	        for (var eventHandler in eventHandlers) {
-	            if (eventHandlers.hasOwnProperty(eventHandler) && eventHandlers[eventHandler]) {
-	                // Check if there's an array of event handlers
-	                if (Object.prototype.toString.call(eventHandlers[eventHandler]) === '[object Array]') {
-	                    for (var i = 0; i < eventHandlers[eventHandler].length; i = i + 1) {
-	                        // Check if it's an init handler
-	                        if (eventHandler === 'init') {
-	                            eventHandlers[eventHandler][i](this.dropzone);
-	                        } else {
-	                            this.dropzone.on(eventHandler, eventHandlers[eventHandler][i]);
-	                        }
-	                    }
-	                } else {
-	                    if (eventHandler === 'init') {
-	                        eventHandlers[eventHandler](this.dropzone);
-	                    } else {
-	                        this.dropzone.on(eventHandler, eventHandlers[eventHandler]);
-	                    }
-	                }
-	            }
-	        }
-
-	        this.dropzone.on('addedfile', function(file)  {
-	            if (file) {
-	                var files = this.state.files;
-
-	                if (!files) {
-	                    files = [];
-	                }
-
-	                files.push(file)
-
-	                this.setState({files: files});
-	            }
-	        }.bind(this));
-
-	        this.dropzone.on('removedfile', function(file)  {
-	            if (file) {
-	                var files = this.state.files;
-
-	                if (files && files.length > 0) {
-	                    for (var i = 0; i < files.length; i++) {
-	                        if (files[i].name === file.name && files[i].size === file.size) {
-	                            files.splice(i, 1);
-	                        }
-	                    }
-
-	                    this.setState({files: files});
-	                }
-	            }
-	        }.bind(this));
-	    }
-	});
-
-	module.exports = DropzoneComponent;
-
-	},{"./helpers":2,"./icon":3,"dropzone":4}],2:[function(require,module,exports){
-	'use strict';
-
-	var Helpers = {
-	    /**
-	     * Clone of jQuery's extend
-	     * Usage: extend(true, {}, obj1, obj2)
-	     */
-	    extend: function () {
-	        var options, name, src, copy, copyIsArray, clone, self = this,
-	            target = arguments[0] || {},
-	            i = 1,
-	            length = arguments.length,
-	            deep = false,
-	            // helper which replicates the jquery internal functions
-	            objectHelper = {
-	                hasOwn: Object.prototype.hasOwnProperty,
-	                class2type: {},
-
-	                type: function (obj) {
-	                    return obj == null ?
-	                        String(obj) :
-	                        objectHelper.class2type[Object.prototype.toString.call(obj)] || 'object';
-	                },
-
-	                isPlainObject: function (obj) {
-	                    var key;
-
-	                    if (!obj || objectHelper.type(obj) !== 'object' || obj.nodeType || objectHelper.isWindow(obj)) {
-	                        return false;
-	                    }
-
-	                    try {
-	                        if (obj.constructor &&
-	                            !objectHelper.hasOwn.call(obj, 'constructor') &&
-	                            !objectHelper.hasOwn.call(obj.constructor.prototype, 'isPrototypeOf')) {
-	                            return false;
-	                        }
-	                    } catch (e) {
-	                        return false;
-	                    }
-
-	                    return key === undefined || objectHelper.hasOwn.call(obj, key);
-	                },
-
-	                isArray: Array.isArray || function (obj) {
-	                    return objectHelper.type(obj) === 'array';
-	                },
-
-	                isFunction: function (obj) {
-	                    return objectHelper.type(obj) === 'function';
-	                },
-
-	                isWindow: function (obj) {
-	                    return obj != null && obj == obj.window;
-	                }
-	            };
-
-	        // Handle a deep copy situation
-	        if (typeof target === 'boolean') {
-	            deep = target;
-	            target = arguments[1] || {};
-	            // skip the boolean and the target
-	            i = 2;
-	        }
-
-	        // Handle case when target is a string or something (possible in deep copy)
-	        if (typeof target !== 'object' && !objectHelper.isFunction(target)) {
-	            target = {};
-	        }
-
-	        // If no second argument is used then this can extend an object that is using this method
-	        if (length === i) {
-	            target = self;
-	            --i;
-	        }
-
-	        for (; i < length; i = i + 1) {
-	            if ((options = arguments[i]) != null) {
-	                for (name in options) {
-	                    src = target[name];
-	                    copy = options[name];
-
-	                    if (target === copy) {
-	                        continue;
-	                    }
-
-	                    if (deep && copy && (objectHelper.isPlainObject(copy) || (copyIsArray = objectHelper.isArray(copy)))) {
-	                        if (copyIsArray) {
-	                            copyIsArray = false;
-	                            clone = src && objectHelper.isArray(src) ? src : [];
-	                        } else {
-	                            clone = src && objectHelper.isPlainObject(src) ? src : {};
-	                        }
-
-	                        target[name] = this.extend(deep, clone, copy);
-	                    } else if (copy !== undefined) {
-	                        target[name] = copy;
-	                    }
-	                }
-	            }
-	        }
-
-	        return target;
-	    }
-	}
-
-	module.exports = Helpers;
-
-	},{}],3:[function(require,module,exports){
-	'use strict';
-
-	var React = (typeof window !== "undefined" ? window['React'] : typeof global !== "undefined" ? global['React'] : null);
-	    
-	var Icon = React.createClass({displayName: "Icon",
-	    render: function () {
-	        return (
-	            React.createElement("div", {"data-filetype": this.props.filetype, className: "filepicker-file-icon"})
-	        );
-	    }
-	});
-
-	module.exports = Icon;
-
-	},{}],4:[function(require,module,exports){
-
-	/*
-	 *
-	 * More info at [www.dropzonejs.com](http://www.dropzonejs.com)
-	 *
-	 * Copyright (c) 2012, Matias Meno
-	 *
-	 * Permission is hereby granted, free of charge, to any person obtaining a copy
-	 * of this software and associated documentation files (the "Software"), to deal
-	 * in the Software without restriction, including without limitation the rights
-	 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	 * copies of the Software, and to permit persons to whom the Software is
-	 * furnished to do so, subject to the following conditions:
-	 *
-	 * The above copyright notice and this permission notice shall be included in
-	 * all copies or substantial portions of the Software.
-	 *
-	 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-	 * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	 * THE SOFTWARE.
-	 *
-	 */
-
-	(function() {
-	  var Dropzone, Emitter, camelize, contentLoaded, detectVerticalSquash, drawImageIOSFix, noop, without,
-	    __slice = [].slice,
-	    __hasProp = {}.hasOwnProperty,
-	    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-
-	  noop = function() {};
-
-	  Emitter = (function() {
-	    function Emitter() {}
-
-	    Emitter.prototype.addEventListener = Emitter.prototype.on;
-
-	    Emitter.prototype.on = function(event, fn) {
-	      this._callbacks = this._callbacks || {};
-	      if (!this._callbacks[event]) {
-	        this._callbacks[event] = [];
-	      }
-	      this._callbacks[event].push(fn);
-	      return this;
-	    };
-
-	    Emitter.prototype.emit = function() {
-	      var args, callback, callbacks, event, _i, _len;
-	      event = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
-	      this._callbacks = this._callbacks || {};
-	      callbacks = this._callbacks[event];
-	      if (callbacks) {
-	        for (_i = 0, _len = callbacks.length; _i < _len; _i++) {
-	          callback = callbacks[_i];
-	          callback.apply(this, args);
-	        }
-	      }
-	      return this;
-	    };
-
-	    Emitter.prototype.removeListener = Emitter.prototype.off;
-
-	    Emitter.prototype.removeAllListeners = Emitter.prototype.off;
-
-	    Emitter.prototype.removeEventListener = Emitter.prototype.off;
-
-	    Emitter.prototype.off = function(event, fn) {
-	      var callback, callbacks, i, _i, _len;
-	      if (!this._callbacks || arguments.length === 0) {
-	        this._callbacks = {};
-	        return this;
-	      }
-	      callbacks = this._callbacks[event];
-	      if (!callbacks) {
-	        return this;
-	      }
-	      if (arguments.length === 1) {
-	        delete this._callbacks[event];
-	        return this;
-	      }
-	      for (i = _i = 0, _len = callbacks.length; _i < _len; i = ++_i) {
-	        callback = callbacks[i];
-	        if (callback === fn) {
-	          callbacks.splice(i, 1);
-	          break;
-	        }
-	      }
-	      return this;
-	    };
-
-	    return Emitter;
-
-	  })();
-
-	  Dropzone = (function(_super) {
-	    var extend, resolveOption;
-
-	    __extends(Dropzone, _super);
-
-	    Dropzone.prototype.Emitter = Emitter;
-
-
-	    /*
-	    This is a list of all available events you can register on a dropzone object.
-	    
-	    You can register an event handler like this:
-	    
-	        dropzone.on("dragEnter", function() { });
-	     */
-
-	    Dropzone.prototype.events = ["drop", "dragstart", "dragend", "dragenter", "dragover", "dragleave", "addedfile", "addedfiles", "removedfile", "thumbnail", "error", "errormultiple", "processing", "processingmultiple", "uploadprogress", "totaluploadprogress", "sending", "sendingmultiple", "success", "successmultiple", "canceled", "canceledmultiple", "complete", "completemultiple", "reset", "maxfilesexceeded", "maxfilesreached", "queuecomplete"];
-
-	    Dropzone.prototype.defaultOptions = {
-	      url: null,
-	      method: "post",
-	      withCredentials: false,
-	      parallelUploads: 2,
-	      uploadMultiple: false,
-	      maxFilesize: 256,
-	      paramName: "file",
-	      createImageThumbnails: true,
-	      maxThumbnailFilesize: 10,
-	      thumbnailWidth: 120,
-	      thumbnailHeight: 120,
-	      filesizeBase: 1000,
-	      maxFiles: null,
-	      params: {},
-	      clickable: true,
-	      ignoreHiddenFiles: true,
-	      acceptedFiles: null,
-	      acceptedMimeTypes: null,
-	      autoProcessQueue: true,
-	      autoQueue: true,
-	      addRemoveLinks: false,
-	      previewsContainer: null,
-	      hiddenInputContainer: "body",
-	      capture: null,
-	      dictDefaultMessage: "Drop files here to upload",
-	      dictFallbackMessage: "Your browser does not support drag'n'drop file uploads.",
-	      dictFallbackText: "Please use the fallback form below to upload your files like in the olden days.",
-	      dictFileTooBig: "File is too big ({{filesize}}MiB). Max filesize: {{maxFilesize}}MiB.",
-	      dictInvalidFileType: "You can't upload files of this type.",
-	      dictResponseError: "Server responded with {{statusCode}} code.",
-	      dictCancelUpload: "Cancel upload",
-	      dictCancelUploadConfirmation: "Are you sure you want to cancel this upload?",
-	      dictRemoveFile: "Remove file",
-	      dictRemoveFileConfirmation: null,
-	      dictMaxFilesExceeded: "You can not upload any more files.",
-	      accept: function(file, done) {
-	        return done();
-	      },
-	      init: function() {
-	        return noop;
-	      },
-	      forceFallback: false,
-	      fallback: function() {
-	        var child, messageElement, span, _i, _len, _ref;
-	        this.element.className = "" + this.element.className + " dz-browser-not-supported";
-	        _ref = this.element.getElementsByTagName("div");
-	        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-	          child = _ref[_i];
-	          if (/(^| )dz-message($| )/.test(child.className)) {
-	            messageElement = child;
-	            child.className = "dz-message";
-	            continue;
-	          }
-	        }
-	        if (!messageElement) {
-	          messageElement = Dropzone.createElement("<div class=\"dz-message\"><span></span></div>");
-	          this.element.appendChild(messageElement);
-	        }
-	        span = messageElement.getElementsByTagName("span")[0];
-	        if (span) {
-	          if (span.textContent != null) {
-	            span.textContent = this.options.dictFallbackMessage;
-	          } else if (span.innerText != null) {
-	            span.innerText = this.options.dictFallbackMessage;
-	          }
-	        }
-	        return this.element.appendChild(this.getFallbackForm());
-	      },
-	      resize: function(file) {
-	        var info, srcRatio, trgRatio;
-	        info = {
-	          srcX: 0,
-	          srcY: 0,
-	          srcWidth: file.width,
-	          srcHeight: file.height
-	        };
-	        srcRatio = file.width / file.height;
-	        info.optWidth = this.options.thumbnailWidth;
-	        info.optHeight = this.options.thumbnailHeight;
-	        if ((info.optWidth == null) && (info.optHeight == null)) {
-	          info.optWidth = info.srcWidth;
-	          info.optHeight = info.srcHeight;
-	        } else if (info.optWidth == null) {
-	          info.optWidth = srcRatio * info.optHeight;
-	        } else if (info.optHeight == null) {
-	          info.optHeight = (1 / srcRatio) * info.optWidth;
-	        }
-	        trgRatio = info.optWidth / info.optHeight;
-	        if (file.height < info.optHeight || file.width < info.optWidth) {
-	          info.trgHeight = info.srcHeight;
-	          info.trgWidth = info.srcWidth;
-	        } else {
-	          if (srcRatio > trgRatio) {
-	            info.srcHeight = file.height;
-	            info.srcWidth = info.srcHeight * trgRatio;
-	          } else {
-	            info.srcWidth = file.width;
-	            info.srcHeight = info.srcWidth / trgRatio;
-	          }
-	        }
-	        info.srcX = (file.width - info.srcWidth) / 2;
-	        info.srcY = (file.height - info.srcHeight) / 2;
-	        return info;
-	      },
-
-	      /*
-	      Those functions register themselves to the events on init and handle all
-	      the user interface specific stuff. Overwriting them won't break the upload
-	      but can break the way it's displayed.
-	      You can overwrite them if you don't like the default behavior. If you just
-	      want to add an additional event handler, register it on the dropzone object
-	      and don't overwrite those options.
-	       */
-	      drop: function(e) {
-	        return this.element.classList.remove("dz-drag-hover");
-	      },
-	      dragstart: noop,
-	      dragend: function(e) {
-	        return this.element.classList.remove("dz-drag-hover");
-	      },
-	      dragenter: function(e) {
-	        return this.element.classList.add("dz-drag-hover");
-	      },
-	      dragover: function(e) {
-	        return this.element.classList.add("dz-drag-hover");
-	      },
-	      dragleave: function(e) {
-	        return this.element.classList.remove("dz-drag-hover");
-	      },
-	      paste: noop,
-	      reset: function() {
-	        return this.element.classList.remove("dz-started");
-	      },
-	      addedfile: function(file) {
-	        var node, removeFileEvent, removeLink, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2, _results;
-	        if (this.element === this.previewsContainer) {
-	          this.element.classList.add("dz-started");
-	        }
-	        if (this.previewsContainer) {
-	          file.previewElement = Dropzone.createElement(this.options.previewTemplate.trim());
-	          file.previewTemplate = file.previewElement;
-	          this.previewsContainer.appendChild(file.previewElement);
-	          _ref = file.previewElement.querySelectorAll("[data-dz-name]");
-	          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-	            node = _ref[_i];
-	            node.textContent = file.name;
-	          }
-	          _ref1 = file.previewElement.querySelectorAll("[data-dz-size]");
-	          for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-	            node = _ref1[_j];
-	            node.innerHTML = this.filesize(file.size);
-	          }
-	          if (this.options.addRemoveLinks) {
-	            file._removeLink = Dropzone.createElement("<a class=\"dz-remove\" href=\"javascript:undefined;\" data-dz-remove>" + this.options.dictRemoveFile + "</a>");
-	            file.previewElement.appendChild(file._removeLink);
-	          }
-	          removeFileEvent = (function(_this) {
-	            return function(e) {
-	              e.preventDefault();
-	              e.stopPropagation();
-	              if (file.status === Dropzone.UPLOADING) {
-	                return Dropzone.confirm(_this.options.dictCancelUploadConfirmation, function() {
-	                  return _this.removeFile(file);
-	                });
-	              } else {
-	                if (_this.options.dictRemoveFileConfirmation) {
-	                  return Dropzone.confirm(_this.options.dictRemoveFileConfirmation, function() {
-	                    return _this.removeFile(file);
-	                  });
-	                } else {
-	                  return _this.removeFile(file);
-	                }
-	              }
-	            };
-	          })(this);
-	          _ref2 = file.previewElement.querySelectorAll("[data-dz-remove]");
-	          _results = [];
-	          for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
-	            removeLink = _ref2[_k];
-	            _results.push(removeLink.addEventListener("click", removeFileEvent));
-	          }
-	          return _results;
-	        }
-	      },
-	      removedfile: function(file) {
-	        var _ref;
-	        if (file.previewElement) {
-	          if ((_ref = file.previewElement) != null) {
-	            _ref.parentNode.removeChild(file.previewElement);
-	          }
-	        }
-	        return this._updateMaxFilesReachedClass();
-	      },
-	      thumbnail: function(file, dataUrl) {
-	        var thumbnailElement, _i, _len, _ref;
-	        if (file.previewElement) {
-	          file.previewElement.classList.remove("dz-file-preview");
-	          _ref = file.previewElement.querySelectorAll("[data-dz-thumbnail]");
-	          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-	            thumbnailElement = _ref[_i];
-	            thumbnailElement.alt = file.name;
-	            thumbnailElement.src = dataUrl;
-	          }
-	          return setTimeout(((function(_this) {
-	            return function() {
-	              return file.previewElement.classList.add("dz-image-preview");
-	            };
-	          })(this)), 1);
-	        }
-	      },
-	      error: function(file, message) {
-	        var node, _i, _len, _ref, _results;
-	        if (file.previewElement) {
-	          file.previewElement.classList.add("dz-error");
-	          if (typeof message !== "String" && message.error) {
-	            message = message.error;
-	          }
-	          _ref = file.previewElement.querySelectorAll("[data-dz-errormessage]");
-	          _results = [];
-	          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-	            node = _ref[_i];
-	            _results.push(node.textContent = message);
-	          }
-	          return _results;
-	        }
-	      },
-	      errormultiple: noop,
-	      processing: function(file) {
-	        if (file.previewElement) {
-	          file.previewElement.classList.add("dz-processing");
-	          if (file._removeLink) {
-	            return file._removeLink.textContent = this.options.dictCancelUpload;
-	          }
-	        }
-	      },
-	      processingmultiple: noop,
-	      uploadprogress: function(file, progress, bytesSent) {
-	        var node, _i, _len, _ref, _results;
-	        if (file.previewElement) {
-	          _ref = file.previewElement.querySelectorAll("[data-dz-uploadprogress]");
-	          _results = [];
-	          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-	            node = _ref[_i];
-	            if (node.nodeName === 'PROGRESS') {
-	              _results.push(node.value = progress);
-	            } else {
-	              _results.push(node.style.width = "" + progress + "%");
-	            }
-	          }
-	          return _results;
-	        }
-	      },
-	      totaluploadprogress: noop,
-	      sending: noop,
-	      sendingmultiple: noop,
-	      success: function(file) {
-	        if (file.previewElement) {
-	          return file.previewElement.classList.add("dz-success");
-	        }
-	      },
-	      successmultiple: noop,
-	      canceled: function(file) {
-	        return this.emit("error", file, "Upload canceled.");
-	      },
-	      canceledmultiple: noop,
-	      complete: function(file) {
-	        if (file._removeLink) {
-	          file._removeLink.textContent = this.options.dictRemoveFile;
-	        }
-	        if (file.previewElement) {
-	          return file.previewElement.classList.add("dz-complete");
-	        }
-	      },
-	      completemultiple: noop,
-	      maxfilesexceeded: noop,
-	      maxfilesreached: noop,
-	      queuecomplete: noop,
-	      addedfiles: noop,
-	      previewTemplate: "<div class=\"dz-preview dz-file-preview\">\n  <div class=\"dz-image\"><img data-dz-thumbnail /></div>\n  <div class=\"dz-details\">\n    <div class=\"dz-size\"><span data-dz-size></span></div>\n    <div class=\"dz-filename\"><span data-dz-name></span></div>\n  </div>\n  <div class=\"dz-progress\"><span class=\"dz-upload\" data-dz-uploadprogress></span></div>\n  <div class=\"dz-error-message\"><span data-dz-errormessage></span></div>\n  <div class=\"dz-success-mark\">\n    <svg width=\"54px\" height=\"54px\" viewBox=\"0 0 54 54\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:sketch=\"http://www.bohemiancoding.com/sketch/ns\">\n      <title>Check</title>\n      <defs></defs>\n      <g id=\"Page-1\" stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\" sketch:type=\"MSPage\">\n        <path d=\"M23.5,31.8431458 L17.5852419,25.9283877 C16.0248253,24.3679711 13.4910294,24.366835 11.9289322,25.9289322 C10.3700136,27.4878508 10.3665912,30.0234455 11.9283877,31.5852419 L20.4147581,40.0716123 C20.5133999,40.1702541 20.6159315,40.2626649 20.7218615,40.3488435 C22.2835669,41.8725651 24.794234,41.8626202 26.3461564,40.3106978 L43.3106978,23.3461564 C44.8771021,21.7797521 44.8758057,19.2483887 43.3137085,17.6862915 C41.7547899,16.1273729 39.2176035,16.1255422 37.6538436,17.6893022 L23.5,31.8431458 Z M27,53 C41.3594035,53 53,41.3594035 53,27 C53,12.6405965 41.3594035,1 27,1 C12.6405965,1 1,12.6405965 1,27 C1,41.3594035 12.6405965,53 27,53 Z\" id=\"Oval-2\" stroke-opacity=\"0.198794158\" stroke=\"#747474\" fill-opacity=\"0.816519475\" fill=\"#FFFFFF\" sketch:type=\"MSShapeGroup\"></path>\n      </g>\n    </svg>\n  </div>\n  <div class=\"dz-error-mark\">\n    <svg width=\"54px\" height=\"54px\" viewBox=\"0 0 54 54\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:sketch=\"http://www.bohemiancoding.com/sketch/ns\">\n      <title>Error</title>\n      <defs></defs>\n      <g id=\"Page-1\" stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\" sketch:type=\"MSPage\">\n        <g id=\"Check-+-Oval-2\" sketch:type=\"MSLayerGroup\" stroke=\"#747474\" stroke-opacity=\"0.198794158\" fill=\"#FFFFFF\" fill-opacity=\"0.816519475\">\n          <path d=\"M32.6568542,29 L38.3106978,23.3461564 C39.8771021,21.7797521 39.8758057,19.2483887 38.3137085,17.6862915 C36.7547899,16.1273729 34.2176035,16.1255422 32.6538436,17.6893022 L27,23.3431458 L21.3461564,17.6893022 C19.7823965,16.1255422 17.2452101,16.1273729 15.6862915,17.6862915 C14.1241943,19.2483887 14.1228979,21.7797521 15.6893022,23.3461564 L21.3431458,29 L15.6893022,34.6538436 C14.1228979,36.2202479 14.1241943,38.7516113 15.6862915,40.3137085 C17.2452101,41.8726271 19.7823965,41.8744578 21.3461564,40.3106978 L27,34.6568542 L32.6538436,40.3106978 C34.2176035,41.8744578 36.7547899,41.8726271 38.3137085,40.3137085 C39.8758057,38.7516113 39.8771021,36.2202479 38.3106978,34.6538436 L32.6568542,29 Z M27,53 C41.3594035,53 53,41.3594035 53,27 C53,12.6405965 41.3594035,1 27,1 C12.6405965,1 1,12.6405965 1,27 C1,41.3594035 12.6405965,53 27,53 Z\" id=\"Oval-2\" sketch:type=\"MSShapeGroup\"></path>\n        </g>\n      </g>\n    </svg>\n  </div>\n</div>"
-	    };
-
-	    extend = function() {
-	      var key, object, objects, target, val, _i, _len;
-	      target = arguments[0], objects = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
-	      for (_i = 0, _len = objects.length; _i < _len; _i++) {
-	        object = objects[_i];
-	        for (key in object) {
-	          val = object[key];
-	          target[key] = val;
-	        }
-	      }
-	      return target;
-	    };
-
-	    function Dropzone(element, options) {
-	      var elementOptions, fallback, _ref;
-	      this.element = element;
-	      this.version = Dropzone.version;
-	      this.defaultOptions.previewTemplate = this.defaultOptions.previewTemplate.replace(/\n*/g, "");
-	      this.clickableElements = [];
-	      this.listeners = [];
-	      this.files = [];
-	      if (typeof this.element === "string") {
-	        this.element = document.querySelector(this.element);
-	      }
-	      if (!(this.element && (this.element.nodeType != null))) {
-	        throw new Error("Invalid dropzone element.");
-	      }
-	      if (this.element.dropzone) {
-	        throw new Error("Dropzone already attached.");
-	      }
-	      Dropzone.instances.push(this);
-	      this.element.dropzone = this;
-	      elementOptions = (_ref = Dropzone.optionsForElement(this.element)) != null ? _ref : {};
-	      this.options = extend({}, this.defaultOptions, elementOptions, options != null ? options : {});
-	      if (this.options.forceFallback || !Dropzone.isBrowserSupported()) {
-	        return this.options.fallback.call(this);
-	      }
-	      if (this.options.url == null) {
-	        this.options.url = this.element.getAttribute("action");
-	      }
-	      if (!this.options.url) {
-	        throw new Error("No URL provided.");
-	      }
-	      if (this.options.acceptedFiles && this.options.acceptedMimeTypes) {
-	        throw new Error("You can't provide both 'acceptedFiles' and 'acceptedMimeTypes'. 'acceptedMimeTypes' is deprecated.");
-	      }
-	      if (this.options.acceptedMimeTypes) {
-	        this.options.acceptedFiles = this.options.acceptedMimeTypes;
-	        delete this.options.acceptedMimeTypes;
-	      }
-	      this.options.method = this.options.method.toUpperCase();
-	      if ((fallback = this.getExistingFallback()) && fallback.parentNode) {
-	        fallback.parentNode.removeChild(fallback);
-	      }
-	      if (this.options.previewsContainer !== false) {
-	        if (this.options.previewsContainer) {
-	          this.previewsContainer = Dropzone.getElement(this.options.previewsContainer, "previewsContainer");
-	        } else {
-	          this.previewsContainer = this.element;
-	        }
-	      }
-	      if (this.options.clickable) {
-	        if (this.options.clickable === true) {
-	          this.clickableElements = [this.element];
-	        } else {
-	          this.clickableElements = Dropzone.getElements(this.options.clickable, "clickable");
-	        }
-	      }
-	      this.init();
-	    }
-
-	    Dropzone.prototype.getAcceptedFiles = function() {
-	      var file, _i, _len, _ref, _results;
-	      _ref = this.files;
-	      _results = [];
-	      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-	        file = _ref[_i];
-	        if (file.accepted) {
-	          _results.push(file);
-	        }
-	      }
-	      return _results;
-	    };
-
-	    Dropzone.prototype.getRejectedFiles = function() {
-	      var file, _i, _len, _ref, _results;
-	      _ref = this.files;
-	      _results = [];
-	      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-	        file = _ref[_i];
-	        if (!file.accepted) {
-	          _results.push(file);
-	        }
-	      }
-	      return _results;
-	    };
-
-	    Dropzone.prototype.getFilesWithStatus = function(status) {
-	      var file, _i, _len, _ref, _results;
-	      _ref = this.files;
-	      _results = [];
-	      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-	        file = _ref[_i];
-	        if (file.status === status) {
-	          _results.push(file);
-	        }
-	      }
-	      return _results;
-	    };
-
-	    Dropzone.prototype.getQueuedFiles = function() {
-	      return this.getFilesWithStatus(Dropzone.QUEUED);
-	    };
-
-	    Dropzone.prototype.getUploadingFiles = function() {
-	      return this.getFilesWithStatus(Dropzone.UPLOADING);
-	    };
-
-	    Dropzone.prototype.getAddedFiles = function() {
-	      return this.getFilesWithStatus(Dropzone.ADDED);
-	    };
-
-	    Dropzone.prototype.getActiveFiles = function() {
-	      var file, _i, _len, _ref, _results;
-	      _ref = this.files;
-	      _results = [];
-	      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-	        file = _ref[_i];
-	        if (file.status === Dropzone.UPLOADING || file.status === Dropzone.QUEUED) {
-	          _results.push(file);
-	        }
-	      }
-	      return _results;
-	    };
-
-	    Dropzone.prototype.init = function() {
-	      var eventName, noPropagation, setupHiddenFileInput, _i, _len, _ref, _ref1;
-	      if (this.element.tagName === "form") {
-	        this.element.setAttribute("enctype", "multipart/form-data");
-	      }
-	      if (this.element.classList.contains("dropzone") && !this.element.querySelector(".dz-message")) {
-	        this.element.appendChild(Dropzone.createElement("<div class=\"dz-default dz-message\"><span>" + this.options.dictDefaultMessage + "</span></div>"));
-	      }
-	      if (this.clickableElements.length) {
-	        setupHiddenFileInput = (function(_this) {
-	          return function() {
-	            if (_this.hiddenFileInput) {
-	              _this.hiddenFileInput.parentNode.removeChild(_this.hiddenFileInput);
-	            }
-	            _this.hiddenFileInput = document.createElement("input");
-	            _this.hiddenFileInput.setAttribute("type", "file");
-	            if ((_this.options.maxFiles == null) || _this.options.maxFiles > 1) {
-	              _this.hiddenFileInput.setAttribute("multiple", "multiple");
-	            }
-	            _this.hiddenFileInput.className = "dz-hidden-input";
-	            if (_this.options.acceptedFiles != null) {
-	              _this.hiddenFileInput.setAttribute("accept", _this.options.acceptedFiles);
-	            }
-	            if (_this.options.capture != null) {
-	              _this.hiddenFileInput.setAttribute("capture", _this.options.capture);
-	            }
-	            _this.hiddenFileInput.style.visibility = "hidden";
-	            _this.hiddenFileInput.style.position = "absolute";
-	            _this.hiddenFileInput.style.top = "0";
-	            _this.hiddenFileInput.style.left = "0";
-	            _this.hiddenFileInput.style.height = "0";
-	            _this.hiddenFileInput.style.width = "0";
-	            document.querySelector(_this.options.hiddenInputContainer).appendChild(_this.hiddenFileInput);
-	            return _this.hiddenFileInput.addEventListener("change", function() {
-	              var file, files, _i, _len;
-	              files = _this.hiddenFileInput.files;
-	              if (files.length) {
-	                for (_i = 0, _len = files.length; _i < _len; _i++) {
-	                  file = files[_i];
-	                  _this.addFile(file);
-	                }
-	              }
-	              _this.emit("addedfiles", files);
-	              return setupHiddenFileInput();
-	            });
-	          };
-	        })(this);
-	        setupHiddenFileInput();
-	      }
-	      this.URL = (_ref = window.URL) != null ? _ref : window.webkitURL;
-	      _ref1 = this.events;
-	      for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-	        eventName = _ref1[_i];
-	        this.on(eventName, this.options[eventName]);
-	      }
-	      this.on("uploadprogress", (function(_this) {
-	        return function() {
-	          return _this.updateTotalUploadProgress();
-	        };
-	      })(this));
-	      this.on("removedfile", (function(_this) {
-	        return function() {
-	          return _this.updateTotalUploadProgress();
-	        };
-	      })(this));
-	      this.on("canceled", (function(_this) {
-	        return function(file) {
-	          return _this.emit("complete", file);
-	        };
-	      })(this));
-	      this.on("complete", (function(_this) {
-	        return function(file) {
-	          if (_this.getAddedFiles().length === 0 && _this.getUploadingFiles().length === 0 && _this.getQueuedFiles().length === 0) {
-	            return setTimeout((function() {
-	              return _this.emit("queuecomplete");
-	            }), 0);
-	          }
-	        };
-	      })(this));
-	      noPropagation = function(e) {
-	        e.stopPropagation();
-	        if (e.preventDefault) {
-	          return e.preventDefault();
-	        } else {
-	          return e.returnValue = false;
-	        }
-	      };
-	      this.listeners = [
-	        {
-	          element: this.element,
-	          events: {
-	            "dragstart": (function(_this) {
-	              return function(e) {
-	                return _this.emit("dragstart", e);
-	              };
-	            })(this),
-	            "dragenter": (function(_this) {
-	              return function(e) {
-	                noPropagation(e);
-	                return _this.emit("dragenter", e);
-	              };
-	            })(this),
-	            "dragover": (function(_this) {
-	              return function(e) {
-	                var efct;
-	                try {
-	                  efct = e.dataTransfer.effectAllowed;
-	                } catch (_error) {}
-	                e.dataTransfer.dropEffect = 'move' === efct || 'linkMove' === efct ? 'move' : 'copy';
-	                noPropagation(e);
-	                return _this.emit("dragover", e);
-	              };
-	            })(this),
-	            "dragleave": (function(_this) {
-	              return function(e) {
-	                return _this.emit("dragleave", e);
-	              };
-	            })(this),
-	            "drop": (function(_this) {
-	              return function(e) {
-	                noPropagation(e);
-	                return _this.drop(e);
-	              };
-	            })(this),
-	            "dragend": (function(_this) {
-	              return function(e) {
-	                return _this.emit("dragend", e);
-	              };
-	            })(this)
-	          }
-	        }
-	      ];
-	      this.clickableElements.forEach((function(_this) {
-	        return function(clickableElement) {
-	          return _this.listeners.push({
-	            element: clickableElement,
-	            events: {
-	              "click": function(evt) {
-	                if ((clickableElement !== _this.element) || (evt.target === _this.element || Dropzone.elementInside(evt.target, _this.element.querySelector(".dz-message")))) {
-	                  _this.hiddenFileInput.click();
-	                }
-	                return true;
-	              }
-	            }
-	          });
-	        };
-	      })(this));
-	      this.enable();
-	      return this.options.init.call(this);
-	    };
-
-	    Dropzone.prototype.destroy = function() {
-	      var _ref;
-	      this.disable();
-	      this.removeAllFiles(true);
-	      if ((_ref = this.hiddenFileInput) != null ? _ref.parentNode : void 0) {
-	        this.hiddenFileInput.parentNode.removeChild(this.hiddenFileInput);
-	        this.hiddenFileInput = null;
-	      }
-	      delete this.element.dropzone;
-	      return Dropzone.instances.splice(Dropzone.instances.indexOf(this), 1);
-	    };
-
-	    Dropzone.prototype.updateTotalUploadProgress = function() {
-	      var activeFiles, file, totalBytes, totalBytesSent, totalUploadProgress, _i, _len, _ref;
-	      totalBytesSent = 0;
-	      totalBytes = 0;
-	      activeFiles = this.getActiveFiles();
-	      if (activeFiles.length) {
-	        _ref = this.getActiveFiles();
-	        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-	          file = _ref[_i];
-	          totalBytesSent += file.upload.bytesSent;
-	          totalBytes += file.upload.total;
-	        }
-	        totalUploadProgress = 100 * totalBytesSent / totalBytes;
-	      } else {
-	        totalUploadProgress = 100;
-	      }
-	      return this.emit("totaluploadprogress", totalUploadProgress, totalBytes, totalBytesSent);
-	    };
-
-	    Dropzone.prototype._getParamName = function(n) {
-	      if (typeof this.options.paramName === "function") {
-	        return this.options.paramName(n);
-	      } else {
-	        return "" + this.options.paramName + (this.options.uploadMultiple ? "[" + n + "]" : "");
-	      }
-	    };
-
-	    Dropzone.prototype.getFallbackForm = function() {
-	      var existingFallback, fields, fieldsString, form;
-	      if (existingFallback = this.getExistingFallback()) {
-	        return existingFallback;
-	      }
-	      fieldsString = "<div class=\"dz-fallback\">";
-	      if (this.options.dictFallbackText) {
-	        fieldsString += "<p>" + this.options.dictFallbackText + "</p>";
-	      }
-	      fieldsString += "<input type=\"file\" name=\"" + (this._getParamName(0)) + "\" " + (this.options.uploadMultiple ? 'multiple="multiple"' : void 0) + " /><input type=\"submit\" value=\"Upload!\"></div>";
-	      fields = Dropzone.createElement(fieldsString);
-	      if (this.element.tagName !== "FORM") {
-	        form = Dropzone.createElement("<form action=\"" + this.options.url + "\" enctype=\"multipart/form-data\" method=\"" + this.options.method + "\"></form>");
-	        form.appendChild(fields);
-	      } else {
-	        this.element.setAttribute("enctype", "multipart/form-data");
-	        this.element.setAttribute("method", this.options.method);
-	      }
-	      return form != null ? form : fields;
-	    };
-
-	    Dropzone.prototype.getExistingFallback = function() {
-	      var fallback, getFallback, tagName, _i, _len, _ref;
-	      getFallback = function(elements) {
-	        var el, _i, _len;
-	        for (_i = 0, _len = elements.length; _i < _len; _i++) {
-	          el = elements[_i];
-	          if (/(^| )fallback($| )/.test(el.className)) {
-	            return el;
-	          }
-	        }
-	      };
-	      _ref = ["div", "form"];
-	      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-	        tagName = _ref[_i];
-	        if (fallback = getFallback(this.element.getElementsByTagName(tagName))) {
-	          return fallback;
-	        }
-	      }
-	    };
-
-	    Dropzone.prototype.setupEventListeners = function() {
-	      var elementListeners, event, listener, _i, _len, _ref, _results;
-	      _ref = this.listeners;
-	      _results = [];
-	      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-	        elementListeners = _ref[_i];
-	        _results.push((function() {
-	          var _ref1, _results1;
-	          _ref1 = elementListeners.events;
-	          _results1 = [];
-	          for (event in _ref1) {
-	            listener = _ref1[event];
-	            _results1.push(elementListeners.element.addEventListener(event, listener, false));
-	          }
-	          return _results1;
-	        })());
-	      }
-	      return _results;
-	    };
-
-	    Dropzone.prototype.removeEventListeners = function() {
-	      var elementListeners, event, listener, _i, _len, _ref, _results;
-	      _ref = this.listeners;
-	      _results = [];
-	      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-	        elementListeners = _ref[_i];
-	        _results.push((function() {
-	          var _ref1, _results1;
-	          _ref1 = elementListeners.events;
-	          _results1 = [];
-	          for (event in _ref1) {
-	            listener = _ref1[event];
-	            _results1.push(elementListeners.element.removeEventListener(event, listener, false));
-	          }
-	          return _results1;
-	        })());
-	      }
-	      return _results;
-	    };
-
-	    Dropzone.prototype.disable = function() {
-	      var file, _i, _len, _ref, _results;
-	      this.clickableElements.forEach(function(element) {
-	        return element.classList.remove("dz-clickable");
-	      });
-	      this.removeEventListeners();
-	      _ref = this.files;
-	      _results = [];
-	      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-	        file = _ref[_i];
-	        _results.push(this.cancelUpload(file));
-	      }
-	      return _results;
-	    };
-
-	    Dropzone.prototype.enable = function() {
-	      this.clickableElements.forEach(function(element) {
-	        return element.classList.add("dz-clickable");
-	      });
-	      return this.setupEventListeners();
-	    };
-
-	    Dropzone.prototype.filesize = function(size) {
-	      var cutoff, i, selectedSize, selectedUnit, unit, units, _i, _len;
-	      selectedSize = 0;
-	      selectedUnit = "b";
-	      if (size > 0) {
-	        units = ['TB', 'GB', 'MB', 'KB', 'b'];
-	        for (i = _i = 0, _len = units.length; _i < _len; i = ++_i) {
-	          unit = units[i];
-	          cutoff = Math.pow(this.options.filesizeBase, 4 - i) / 10;
-	          if (size >= cutoff) {
-	            selectedSize = size / Math.pow(this.options.filesizeBase, 4 - i);
-	            selectedUnit = unit;
-	            break;
-	          }
-	        }
-	        selectedSize = Math.round(10 * selectedSize) / 10;
-	      }
-	      return "<strong>" + selectedSize + "</strong> " + selectedUnit;
-	    };
-
-	    Dropzone.prototype._updateMaxFilesReachedClass = function() {
-	      if ((this.options.maxFiles != null) && this.getAcceptedFiles().length >= this.options.maxFiles) {
-	        if (this.getAcceptedFiles().length === this.options.maxFiles) {
-	          this.emit('maxfilesreached', this.files);
-	        }
-	        return this.element.classList.add("dz-max-files-reached");
-	      } else {
-	        return this.element.classList.remove("dz-max-files-reached");
-	      }
-	    };
-
-	    Dropzone.prototype.drop = function(e) {
-	      var files, items;
-	      if (!e.dataTransfer) {
-	        return;
-	      }
-	      this.emit("drop", e);
-	      files = e.dataTransfer.files;
-	      this.emit("addedfiles", files);
-	      if (files.length) {
-	        items = e.dataTransfer.items;
-	        if (items && items.length && (items[0].webkitGetAsEntry != null)) {
-	          this._addFilesFromItems(items);
-	        } else {
-	          this.handleFiles(files);
-	        }
-	      }
-	    };
-
-	    Dropzone.prototype.paste = function(e) {
-	      var items, _ref;
-	      if ((e != null ? (_ref = e.clipboardData) != null ? _ref.items : void 0 : void 0) == null) {
-	        return;
-	      }
-	      this.emit("paste", e);
-	      items = e.clipboardData.items;
-	      if (items.length) {
-	        return this._addFilesFromItems(items);
-	      }
-	    };
-
-	    Dropzone.prototype.handleFiles = function(files) {
-	      var file, _i, _len, _results;
-	      _results = [];
-	      for (_i = 0, _len = files.length; _i < _len; _i++) {
-	        file = files[_i];
-	        _results.push(this.addFile(file));
-	      }
-	      return _results;
-	    };
-
-	    Dropzone.prototype._addFilesFromItems = function(items) {
-	      var entry, item, _i, _len, _results;
-	      _results = [];
-	      for (_i = 0, _len = items.length; _i < _len; _i++) {
-	        item = items[_i];
-	        if ((item.webkitGetAsEntry != null) && (entry = item.webkitGetAsEntry())) {
-	          if (entry.isFile) {
-	            _results.push(this.addFile(item.getAsFile()));
-	          } else if (entry.isDirectory) {
-	            _results.push(this._addFilesFromDirectory(entry, entry.name));
-	          } else {
-	            _results.push(void 0);
-	          }
-	        } else if (item.getAsFile != null) {
-	          if ((item.kind == null) || item.kind === "file") {
-	            _results.push(this.addFile(item.getAsFile()));
-	          } else {
-	            _results.push(void 0);
-	          }
-	        } else {
-	          _results.push(void 0);
-	        }
-	      }
-	      return _results;
-	    };
-
-	    Dropzone.prototype._addFilesFromDirectory = function(directory, path) {
-	      var dirReader, entriesReader;
-	      dirReader = directory.createReader();
-	      entriesReader = (function(_this) {
-	        return function(entries) {
-	          var entry, _i, _len;
-	          for (_i = 0, _len = entries.length; _i < _len; _i++) {
-	            entry = entries[_i];
-	            if (entry.isFile) {
-	              entry.file(function(file) {
-	                if (_this.options.ignoreHiddenFiles && file.name.substring(0, 1) === '.') {
-	                  return;
-	                }
-	                file.fullPath = "" + path + "/" + file.name;
-	                return _this.addFile(file);
-	              });
-	            } else if (entry.isDirectory) {
-	              _this._addFilesFromDirectory(entry, "" + path + "/" + entry.name);
-	            }
-	          }
-	        };
-	      })(this);
-	      return dirReader.readEntries(entriesReader, function(error) {
-	        return typeof console !== "undefined" && console !== null ? typeof console.log === "function" ? console.log(error) : void 0 : void 0;
-	      });
-	    };
-
-	    Dropzone.prototype.accept = function(file, done) {
-	      if (file.size > this.options.maxFilesize * 1024 * 1024) {
-	        return done(this.options.dictFileTooBig.replace("{{filesize}}", Math.round(file.size / 1024 / 10.24) / 100).replace("{{maxFilesize}}", this.options.maxFilesize));
-	      } else if (!Dropzone.isValidFile(file, this.options.acceptedFiles)) {
-	        return done(this.options.dictInvalidFileType);
-	      } else if ((this.options.maxFiles != null) && this.getAcceptedFiles().length >= this.options.maxFiles) {
-	        done(this.options.dictMaxFilesExceeded.replace("{{maxFiles}}", this.options.maxFiles));
-	        return this.emit("maxfilesexceeded", file);
-	      } else {
-	        return this.options.accept.call(this, file, done);
-	      }
-	    };
-
-	    Dropzone.prototype.addFile = function(file) {
-	      file.upload = {
-	        progress: 0,
-	        total: file.size,
-	        bytesSent: 0
-	      };
-	      this.files.push(file);
-	      file.status = Dropzone.ADDED;
-	      this.emit("addedfile", file);
-	      this._enqueueThumbnail(file);
-	      return this.accept(file, (function(_this) {
-	        return function(error) {
-	          if (error) {
-	            file.accepted = false;
-	            _this._errorProcessing([file], error);
-	          } else {
-	            file.accepted = true;
-	            if (_this.options.autoQueue) {
-	              _this.enqueueFile(file);
-	            }
-	          }
-	          return _this._updateMaxFilesReachedClass();
-	        };
-	      })(this));
-	    };
-
-	    Dropzone.prototype.enqueueFiles = function(files) {
-	      var file, _i, _len;
-	      for (_i = 0, _len = files.length; _i < _len; _i++) {
-	        file = files[_i];
-	        this.enqueueFile(file);
-	      }
-	      return null;
-	    };
-
-	    Dropzone.prototype.enqueueFile = function(file) {
-	      if (file.status === Dropzone.ADDED && file.accepted === true) {
-	        file.status = Dropzone.QUEUED;
-	        if (this.options.autoProcessQueue) {
-	          return setTimeout(((function(_this) {
-	            return function() {
-	              return _this.processQueue();
-	            };
-	          })(this)), 0);
-	        }
-	      } else {
-	        throw new Error("This file can't be queued because it has already been processed or was rejected.");
-	      }
-	    };
-
-	    Dropzone.prototype._thumbnailQueue = [];
-
-	    Dropzone.prototype._processingThumbnail = false;
-
-	    Dropzone.prototype._enqueueThumbnail = function(file) {
-	      if (this.options.createImageThumbnails && file.type.match(/image.*/) && file.size <= this.options.maxThumbnailFilesize * 1024 * 1024) {
-	        this._thumbnailQueue.push(file);
-	        return setTimeout(((function(_this) {
-	          return function() {
-	            return _this._processThumbnailQueue();
-	          };
-	        })(this)), 0);
-	      }
-	    };
-
-	    Dropzone.prototype._processThumbnailQueue = function() {
-	      if (this._processingThumbnail || this._thumbnailQueue.length === 0) {
-	        return;
-	      }
-	      this._processingThumbnail = true;
-	      return this.createThumbnail(this._thumbnailQueue.shift(), (function(_this) {
-	        return function() {
-	          _this._processingThumbnail = false;
-	          return _this._processThumbnailQueue();
-	        };
-	      })(this));
-	    };
-
-	    Dropzone.prototype.removeFile = function(file) {
-	      if (file.status === Dropzone.UPLOADING) {
-	        this.cancelUpload(file);
-	      }
-	      this.files = without(this.files, file);
-	      this.emit("removedfile", file);
-	      if (this.files.length === 0) {
-	        return this.emit("reset");
-	      }
-	    };
-
-	    Dropzone.prototype.removeAllFiles = function(cancelIfNecessary) {
-	      var file, _i, _len, _ref;
-	      if (cancelIfNecessary == null) {
-	        cancelIfNecessary = false;
-	      }
-	      _ref = this.files.slice();
-	      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-	        file = _ref[_i];
-	        if (file.status !== Dropzone.UPLOADING || cancelIfNecessary) {
-	          this.removeFile(file);
-	        }
-	      }
-	      return null;
-	    };
-
-	    Dropzone.prototype.createThumbnail = function(file, callback) {
-	      var fileReader;
-	      fileReader = new FileReader;
-	      fileReader.onload = (function(_this) {
-	        return function() {
-	          if (file.type === "image/svg+xml") {
-	            _this.emit("thumbnail", file, fileReader.result);
-	            if (callback != null) {
-	              callback();
-	            }
-	            return;
-	          }
-	          return _this.createThumbnailFromUrl(file, fileReader.result, callback);
-	        };
-	      })(this);
-	      return fileReader.readAsDataURL(file);
-	    };
-
-	    Dropzone.prototype.createThumbnailFromUrl = function(file, imageUrl, callback, crossOrigin) {
-	      var img;
-	      img = document.createElement("img");
-	      if (crossOrigin) {
-	        img.crossOrigin = crossOrigin;
-	      }
-	      img.onload = (function(_this) {
-	        return function() {
-	          var canvas, ctx, resizeInfo, thumbnail, _ref, _ref1, _ref2, _ref3;
-	          file.width = img.width;
-	          file.height = img.height;
-	          resizeInfo = _this.options.resize.call(_this, file);
-	          if (resizeInfo.trgWidth == null) {
-	            resizeInfo.trgWidth = resizeInfo.optWidth;
-	          }
-	          if (resizeInfo.trgHeight == null) {
-	            resizeInfo.trgHeight = resizeInfo.optHeight;
-	          }
-	          canvas = document.createElement("canvas");
-	          ctx = canvas.getContext("2d");
-	          canvas.width = resizeInfo.trgWidth;
-	          canvas.height = resizeInfo.trgHeight;
-	          drawImageIOSFix(ctx, img, (_ref = resizeInfo.srcX) != null ? _ref : 0, (_ref1 = resizeInfo.srcY) != null ? _ref1 : 0, resizeInfo.srcWidth, resizeInfo.srcHeight, (_ref2 = resizeInfo.trgX) != null ? _ref2 : 0, (_ref3 = resizeInfo.trgY) != null ? _ref3 : 0, resizeInfo.trgWidth, resizeInfo.trgHeight);
-	          thumbnail = canvas.toDataURL("image/png");
-	          _this.emit("thumbnail", file, thumbnail);
-	          if (callback != null) {
-	            return callback();
-	          }
-	        };
-	      })(this);
-	      if (callback != null) {
-	        img.onerror = callback;
-	      }
-	      return img.src = imageUrl;
-	    };
-
-	    Dropzone.prototype.processQueue = function() {
-	      var i, parallelUploads, processingLength, queuedFiles;
-	      parallelUploads = this.options.parallelUploads;
-	      processingLength = this.getUploadingFiles().length;
-	      i = processingLength;
-	      if (processingLength >= parallelUploads) {
-	        return;
-	      }
-	      queuedFiles = this.getQueuedFiles();
-	      if (!(queuedFiles.length > 0)) {
-	        return;
-	      }
-	      if (this.options.uploadMultiple) {
-	        return this.processFiles(queuedFiles.slice(0, parallelUploads - processingLength));
-	      } else {
-	        while (i < parallelUploads) {
-	          if (!queuedFiles.length) {
-	            return;
-	          }
-	          this.processFile(queuedFiles.shift());
-	          i++;
-	        }
-	      }
-	    };
-
-	    Dropzone.prototype.processFile = function(file) {
-	      return this.processFiles([file]);
-	    };
-
-	    Dropzone.prototype.processFiles = function(files) {
-	      var file, _i, _len;
-	      for (_i = 0, _len = files.length; _i < _len; _i++) {
-	        file = files[_i];
-	        file.processing = true;
-	        file.status = Dropzone.UPLOADING;
-	        this.emit("processing", file);
-	      }
-	      if (this.options.uploadMultiple) {
-	        this.emit("processingmultiple", files);
-	      }
-	      return this.uploadFiles(files);
-	    };
-
-	    Dropzone.prototype._getFilesWithXhr = function(xhr) {
-	      var file, files;
-	      return files = (function() {
-	        var _i, _len, _ref, _results;
-	        _ref = this.files;
-	        _results = [];
-	        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-	          file = _ref[_i];
-	          if (file.xhr === xhr) {
-	            _results.push(file);
-	          }
-	        }
-	        return _results;
-	      }).call(this);
-	    };
-
-	    Dropzone.prototype.cancelUpload = function(file) {
-	      var groupedFile, groupedFiles, _i, _j, _len, _len1, _ref;
-	      if (file.status === Dropzone.UPLOADING) {
-	        groupedFiles = this._getFilesWithXhr(file.xhr);
-	        for (_i = 0, _len = groupedFiles.length; _i < _len; _i++) {
-	          groupedFile = groupedFiles[_i];
-	          groupedFile.status = Dropzone.CANCELED;
-	        }
-	        file.xhr.abort();
-	        for (_j = 0, _len1 = groupedFiles.length; _j < _len1; _j++) {
-	          groupedFile = groupedFiles[_j];
-	          this.emit("canceled", groupedFile);
-	        }
-	        if (this.options.uploadMultiple) {
-	          this.emit("canceledmultiple", groupedFiles);
-	        }
-	      } else if ((_ref = file.status) === Dropzone.ADDED || _ref === Dropzone.QUEUED) {
-	        file.status = Dropzone.CANCELED;
-	        this.emit("canceled", file);
-	        if (this.options.uploadMultiple) {
-	          this.emit("canceledmultiple", [file]);
-	        }
-	      }
-	      if (this.options.autoProcessQueue) {
-	        return this.processQueue();
-	      }
-	    };
-
-	    resolveOption = function() {
-	      var args, option;
-	      option = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
-	      if (typeof option === 'function') {
-	        return option.apply(this, args);
-	      }
-	      return option;
-	    };
-
-	    Dropzone.prototype.uploadFile = function(file) {
-	      return this.uploadFiles([file]);
-	    };
-
-	    Dropzone.prototype.uploadFiles = function(files) {
-	      var file, formData, handleError, headerName, headerValue, headers, i, input, inputName, inputType, key, method, option, progressObj, response, updateProgress, url, value, xhr, _i, _j, _k, _l, _len, _len1, _len2, _len3, _m, _ref, _ref1, _ref2, _ref3, _ref4, _ref5;
-	      xhr = new XMLHttpRequest();
-	      for (_i = 0, _len = files.length; _i < _len; _i++) {
-	        file = files[_i];
-	        file.xhr = xhr;
-	      }
-	      method = resolveOption(this.options.method, files);
-	      url = resolveOption(this.options.url, files);
-	      xhr.open(method, url, true);
-	      xhr.withCredentials = !!this.options.withCredentials;
-	      response = null;
-	      handleError = (function(_this) {
-	        return function() {
-	          var _j, _len1, _results;
-	          _results = [];
-	          for (_j = 0, _len1 = files.length; _j < _len1; _j++) {
-	            file = files[_j];
-	            _results.push(_this._errorProcessing(files, response || _this.options.dictResponseError.replace("{{statusCode}}", xhr.status), xhr));
-	          }
-	          return _results;
-	        };
-	      })(this);
-	      updateProgress = (function(_this) {
-	        return function(e) {
-	          var allFilesFinished, progress, _j, _k, _l, _len1, _len2, _len3, _results;
-	          if (e != null) {
-	            progress = 100 * e.loaded / e.total;
-	            for (_j = 0, _len1 = files.length; _j < _len1; _j++) {
-	              file = files[_j];
-	              file.upload = {
-	                progress: progress,
-	                total: e.total,
-	                bytesSent: e.loaded
-	              };
-	            }
-	          } else {
-	            allFilesFinished = true;
-	            progress = 100;
-	            for (_k = 0, _len2 = files.length; _k < _len2; _k++) {
-	              file = files[_k];
-	              if (!(file.upload.progress === 100 && file.upload.bytesSent === file.upload.total)) {
-	                allFilesFinished = false;
-	              }
-	              file.upload.progress = progress;
-	              file.upload.bytesSent = file.upload.total;
-	            }
-	            if (allFilesFinished) {
-	              return;
-	            }
-	          }
-	          _results = [];
-	          for (_l = 0, _len3 = files.length; _l < _len3; _l++) {
-	            file = files[_l];
-	            _results.push(_this.emit("uploadprogress", file, progress, file.upload.bytesSent));
-	          }
-	          return _results;
-	        };
-	      })(this);
-	      xhr.onload = (function(_this) {
-	        return function(e) {
-	          var _ref;
-	          if (files[0].status === Dropzone.CANCELED) {
-	            return;
-	          }
-	          if (xhr.readyState !== 4) {
-	            return;
-	          }
-	          response = xhr.responseText;
-	          if (xhr.getResponseHeader("content-type") && ~xhr.getResponseHeader("content-type").indexOf("application/json")) {
-	            try {
-	              response = JSON.parse(response);
-	            } catch (_error) {
-	              e = _error;
-	              response = "Invalid JSON response from server.";
-	            }
-	          }
-	          updateProgress();
-	          if (!((200 <= (_ref = xhr.status) && _ref < 300))) {
-	            return handleError();
-	          } else {
-	            return _this._finished(files, response, e);
-	          }
-	        };
-	      })(this);
-	      xhr.onerror = (function(_this) {
-	        return function() {
-	          if (files[0].status === Dropzone.CANCELED) {
-	            return;
-	          }
-	          return handleError();
-	        };
-	      })(this);
-	      progressObj = (_ref = xhr.upload) != null ? _ref : xhr;
-	      progressObj.onprogress = updateProgress;
-	      headers = {
-	        "Accept": "application/json",
-	        "Cache-Control": "no-cache",
-	        "X-Requested-With": "XMLHttpRequest"
-	      };
-	      if (this.options.headers) {
-	        extend(headers, this.options.headers);
-	      }
-	      for (headerName in headers) {
-	        headerValue = headers[headerName];
-	        if (headerValue) {
-	          xhr.setRequestHeader(headerName, headerValue);
-	        }
-	      }
-	      formData = new FormData();
-	      if (this.options.params) {
-	        _ref1 = this.options.params;
-	        for (key in _ref1) {
-	          value = _ref1[key];
-	          formData.append(key, value);
-	        }
-	      }
-	      for (_j = 0, _len1 = files.length; _j < _len1; _j++) {
-	        file = files[_j];
-	        this.emit("sending", file, xhr, formData);
-	      }
-	      if (this.options.uploadMultiple) {
-	        this.emit("sendingmultiple", files, xhr, formData);
-	      }
-	      if (this.element.tagName === "FORM") {
-	        _ref2 = this.element.querySelectorAll("input, textarea, select, button");
-	        for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
-	          input = _ref2[_k];
-	          inputName = input.getAttribute("name");
-	          inputType = input.getAttribute("type");
-	          if (input.tagName === "SELECT" && input.hasAttribute("multiple")) {
-	            _ref3 = input.options;
-	            for (_l = 0, _len3 = _ref3.length; _l < _len3; _l++) {
-	              option = _ref3[_l];
-	              if (option.selected) {
-	                formData.append(inputName, option.value);
-	              }
-	            }
-	          } else if (!inputType || ((_ref4 = inputType.toLowerCase()) !== "checkbox" && _ref4 !== "radio") || input.checked) {
-	            formData.append(inputName, input.value);
-	          }
-	        }
-	      }
-	      for (i = _m = 0, _ref5 = files.length - 1; 0 <= _ref5 ? _m <= _ref5 : _m >= _ref5; i = 0 <= _ref5 ? ++_m : --_m) {
-	        formData.append(this._getParamName(i), files[i], files[i].name);
-	      }
-	      return this.submitRequest(xhr, formData, files);
-	    };
-
-	    Dropzone.prototype.submitRequest = function(xhr, formData, files) {
-	      return xhr.send(formData);
-	    };
-
-	    Dropzone.prototype._finished = function(files, responseText, e) {
-	      var file, _i, _len;
-	      for (_i = 0, _len = files.length; _i < _len; _i++) {
-	        file = files[_i];
-	        file.status = Dropzone.SUCCESS;
-	        this.emit("success", file, responseText, e);
-	        this.emit("complete", file);
-	      }
-	      if (this.options.uploadMultiple) {
-	        this.emit("successmultiple", files, responseText, e);
-	        this.emit("completemultiple", files);
-	      }
-	      if (this.options.autoProcessQueue) {
-	        return this.processQueue();
-	      }
-	    };
-
-	    Dropzone.prototype._errorProcessing = function(files, message, xhr) {
-	      var file, _i, _len;
-	      for (_i = 0, _len = files.length; _i < _len; _i++) {
-	        file = files[_i];
-	        file.status = Dropzone.ERROR;
-	        this.emit("error", file, message, xhr);
-	        this.emit("complete", file);
-	      }
-	      if (this.options.uploadMultiple) {
-	        this.emit("errormultiple", files, message, xhr);
-	        this.emit("completemultiple", files);
-	      }
-	      if (this.options.autoProcessQueue) {
-	        return this.processQueue();
-	      }
-	    };
-
-	    return Dropzone;
-
-	  })(Emitter);
-
-	  Dropzone.version = "4.2.0";
-
-	  Dropzone.options = {};
-
-	  Dropzone.optionsForElement = function(element) {
-	    if (element.getAttribute("id")) {
-	      return Dropzone.options[camelize(element.getAttribute("id"))];
-	    } else {
-	      return void 0;
-	    }
-	  };
-
-	  Dropzone.instances = [];
-
-	  Dropzone.forElement = function(element) {
-	    if (typeof element === "string") {
-	      element = document.querySelector(element);
-	    }
-	    if ((element != null ? element.dropzone : void 0) == null) {
-	      throw new Error("No Dropzone found for given element. This is probably because you're trying to access it before Dropzone had the time to initialize. Use the `init` option to setup any additional observers on your Dropzone.");
-	    }
-	    return element.dropzone;
-	  };
-
-	  Dropzone.autoDiscover = true;
-
-	  Dropzone.discover = function() {
-	    var checkElements, dropzone, dropzones, _i, _len, _results;
-	    if (document.querySelectorAll) {
-	      dropzones = document.querySelectorAll(".dropzone");
-	    } else {
-	      dropzones = [];
-	      checkElements = function(elements) {
-	        var el, _i, _len, _results;
-	        _results = [];
-	        for (_i = 0, _len = elements.length; _i < _len; _i++) {
-	          el = elements[_i];
-	          if (/(^| )dropzone($| )/.test(el.className)) {
-	            _results.push(dropzones.push(el));
-	          } else {
-	            _results.push(void 0);
-	          }
-	        }
-	        return _results;
-	      };
-	      checkElements(document.getElementsByTagName("div"));
-	      checkElements(document.getElementsByTagName("form"));
-	    }
-	    _results = [];
-	    for (_i = 0, _len = dropzones.length; _i < _len; _i++) {
-	      dropzone = dropzones[_i];
-	      if (Dropzone.optionsForElement(dropzone) !== false) {
-	        _results.push(new Dropzone(dropzone));
-	      } else {
-	        _results.push(void 0);
-	      }
-	    }
-	    return _results;
-	  };
-
-	  Dropzone.blacklistedBrowsers = [/opera.*Macintosh.*version\/12/i];
-
-	  Dropzone.isBrowserSupported = function() {
-	    var capableBrowser, regex, _i, _len, _ref;
-	    capableBrowser = true;
-	    if (window.File && window.FileReader && window.FileList && window.Blob && window.FormData && document.querySelector) {
-	      if (!("classList" in document.createElement("a"))) {
-	        capableBrowser = false;
-	      } else {
-	        _ref = Dropzone.blacklistedBrowsers;
-	        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-	          regex = _ref[_i];
-	          if (regex.test(navigator.userAgent)) {
-	            capableBrowser = false;
-	            continue;
-	          }
-	        }
-	      }
-	    } else {
-	      capableBrowser = false;
-	    }
-	    return capableBrowser;
-	  };
-
-	  without = function(list, rejectedItem) {
-	    var item, _i, _len, _results;
-	    _results = [];
-	    for (_i = 0, _len = list.length; _i < _len; _i++) {
-	      item = list[_i];
-	      if (item !== rejectedItem) {
-	        _results.push(item);
-	      }
-	    }
-	    return _results;
-	  };
-
-	  camelize = function(str) {
-	    return str.replace(/[\-_](\w)/g, function(match) {
-	      return match.charAt(1).toUpperCase();
-	    });
-	  };
-
-	  Dropzone.createElement = function(string) {
-	    var div;
-	    div = document.createElement("div");
-	    div.innerHTML = string;
-	    return div.childNodes[0];
-	  };
-
-	  Dropzone.elementInside = function(element, container) {
-	    if (element === container) {
-	      return true;
-	    }
-	    while (element = element.parentNode) {
-	      if (element === container) {
-	        return true;
-	      }
-	    }
-	    return false;
-	  };
-
-	  Dropzone.getElement = function(el, name) {
-	    var element;
-	    if (typeof el === "string") {
-	      element = document.querySelector(el);
-	    } else if (el.nodeType != null) {
-	      element = el;
-	    }
-	    if (element == null) {
-	      throw new Error("Invalid `" + name + "` option provided. Please provide a CSS selector or a plain HTML element.");
-	    }
-	    return element;
-	  };
-
-	  Dropzone.getElements = function(els, name) {
-	    var e, el, elements, _i, _j, _len, _len1, _ref;
-	    if (els instanceof Array) {
-	      elements = [];
-	      try {
-	        for (_i = 0, _len = els.length; _i < _len; _i++) {
-	          el = els[_i];
-	          elements.push(this.getElement(el, name));
-	        }
-	      } catch (_error) {
-	        e = _error;
-	        elements = null;
-	      }
-	    } else if (typeof els === "string") {
-	      elements = [];
-	      _ref = document.querySelectorAll(els);
-	      for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
-	        el = _ref[_j];
-	        elements.push(el);
-	      }
-	    } else if (els.nodeType != null) {
-	      elements = [els];
-	    }
-	    if (!((elements != null) && elements.length)) {
-	      throw new Error("Invalid `" + name + "` option provided. Please provide a CSS selector, a plain HTML element or a list of those.");
-	    }
-	    return elements;
-	  };
-
-	  Dropzone.confirm = function(question, accepted, rejected) {
-	    if (window.confirm(question)) {
-	      return accepted();
-	    } else if (rejected != null) {
-	      return rejected();
-	    }
-	  };
-
-	  Dropzone.isValidFile = function(file, acceptedFiles) {
-	    var baseMimeType, mimeType, validType, _i, _len;
-	    if (!acceptedFiles) {
-	      return true;
-	    }
-	    acceptedFiles = acceptedFiles.split(",");
-	    mimeType = file.type;
-	    baseMimeType = mimeType.replace(/\/.*$/, "");
-	    for (_i = 0, _len = acceptedFiles.length; _i < _len; _i++) {
-	      validType = acceptedFiles[_i];
-	      validType = validType.trim();
-	      if (validType.charAt(0) === ".") {
-	        if (file.name.toLowerCase().indexOf(validType.toLowerCase(), file.name.length - validType.length) !== -1) {
-	          return true;
-	        }
-	      } else if (/\/\*$/.test(validType)) {
-	        if (baseMimeType === validType.replace(/\/.*$/, "")) {
-	          return true;
-	        }
-	      } else {
-	        if (mimeType === validType) {
-	          return true;
-	        }
-	      }
-	    }
-	    return false;
-	  };
-
-	  if (typeof jQuery !== "undefined" && jQuery !== null) {
-	    jQuery.fn.dropzone = function(options) {
-	      return this.each(function() {
-	        return new Dropzone(this, options);
-	      });
-	    };
-	  }
-
-	  if (typeof module !== "undefined" && module !== null) {
-	    module.exports = Dropzone;
-	  } else {
-	    window.Dropzone = Dropzone;
-	  }
-
-	  Dropzone.ADDED = "added";
-
-	  Dropzone.QUEUED = "queued";
-
-	  Dropzone.ACCEPTED = Dropzone.QUEUED;
-
-	  Dropzone.UPLOADING = "uploading";
-
-	  Dropzone.PROCESSING = Dropzone.UPLOADING;
-
-	  Dropzone.CANCELED = "canceled";
-
-	  Dropzone.ERROR = "error";
-
-	  Dropzone.SUCCESS = "success";
-
-
-	  /*
-	  
-	  Bugfix for iOS 6 and 7
-	  Source: http://stackoverflow.com/questions/11929099/html5-canvas-drawimage-ratio-bug-ios
-	  based on the work of https://github.com/stomita/ios-imagefile-megapixel
-	   */
-
-	  detectVerticalSquash = function(img) {
-	    var alpha, canvas, ctx, data, ey, ih, iw, py, ratio, sy;
-	    iw = img.naturalWidth;
-	    ih = img.naturalHeight;
-	    canvas = document.createElement("canvas");
-	    canvas.width = 1;
-	    canvas.height = ih;
-	    ctx = canvas.getContext("2d");
-	    ctx.drawImage(img, 0, 0);
-	    data = ctx.getImageData(0, 0, 1, ih).data;
-	    sy = 0;
-	    ey = ih;
-	    py = ih;
-	    while (py > sy) {
-	      alpha = data[(py - 1) * 4 + 3];
-	      if (alpha === 0) {
-	        ey = py;
-	      } else {
-	        sy = py;
-	      }
-	      py = (ey + sy) >> 1;
-	    }
-	    ratio = py / ih;
-	    if (ratio === 0) {
-	      return 1;
-	    } else {
-	      return ratio;
-	    }
-	  };
-
-	  drawImageIOSFix = function(ctx, img, sx, sy, sw, sh, dx, dy, dw, dh) {
-	    var vertSquashRatio;
-	    vertSquashRatio = detectVerticalSquash(img);
-	    return ctx.drawImage(img, sx, sy, sw, sh, dx, dy, dw, dh / vertSquashRatio);
-	  };
-
-
-	  /*
-	   * contentloaded.js
-	   *
-	   * Author: Diego Perini (diego.perini at gmail.com)
-	   * Summary: cross-browser wrapper for DOMContentLoaded
-	   * Updated: 20101020
-	   * License: MIT
-	   * Version: 1.2
-	   *
-	   * URL:
-	   * http://javascript.nwbox.com/ContentLoaded/
-	   * http://javascript.nwbox.com/ContentLoaded/MIT-LICENSE
-	   */
-
-	  contentLoaded = function(win, fn) {
-	    var add, doc, done, init, poll, pre, rem, root, top;
-	    done = false;
-	    top = true;
-	    doc = win.document;
-	    root = doc.documentElement;
-	    add = (doc.addEventListener ? "addEventListener" : "attachEvent");
-	    rem = (doc.addEventListener ? "removeEventListener" : "detachEvent");
-	    pre = (doc.addEventListener ? "" : "on");
-	    init = function(e) {
-	      if (e.type === "readystatechange" && doc.readyState !== "complete") {
-	        return;
-	      }
-	      (e.type === "load" ? win : doc)[rem](pre + e.type, init, false);
-	      if (!done && (done = true)) {
-	        return fn.call(win, e.type || e);
-	      }
-	    };
-	    poll = function() {
-	      var e;
-	      try {
-	        root.doScroll("left");
-	      } catch (_error) {
-	        e = _error;
-	        setTimeout(poll, 50);
-	        return;
-	      }
-	      return init("poll");
-	    };
-	    if (doc.readyState !== "complete") {
-	      if (doc.createEventObject && root.doScroll) {
-	        try {
-	          top = !win.frameElement;
-	        } catch (_error) {}
-	        if (top) {
-	          poll();
-	        }
-	      }
-	      doc[add](pre + "DOMContentLoaded", init, false);
-	      doc[add](pre + "readystatechange", init, false);
-	      return win[add](pre + "load", init, false);
-	    }
-	  };
-
-	  Dropzone._autoDiscoverFunction = function() {
-	    if (Dropzone.autoDiscover) {
-	      return Dropzone.discover();
-	    }
-	  };
-
-	  contentLoaded(window, Dropzone._autoDiscoverFunction);
-
-	}).call(this);
-
-	},{}]},{},[1])(1)
-	});
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
-
-/***/ },
-/* 204 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.Slider = exports.SliderItem = undefined;
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _button = __webpack_require__(167);
-
-	var _classnames = __webpack_require__(162);
-
-	var _classnames2 = _interopRequireDefault(_classnames);
-
-	__webpack_require__(205);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-	var SliderItem = exports.SliderItem = function SliderItem(_ref) {
-	    var children = _ref.children;
-
-	    var rest = _objectWithoutProperties(_ref, ['children']);
-
-	    return _react2.default.createElement(
-	        'li',
-	        rest,
-	        children
-	    );
-	};
-
-	var SliderViewPort = function SliderViewPort(_ref2) {
-	    var children = _ref2.children;
-	    var expanded = _ref2.expanded;
-	    var className = _ref2.className;
-
-	    var rest = _objectWithoutProperties(_ref2, ['children', 'expanded', 'className']);
-
-	    var cssClass = (0, _classnames2.default)(className, {
-	        "expanded": expanded,
-	        "collapsed": !expanded
-	    });
-	    return _react2.default.createElement(
-	        'div',
-	        _extends({}, rest, { className: cssClass }),
-	        _react2.default.createElement(
-	            'ul',
-	            null,
-	            children
-	        )
-	    );
-	};
-
-	SliderViewPort.propTypes = {
-	    children: _react2.default.PropTypes.array.isRequired,
-	    expanded: _react2.default.PropTypes.bool.isRequired
-	};
-
-	var SliderControls = function SliderControls(_ref3) {
-	    var onExpandToggle = _ref3.onExpandToggle;
-	    var onPrevious = _ref3.onPrevious;
-	    var onNext = _ref3.onNext;
-	    var expanded = _ref3.expanded;
-
-	    var rest = _objectWithoutProperties(_ref3, ['onExpandToggle', 'onPrevious', 'onNext', 'expanded']);
-
-	    var iconType = expanded ? "arrow_drop_up_circle" : "arrow_drop_down_circle";
-	    return _react2.default.createElement(
-	        'div',
-	        rest,
-	        expanded ? _react2.default.createElement(_button.IconButton, { icon: 'arrow_back', onClick: onPrevious }) : null,
-	        _react2.default.createElement(_button.IconButton, { icon: iconType, onClick: onExpandToggle }),
-	        expanded ? _react2.default.createElement(_button.IconButton, { icon: 'arrow_forward', onClick: onNext }) : null
-	    );
-	};
-
-	var SliderScrollBar = function SliderScrollBar(_ref4) {
-	    var rest = _objectWithoutProperties(_ref4, []);
-
-	    return _react2.default.createElement(
-	        'div',
-	        _extends({ className: 'scrollbar-track' }, rest),
-	        _react2.default.createElement('span', { className: 'scrollbar-piece' })
-	    );
-	};
-
-	var Slider = exports.Slider = function (_React$Component) {
-	    _inherits(Slider, _React$Component);
-
-	    function Slider(props) {
-	        _classCallCheck(this, Slider);
-
-	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Slider).call(this, props));
-
-	        _this.state = {
-	            expanded: true
-	        };
-	        return _this;
-	    }
-
-	    _createClass(Slider, [{
-	        key: 'render',
-	        value: function render() {
-	            var cssClass = (0, _classnames2.default)(this.props.className, 'slider-wrapper');
-	            return _react2.default.createElement(
-	                'div',
-	                { className: cssClass },
-	                _react2.default.createElement(
-	                    SliderViewPort,
-	                    { expanded: this.state.expanded, className: 'viewport' },
-	                    this.props.children
-	                ),
-	                _react2.default.createElement(SliderScrollBar, null),
-	                _react2.default.createElement(SliderControls, {
-	                    className: 'slider-controls',
-	                    onExpandToggle: this._handleExpandToggle.bind(this),
-	                    onPrevious: this._handlePrevious.bind(this),
-	                    onNext: this._handleNext,
-	                    expanded: this.state.expanded
-	                })
-	            );
-	        }
-	    }, {
-	        key: '_handlePrevious',
-	        value: function _handlePrevious(event) {
-	            console.log(event);
-	        }
-	    }, {
-	        key: '_handleNext',
-	        value: function _handleNext(event) {}
-	    }, {
-	        key: '_handleExpandToggle',
-	        value: function _handleExpandToggle(event) {
-	            this.setState({
-	                expanded: !this.state.expanded
-	            });
-	        }
-	    }]);
-
-	    return Slider;
-	}(_react2.default.Component);
-
-	exports.default = Slider;
-
-/***/ },
-/* 205 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
-/* 206 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.DraggableThumbnail = exports.Thumbnail = undefined;
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _card = __webpack_require__(207);
-
-	var _button = __webpack_require__(167);
-
-	var _classnames = __webpack_require__(162);
-
-	var _classnames2 = _interopRequireDefault(_classnames);
-
-	__webpack_require__(217);
-
-	var _CanvasDraggableEnhancer = __webpack_require__(218);
-
-	var _CanvasDraggableEnhancer2 = _interopRequireDefault(_CanvasDraggableEnhancer);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Thumbnail = exports.Thumbnail = function (_React$Component) {
-	    _inherits(Thumbnail, _React$Component);
-
-	    function Thumbnail(props) {
-	        _classCallCheck(this, Thumbnail);
-
-	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Thumbnail).call(this, props));
-
-	        _this.state = {
-	            selected: false
-	        };
-	        return _this;
-	    }
-
-	    _createClass(Thumbnail, [{
-	        key: 'render',
-	        value: function render() {
-
-	            var cssClass = (0, _classnames2.default)(this.props.className, 'image-thumbnail', { 'selected': !this.state.selected });
-	            return _react2.default.createElement(
-	                _card.Card,
-	                _extends({ className: cssClass }, this.props),
-	                _react2.default.createElement(_card.CardMedia, {
-	                    aspectRatio: 'wide',
-	                    image: this.props.url,
-	                    contentOverlay: true
-	                })
-	            );
-	        }
-	    }]);
-
-	    return Thumbnail;
-	}(_react2.default.Component);
-
-	Thumbnail.propTypes = {
-	    url: _react2.default.PropTypes.string,
-	    keywords: _react2.default.PropTypes.array,
-	    metadata: _react2.default.PropTypes.object,
-	    onRightClick: _react2.default.PropTypes.func,
-	    menu: _react2.default.PropTypes.element
-	};
-
-	exports.default = Thumbnail;
-	var DraggableThumbnail = exports.DraggableThumbnail = (0, _CanvasDraggableEnhancer2.default)(Thumbnail);
-
-/***/ },
-/* 207 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.CardTitle = exports.CardText = exports.CardMedia = exports.CardActions = exports.Card = undefined;
-
-	var _Card = __webpack_require__(208);
-
-	var _Card2 = _interopRequireDefault(_Card);
-
-	var _CardActions2 = __webpack_require__(210);
-
-	var _CardActions3 = _interopRequireDefault(_CardActions2);
-
-	var _CardMedia2 = __webpack_require__(211);
-
-	var _CardMedia3 = _interopRequireDefault(_CardMedia2);
-
-	var _CardText2 = __webpack_require__(212);
-
-	var _CardText3 = _interopRequireDefault(_CardText2);
-
-	var _CardTitle2 = __webpack_require__(213);
-
-	var _CardTitle3 = _interopRequireDefault(_CardTitle2);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	exports.default = _Card2.default;
-	exports.Card = _Card2.default;
-	exports.CardActions = _CardActions3.default;
-	exports.CardMedia = _CardMedia3.default;
-	exports.CardText = _CardText3.default;
-	exports.CardTitle = _CardTitle3.default;
-
-/***/ },
-/* 208 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _classnames = __webpack_require__(162);
-
-	var _classnames2 = _interopRequireDefault(_classnames);
-
-	var _style = __webpack_require__(209);
-
-	var _style2 = _interopRequireDefault(_style);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-	var Card = function Card(_ref) {
-	  var children = _ref.children;
-	  var className = _ref.className;
-	  var raised = _ref.raised;
-
-	  var other = _objectWithoutProperties(_ref, ['children', 'className', 'raised']);
-
-	  var classes = (0, _classnames2.default)(_style2.default.card, _defineProperty({}, _style2.default.raised, raised), className);
-
-	  return _react2.default.createElement(
-	    'div',
-	    _extends({ 'data-react-toolbox': 'card', className: classes }, other),
-	    children
-	  );
-	};
-
-	Card.propTypes = {
-	  children: _react.PropTypes.any,
-	  className: _react.PropTypes.string,
-	  raised: _react.PropTypes.bool
-	};
-
-	exports.default = Card;
-
-/***/ },
-/* 209 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-	module.exports = {"card":"style__card___rrWqP","raised":"style__raised___1pXA2","cardMedia":"style__cardMedia___2NiAP","wide":"style__wide___2eACG","square":"style__square___55wAk","content":"style__content___1gcGG","contentOverlay":"style__contentOverlay___13VOt","cardTitle":"style__cardTitle___2H4S-","cardActions":"style__cardActions___szCG_","cardText":"style__cardText___3AJGV","avatar":"style__avatar___3E0MH","subtitle":"style__subtitle___1YVh9","large":"style__large___ydFaL","title":"style__title___3gDB5","small":"style__small___2uWLQ"};
-
-/***/ },
-/* 210 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _classnames = __webpack_require__(162);
-
-	var _classnames2 = _interopRequireDefault(_classnames);
-
-	var _style = __webpack_require__(209);
-
-	var _style2 = _interopRequireDefault(_style);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var CardActions = function (_Component) {
-	  _inherits(CardActions, _Component);
-
-	  function CardActions() {
-	    _classCallCheck(this, CardActions);
-
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(CardActions).apply(this, arguments));
-	  }
-
-	  _createClass(CardActions, [{
-	    key: 'render',
-	    value: function render() {
-	      var _props = this.props;
-	      var children = _props.children;
-	      var className = _props.className;
-
-	      var other = _objectWithoutProperties(_props, ['children', 'className']);
-
-	      var classes = (0, _classnames2.default)(_style2.default.cardActions, className);
-
-	      return _react2.default.createElement(
-	        'div',
-	        _extends({ className: classes }, other),
-	        children
-	      );
-	    }
-	  }]);
-
-	  return CardActions;
-	}(_react.Component);
-
-	CardActions.propTypes = {
-	  children: _react.PropTypes.any,
-	  className: _react.PropTypes.string
-	};
-	exports.default = CardActions;
-
-/***/ },
-/* 211 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _classnames = __webpack_require__(162);
-
-	var _classnames2 = _interopRequireDefault(_classnames);
-
-	var _style = __webpack_require__(209);
-
-	var _style2 = _interopRequireDefault(_style);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var CardMedia = function (_Component) {
-	  _inherits(CardMedia, _Component);
-
-	  function CardMedia() {
-	    _classCallCheck(this, CardMedia);
-
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(CardMedia).apply(this, arguments));
-	  }
-
-	  _createClass(CardMedia, [{
-	    key: 'render',
-	    value: function render() {
-	      var _props = this.props;
-	      var aspectRatio = _props.aspectRatio;
-	      var children = _props.children;
-	      var className = _props.className;
-	      var color = _props.color;
-	      var contentOverlay = _props.contentOverlay;
-	      var image = _props.image;
-
-	      var other = _objectWithoutProperties(_props, ['aspectRatio', 'children', 'className', 'color', 'contentOverlay', 'image']);
-
-	      var classes = (0, _classnames2.default)(_style2.default.cardMedia, _defineProperty({}, _style2.default[aspectRatio], aspectRatio), className);
-
-	      var innerClasses = (0, _classnames2.default)(_style2.default.content, _defineProperty({}, _style2.default.contentOverlay, contentOverlay));
-
-	      var bgStyle = {
-	        backgroundColor: color ? color : undefined,
-	        backgroundImage: typeof image === 'string' ? 'url(\'' + image + '\')' : undefined
-	      };
-
-	      return _react2.default.createElement(
-	        'div',
-	        _extends({ style: bgStyle, className: classes }, other),
-	        _react2.default.createElement(
-	          'div',
-	          { className: innerClasses },
-	          children
-	        )
-	      );
-	    }
-	  }]);
-
-	  return CardMedia;
-	}(_react.Component);
-
-	CardMedia.propTypes = {
-	  aspectRatio: _react.PropTypes.oneOf(['wide', 'square']),
-	  children: _react.PropTypes.any,
-	  className: _react.PropTypes.string,
-	  color: _react.PropTypes.string,
-	  contentOverlay: _react.PropTypes.bool,
-	  image: _react.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.element])
-	};
-	exports.default = CardMedia;
-
-/***/ },
-/* 212 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _classnames = __webpack_require__(162);
-
-	var _classnames2 = _interopRequireDefault(_classnames);
-
-	var _style = __webpack_require__(209);
-
-	var _style2 = _interopRequireDefault(_style);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var CardText = function (_Component) {
-	  _inherits(CardText, _Component);
-
-	  function CardText() {
-	    _classCallCheck(this, CardText);
-
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(CardText).apply(this, arguments));
-	  }
-
-	  _createClass(CardText, [{
-	    key: 'render',
-	    value: function render() {
-	      var _props = this.props;
-	      var children = _props.children;
-	      var className = _props.className;
-
-	      var other = _objectWithoutProperties(_props, ['children', 'className']);
-
-	      var classes = (0, _classnames2.default)(_style2.default.cardText, className);
-
-	      return _react2.default.createElement(
-	        'div',
-	        _extends({ className: classes }, other),
-	        typeof children === 'string' ? _react2.default.createElement(
-	          'p',
-	          null,
-	          children
-	        ) : children
-	      );
-	    }
-	  }]);
-
-	  return CardText;
-	}(_react.Component);
-
-	CardText.propTypes = {
-	  children: _react.PropTypes.any,
-	  className: _react.PropTypes.string
-	};
-	exports.default = CardText;
-
-/***/ },
-/* 213 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _classnames = __webpack_require__(162);
-
-	var _classnames2 = _interopRequireDefault(_classnames);
-
-	var _avatar = __webpack_require__(214);
-
-	var _style = __webpack_require__(209);
-
-	var _style2 = _interopRequireDefault(_style);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-	var CardTitle = function CardTitle(_ref) {
-	  var _ClassNames;
-
-	  var avatar = _ref.avatar;
-	  var children = _ref.children;
-	  var className = _ref.className;
-	  var subtitle = _ref.subtitle;
-	  var title = _ref.title;
-
-	  var other = _objectWithoutProperties(_ref, ['avatar', 'children', 'className', 'subtitle', 'title']);
-
-	  var classes = (0, _classnames2.default)(_style2.default.cardTitle, (_ClassNames = {}, _defineProperty(_ClassNames, _style2.default.small, avatar), _defineProperty(_ClassNames, _style2.default.large, !avatar), _ClassNames), className);
-
-	  var avatarComponent = undefined;
-
-	  if (typeof avatar === 'string') {
-	    avatarComponent = _react2.default.createElement(_avatar.Avatar, { image: avatar });
-	  } else {
-	    avatarComponent = avatar;
-	  }
-
-	  return _react2.default.createElement(
-	    'div',
-	    _extends({ className: classes }, other),
-	    avatarComponent && _react2.default.createElement(
-	      'div',
-	      { className: _style2.default.avatar },
-	      avatarComponent
-	    ),
-	    _react2.default.createElement(
-	      'div',
-	      null,
-	      title && _react2.default.createElement(
-	        'h5',
-	        { className: _style2.default.title },
-	        title
-	      ),
-	      children && typeof children === 'string' && _react2.default.createElement(
-	        'h5',
-	        { className: _style2.default.title },
-	        children
-	      ),
-	      subtitle && _react2.default.createElement(
-	        'p',
-	        { className: _style2.default.subtitle },
-	        subtitle
-	      ),
-	      children && typeof children !== 'string' && children
-	    )
-	  );
-	};
-
-	CardTitle.propTypes = {
-	  avatar: _react.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.element]),
-	  children: _react.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.element, _react.PropTypes.array]),
-	  className: _react.PropTypes.string,
-	  subtitle: _react.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.element]),
-	  title: _react.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.element])
-	};
-
-	exports.default = CardTitle;
-
-/***/ },
-/* 214 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.Avatar = undefined;
-
-	var _Avatar = __webpack_require__(215);
-
-	var _Avatar2 = _interopRequireDefault(_Avatar);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	exports.Avatar = _Avatar2.default;
-	exports.default = _Avatar2.default;
-
-/***/ },
-/* 215 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _font_icon = __webpack_require__(169);
-
-	var _font_icon2 = _interopRequireDefault(_font_icon);
-
-	var _style = __webpack_require__(216);
-
-	var _style2 = _interopRequireDefault(_style);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-	var Avatar = function Avatar(_ref) {
-	  var children = _ref.children;
-	  var className = _ref.className;
-	  var icon = _ref.icon;
-	  var image = _ref.image;
-	  var title = _ref.title;
-
-	  var other = _objectWithoutProperties(_ref, ['children', 'className', 'icon', 'image', 'title']);
-
-	  return _react2.default.createElement(
-	    'div',
-	    _extends({ 'data-react-toolbox': 'avatar', className: _style2.default.avatar + ' ' + className }, other),
-	    children,
-	    typeof image === 'string' ? _react2.default.createElement('img', { className: _style2.default.image, src: image, title: title }) : image,
-	    typeof icon === 'string' ? _react2.default.createElement(_font_icon2.default, { className: _style2.default.letter, value: icon }) : icon,
-	    title ? _react2.default.createElement(
-	      'span',
-	      { className: _style2.default.letter },
-	      title[0]
-	    ) : null
-	  );
-	};
-
-	Avatar.propTypes = {
-	  children: _react.PropTypes.node,
-	  className: _react.PropTypes.string,
-	  icon: _react.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.element]),
-	  image: _react.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.element]),
-	  title: _react.PropTypes.string
-	};
-
-	exports.default = Avatar;
-
-/***/ },
-/* 216 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-	module.exports = {"avatar":"style__avatar___3S3z7","image":"style__image___7im4m","letter":"style__letter___1b_fw"};
-
-/***/ },
-/* 217 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
-/* 218 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
 
@@ -27435,7 +21039,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactHammerjs = __webpack_require__(219);
+	var _reactHammerjs = __webpack_require__(184);
 
 	var _reactHammerjs2 = _interopRequireDefault(_reactHammerjs);
 
@@ -27573,7 +21177,7 @@
 	exports.default = CanvasDraggableEnhancer;
 
 /***/ },
-/* 219 */
+/* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -27581,7 +21185,7 @@
 
 	// require('hammerjs') when in a browser. This is safe because Hammer is only
 	// invoked in componentDidMount, which is not executed on the server.
-	var Hammer = (typeof window !== 'undefined') ? __webpack_require__(220) : undefined;
+	var Hammer = (typeof window !== 'undefined') ? __webpack_require__(185) : undefined;
 
 	var privateProps = {
 		children: true,
@@ -27714,7 +21318,7 @@
 
 
 /***/ },
-/* 220 */
+/* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*! Hammer.JS - v2.0.6 - 2015-12-23
@@ -30288,1190 +23892,302 @@
 
 
 /***/ },
-/* 221 */
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	var defaultClickRejectionStrategy = __webpack_require__(187);
 
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.Canvas = undefined;
+	module.exports = function injectTapEventPlugin (strategyOverrides) {
+	  strategyOverrides = strategyOverrides || {}
+	  var shouldRejectClick = strategyOverrides.shouldRejectClick || defaultClickRejectionStrategy;
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _classnames = __webpack_require__(162);
-
-	var _classnames2 = _interopRequireDefault(_classnames);
-
-	__webpack_require__(222);
-
-	var _Thumbnail = __webpack_require__(206);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Canvas = exports.Canvas = function (_React$Component) {
-	    _inherits(Canvas, _React$Component);
-
-	    function Canvas(props) {
-	        _classCallCheck(this, Canvas);
-
-	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Canvas).call(this, props));
-
-	        _this.state = {};
-	        return _this;
-	    }
-
-	    _createClass(Canvas, [{
-	        key: 'render',
-	        value: function render() {
-
-	            var cssClass = (0, _classnames2.default)(this.props.className, "canvas-container");
-	            var thumbnails = this.renderImages();
-	            return _react2.default.createElement(
-	                'div',
-	                { className: cssClass },
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'canvas-inner' },
-	                    thumbnails
-	                )
-	            );
-	        }
-	    }, {
-	        key: 'renderImages',
-	        value: function renderImages() {
-	            console.log(this.props.images);
-	            if (!this.props.images) return null;
-	            return this.props.images.map(function (_ref) {
-	                var url = _ref.url;
-	                var id = _ref.id;
-	                var top = _ref.top;
-	                var left = _ref.left;
-
-	                return _react2.default.createElement(_Thumbnail.DraggableThumbnail, { url: url, top: top, left: left, key: id, id: id });
-	            });
-	        }
-	    }]);
-
-	    return Canvas;
-	}(_react2.default.Component);
-
-	exports.default = Canvas;
-
-/***/ },
-/* 222 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
-/* 223 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.ThumbnailContextMenu = exports.ContextMenu = undefined;
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _menu = __webpack_require__(224);
-
-	var _classnames = __webpack_require__(162);
-
-	var _classnames2 = _interopRequireDefault(_classnames);
-
-	var _reactClickOutside = __webpack_require__(236);
-
-	var _reactClickOutside2 = _interopRequireDefault(_reactClickOutside);
-
-	__webpack_require__(237);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	if (!document) {
-	    var document = { addEventListener: function addEventListener() {} };
-	}
-
-	var ContextMenu = exports.ContextMenu = function (_React$Component) {
-	    _inherits(ContextMenu, _React$Component);
-
-	    function ContextMenu(props) {
-	        _classCallCheck(this, ContextMenu);
-
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(ContextMenu).call(this, props));
-	    }
-
-	    _createClass(ContextMenu, [{
-	        key: 'render',
-	        value: function render() {
-	            var position = {
-	                transform: 'translate3d(' + this.props.left + 'px, ' + this.props.top + 'px,0)'
-	            };
-	            var _props = this.props;
-	            var className = _props.className;
-	            var style = _props.style;
-
-	            var other = _objectWithoutProperties(_props, ['className', 'style']);
-
-	            var cssClass = (0, _classnames2.default)(className, 'context-menu', { 'hidden': !this.props.show });
-	            return _react2.default.createElement(
-	                'div',
-	                { style: position, className: cssClass, active: false },
-	                _react2.default.createElement(
-	                    _menu.Menu,
-	                    _extends({}, other, { onClick: this._handleClick.bind(this) }),
-	                    this.props.children
-	                )
-	            );
-	        }
-	    }, {
-	        key: 'componentDidMount',
-	        value: function componentDidMount() {
-	            // Hide dropdown block on click outside the block
-	            window.addEventListener('click', this._hideMenu.bind(this), false);
-	        }
-	    }, {
-	        key: 'componentWillUnmount',
-	        value: function componentWillUnmount() {
-	            // Remove click event listener on component unmount
-	            window.removeEventListener('click', this._hideMenu.bind(this), false);
-	        }
-	    }, {
-	        key: '_handleClick',
-	        value: function _handleClick(e) {
-	            this._hideMenu();
-	        }
-	    }, {
-	        key: '_hideMenu',
-	        value: function _hideMenu() {
-	            var _this2 = this;
-
-	            //console.log("hide");
-	            //console.log(this.props.onHide);
-	            setTimeout(function () {
-	                if (_this2.props.onHide) {
-	                    _this2.props.onHide();
-	                }
-	            }, 100);
-	        }
-	    }]);
-
-	    return ContextMenu;
-	}(_react2.default.Component);
-
-	var ThumbnailContextMenu = exports.ThumbnailContextMenu = function ThumbnailContextMenu(props) {
-	    return _react2.default.createElement(
-	        ContextMenu,
-	        props,
-	        _react2.default.createElement(_menu.MenuItem, { value: 'download', icon: 'get_app', caption: 'Download' }),
-	        _react2.default.createElement(_menu.MenuItem, { value: 'help', icon: 'favorite', caption: 'Favorite' }),
-	        _react2.default.createElement(_menu.MenuItem, { value: 'settings', icon: 'open_in_browser', caption: 'Open in app' }),
-	        _react2.default.createElement(_menu.MenuDivider, null),
-	        _react2.default.createElement(_menu.MenuItem, { value: 'signout', icon: 'delete', caption: 'Delete', disabled: true })
-	    );
-	};
-
-	exports.default = ContextMenu;
-
-/***/ },
-/* 224 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.IconMenu = exports.MenuDivider = exports.MenuItem = exports.Menu = undefined;
-
-	var _Menu2 = __webpack_require__(225);
-
-	var _Menu3 = _interopRequireDefault(_Menu2);
-
-	var _MenuItem2 = __webpack_require__(226);
-
-	var _MenuItem3 = _interopRequireDefault(_MenuItem2);
-
-	var _MenuDivider2 = __webpack_require__(232);
-
-	var _MenuDivider3 = _interopRequireDefault(_MenuDivider2);
-
-	var _IconMenu2 = __webpack_require__(234);
-
-	var _IconMenu3 = _interopRequireDefault(_IconMenu2);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	exports.Menu = _Menu3.default;
-	exports.MenuItem = _MenuItem3.default;
-	exports.MenuDivider = _MenuDivider3.default;
-	exports.IconMenu = _IconMenu3.default;
-
-/***/ },
-/* 225 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactDom = __webpack_require__(158);
-
-	var _reactDom2 = _interopRequireDefault(_reactDom);
-
-	var _classnames = __webpack_require__(162);
-
-	var _classnames2 = _interopRequireDefault(_classnames);
-
-	var _MenuItem = __webpack_require__(226);
-
-	var _MenuItem2 = _interopRequireDefault(_MenuItem);
-
-	var _utils = __webpack_require__(228);
-
-	var _style = __webpack_require__(231);
-
-	var _style2 = _interopRequireDefault(_style);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var POSITION = {
-	  AUTO: 'auto',
-	  STATIC: 'static',
-	  TOP_LEFT: 'top-left',
-	  TOP_RIGHT: 'top-right',
-	  BOTTOM_LEFT: 'bottom-left',
-	  BOTTOM_RIGHT: 'bottom-right'
-	};
-
-	var Menu = function (_React$Component) {
-	  _inherits(Menu, _React$Component);
-
-	  function Menu() {
-	    var _Object$getPrototypeO;
-
-	    var _temp, _this, _ret;
-
-	    _classCallCheck(this, Menu);
-
-	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	      args[_key] = arguments[_key];
-	    }
-
-	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Menu)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.state = {
-	      active: _this.props.active,
-	      rippled: false
-	    }, _this.handleDocumentClick = function (event) {
-	      if (_this.state.active && !_utils.events.targetIsDescendant(event, _reactDom2.default.findDOMNode(_this))) {
-	        _this.setState({ active: false, rippled: false });
-	      }
-	    }, _this.handleSelect = function (item) {
-	      var _item$props = item.props;
-	      var value = _item$props.value;
-	      var onClick = _item$props.onClick;
-
-	      _this.setState({ active: false, rippled: _this.props.ripple }, function () {
-	        if (onClick) onClick();
-	        if (_this.props.onSelect) _this.props.onSelect(value);
-	      });
-	    }, _temp), _possibleConstructorReturn(_this, _ret);
-	  }
-
-	  _createClass(Menu, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      var _this2 = this;
-
-	      setTimeout(function () {
-	        var _refs$menu$getBoundin = _this2.refs.menu.getBoundingClientRect();
-
-	        var width = _refs$menu$getBoundin.width;
-	        var height = _refs$menu$getBoundin.height;
-
-	        var position = _this2.props.position === POSITION.AUTO ? _this2.calculatePosition() : _this2.props.position;
-	        _this2.setState({ position: position, width: width, height: height });
-	      });
-	    }
-	  }, {
-	    key: 'componentWillReceiveProps',
-	    value: function componentWillReceiveProps(nextProps) {
-	      if (this.props.position !== nextProps.position) {
-	        var position = nextProps.position === POSITION.AUTO ? this.calculatePosition() : nextProps.position;
-	        this.setState({ position: position });
-	      }
-	    }
-	  }, {
-	    key: 'shouldComponentUpdate',
-	    value: function shouldComponentUpdate(nextProps, nextState) {
-	      var _this3 = this;
-
-	      if (!this.state.active && nextState.active && this.props.position === POSITION.AUTO) {
-	        var position = this.calculatePosition();
-	        if (this.state.position !== position) {
-	          this.setState({ position: position, active: false }, function () {
-	            setTimeout(function () {
-	              _this3.setState({ active: true });
-	            }, 20);
-	          });
-	          return false;
-	        }
-	      }
-	      return true;
-	    }
-	  }, {
-	    key: 'componentWillUpdate',
-	    value: function componentWillUpdate(nextProps, nextState) {
-	      if (!this.state.active && nextState.active) {
-	        _utils.events.addEventsToDocument({ click: this.handleDocumentClick });
-	      }
-	    }
-	  }, {
-	    key: 'componentDidUpdate',
-	    value: function componentDidUpdate(prevProps, prevState) {
-	      if (prevState.active && !this.state.active) {
-	        if (this.props.onHide) this.props.onHide();
-	        _utils.events.removeEventsFromDocument({ click: this.handleDocumentClick });
-	      } else if (!prevState.active && this.state.active && this.props.onShow) {
-	        this.props.onShow();
-	      }
-	    }
-	  }, {
-	    key: 'componentWillUnmount',
-	    value: function componentWillUnmount() {
-	      if (this.state.active) {
-	        _utils.events.removeEventsFromDocument({ click: this.handleDocumentClick });
-	      }
-	    }
-	  }, {
-	    key: 'calculatePosition',
-	    value: function calculatePosition() {
-	      var _ReactDOM$findDOMNode = _reactDom2.default.findDOMNode(this).parentNode.getBoundingClientRect();
-
-	      var top = _ReactDOM$findDOMNode.top;
-	      var left = _ReactDOM$findDOMNode.left;
-	      var height = _ReactDOM$findDOMNode.height;
-	      var width = _ReactDOM$findDOMNode.width;
-
-	      var _utils$getViewport = _utils.utils.getViewport();
-
-	      var wh = _utils$getViewport.height;
-	      var ww = _utils$getViewport.width;
-
-	      var toTop = top < wh / 2 - height / 2;
-	      var toLeft = left < ww / 2 - width / 2;
-	      return (toTop ? 'top' : 'bottom') + '-' + (toLeft ? 'left' : 'right');
-	    }
-	  }, {
-	    key: 'getMenuStyle',
-	    value: function getMenuStyle() {
-	      var _state = this.state;
-	      var width = _state.width;
-	      var height = _state.height;
-	      var position = _state.position;
-
-	      if (position !== POSITION.STATIC) {
-	        if (this.state.active) {
-	          return { clip: 'rect(0 ' + width + 'px ' + height + 'px 0)' };
-	        } else if (position === POSITION.TOP_RIGHT) {
-	          return { clip: 'rect(0 ' + width + 'px 0 ' + width + 'px)' };
-	        } else if (position === POSITION.BOTTOM_RIGHT) {
-	          return { clip: 'rect(' + height + 'px ' + width + 'px ' + height + 'px ' + width + 'px)' };
-	        } else if (position === POSITION.BOTTOM_LEFT) {
-	          return { clip: 'rect(' + height + 'px 0 ' + height + 'px 0)' };
-	        } else if (position === POSITION.TOP_LEFT) {
-	          return { clip: 'rect(0 0 0 0)' };
-	        }
-	      }
-	    }
-	  }, {
-	    key: 'getRootStyle',
-	    value: function getRootStyle() {
-	      if (this.state.position !== POSITION.STATIC) {
-	        return { width: this.state.width, height: this.state.height };
-	      }
-	    }
-	  }, {
-	    key: 'renderItems',
-	    value: function renderItems() {
-	      var _this4 = this;
-
-	      return _react2.default.Children.map(this.props.children, function (item) {
-	        if (!item) return item;
-	        if (item.type === _MenuItem2.default) {
-	          return _react2.default.cloneElement(item, {
-	            ripple: item.props.ripple || _this4.props.ripple,
-	            selected: typeof item.props.value !== 'undefined' && _this4.props.selectable && item.props.value === _this4.props.selected,
-	            onClick: _this4.handleSelect.bind(_this4, item)
-	          });
-	        } else {
-	          return _react2.default.cloneElement(item);
-	        }
-	      });
-	    }
-	  }, {
-	    key: 'show',
-	    value: function show() {
-	      var _refs$menu$getBoundin2 = this.refs.menu.getBoundingClientRect();
-
-	      var width = _refs$menu$getBoundin2.width;
-	      var height = _refs$menu$getBoundin2.height;
-
-	      this.setState({ active: true, width: width, height: height });
-	    }
-	  }, {
-	    key: 'hide',
-	    value: function hide() {
-	      this.setState({ active: false });
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _ClassNames;
-
-	      var outlineStyle = { width: this.state.width, height: this.state.height };
-	      var className = (0, _classnames2.default)([_style2.default.root, _style2.default[this.state.position]], (_ClassNames = {}, _defineProperty(_ClassNames, _style2.default.active, this.state.active), _defineProperty(_ClassNames, _style2.default.rippled, this.state.rippled), _ClassNames), this.props.className);
-
-	      return _react2.default.createElement(
-	        'div',
-	        { 'data-react-toolbox': 'menu', className: className, style: this.getRootStyle() },
-	        this.props.outline ? _react2.default.createElement('div', { className: _style2.default.outline, style: outlineStyle }) : null,
-	        _react2.default.createElement(
-	          'ul',
-	          { ref: 'menu', className: _style2.default.menu, style: this.getMenuStyle() },
-	          this.renderItems()
-	        )
-	      );
-	    }
-	  }]);
-
-	  return Menu;
-	}(_react2.default.Component);
-
-	Menu.propTypes = {
-	  active: _react2.default.PropTypes.bool,
-	  children: _react2.default.PropTypes.node,
-	  className: _react2.default.PropTypes.string,
-	  onHide: _react2.default.PropTypes.func,
-	  onSelect: _react2.default.PropTypes.func,
-	  onShow: _react2.default.PropTypes.func,
-	  outline: _react2.default.PropTypes.bool,
-	  position: _react2.default.PropTypes.string,
-	  ripple: _react2.default.PropTypes.bool,
-	  selectable: _react2.default.PropTypes.bool,
-	  selected: _react2.default.PropTypes.any
-	};
-	Menu.defaultProps = {
-	  active: false,
-	  outline: true,
-	  position: POSITION.STATIC,
-	  ripple: true,
-	  selectable: true
-	};
-	exports.default = Menu;
-
-/***/ },
-/* 226 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.RawMenuItem = undefined;
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _font_icon = __webpack_require__(169);
-
-	var _font_icon2 = _interopRequireDefault(_font_icon);
-
-	var _classnames = __webpack_require__(162);
-
-	var _classnames2 = _interopRequireDefault(_classnames);
-
-	var _ripple = __webpack_require__(171);
-
-	var _ripple2 = _interopRequireDefault(_ripple);
-
-	var _style = __webpack_require__(227);
-
-	var _style2 = _interopRequireDefault(_style);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var MenuItem = function (_React$Component) {
-	  _inherits(MenuItem, _React$Component);
-
-	  function MenuItem() {
-	    var _Object$getPrototypeO;
-
-	    var _temp, _this, _ret;
-
-	    _classCallCheck(this, MenuItem);
-
-	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	      args[_key] = arguments[_key];
-	    }
-
-	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(MenuItem)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.handleClick = function (event) {
-	      if (_this.props.onClick && !_this.props.disabled) {
-	        _this.props.onClick(event, _this);
-	      }
-	    }, _temp), _possibleConstructorReturn(_this, _ret);
-	  }
-
-	  _createClass(MenuItem, [{
-	    key: 'render',
-	    value: function render() {
-	      var _ClassNames;
-
-	      var _props = this.props;
-	      var icon = _props.icon;
-	      var caption = _props.caption;
-	      var children = _props.children;
-	      var shortcut = _props.shortcut;
-	      var selected = _props.selected;
-	      var disabled = _props.disabled;
-
-	      var others = _objectWithoutProperties(_props, ['icon', 'caption', 'children', 'shortcut', 'selected', 'disabled']);
-
-	      var className = (0, _classnames2.default)(_style2.default.root, (_ClassNames = {}, _defineProperty(_ClassNames, _style2.default.selected, selected), _defineProperty(_ClassNames, _style2.default.disabled, disabled), _ClassNames), this.props.className);
-
-	      return _react2.default.createElement(
-	        'li',
-	        _extends({}, others, { 'data-react-toolbox': 'menu-item', className: className, onClick: this.handleClick }),
-	        icon ? _react2.default.createElement(_font_icon2.default, { value: icon, className: _style2.default.icon }) : null,
-	        _react2.default.createElement(
-	          'span',
-	          { className: _style2.default.caption },
-	          caption
-	        ),
-	        shortcut ? _react2.default.createElement(
-	          'small',
-	          { className: _style2.default.shortcut },
-	          shortcut
-	        ) : null,
-	        children
-	      );
-	    }
-	  }]);
-
-	  return MenuItem;
-	}(_react2.default.Component);
-
-	MenuItem.propTypes = {
-	  caption: _react2.default.PropTypes.string.isRequired,
-	  children: _react2.default.PropTypes.any,
-	  className: _react2.default.PropTypes.string,
-	  disabled: _react2.default.PropTypes.bool,
-	  icon: _react2.default.PropTypes.any,
-	  onClick: _react2.default.PropTypes.func,
-	  selected: _react2.default.PropTypes.bool,
-	  shortcut: _react2.default.PropTypes.string
-	};
-	MenuItem.defaultProps = {
-	  className: '',
-	  disabled: false,
-	  selected: false
-	};
-	exports.default = (0, _ripple2.default)({
-	  className: _style2.default.ripple
-	})(MenuItem);
-	exports.RawMenuItem = MenuItem;
-
-/***/ },
-/* 227 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-	module.exports = {"root":"style-menu_item__root___3IHj6","disabled":"style-menu_item__disabled___SogH6","selected":"style-menu_item__selected___FTuRM","icon":"style-menu_item__icon___2S3LH","caption":"style-menu_item__caption___B_igT","shortcut":"style-menu_item__shortcut___uQWnp","ripple":"style-menu_item__ripple___1t-73"};
-
-/***/ },
-/* 228 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.utils = exports.time = exports.prefixer = exports.events = undefined;
-
-	var _events = __webpack_require__(188);
-
-	var _events2 = _interopRequireDefault(_events);
-
-	var _prefixer = __webpack_require__(174);
-
-	var _prefixer2 = _interopRequireDefault(_prefixer);
-
-	var _time = __webpack_require__(229);
-
-	var _time2 = _interopRequireDefault(_time);
-
-	var _utils = __webpack_require__(230);
-
-	var _utils2 = _interopRequireDefault(_utils);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	exports.default = { events: _events2.default, prefixer: _prefixer2.default, time: _time2.default, utils: _utils2.default };
-	exports.events = _events2.default;
-	exports.prefixer = _prefixer2.default;
-	exports.time = _time2.default;
-	exports.utils = _utils2.default;
-
-/***/ },
-/* 229 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.default = {
-	  getDaysInMonth: function getDaysInMonth(d) {
-	    var resultDate = this.getFirstDayOfMonth(d);
-	    resultDate.setMonth(resultDate.getMonth() + 1);
-	    resultDate.setDate(resultDate.getDate() - 1);
-	    return resultDate.getDate();
-	  },
-	  getFirstDayOfMonth: function getFirstDayOfMonth(d) {
-	    return new Date(d.getFullYear(), d.getMonth(), 1);
-	  },
-	  getFirstWeekDay: function getFirstWeekDay(d) {
-	    return this.getFirstDayOfMonth(d).getDay();
-	  },
-	  getTimeMode: function getTimeMode(d) {
-	    return d.getHours() >= 12 ? 'pm' : 'am';
-	  },
-	  getFullMonth: function getFullMonth(d) {
-	    var month = d.getMonth();
-	    switch (month) {
-	      default:
-	        return 'Unknown';
-	      case 0:
-	        return 'January';
-	      case 1:
-	        return 'February';
-	      case 2:
-	        return 'March';
-	      case 3:
-	        return 'April';
-	      case 4:
-	        return 'May';
-	      case 5:
-	        return 'June';
-	      case 6:
-	        return 'July';
-	      case 7:
-	        return 'August';
-	      case 8:
-	        return 'September';
-	      case 9:
-	        return 'October';
-	      case 10:
-	        return 'November';
-	      case 11:
-	        return 'December';
-	    }
-	  },
-	  getShortMonth: function getShortMonth(d) {
-	    var month = d.getMonth();
-	    switch (month) {
-	      default:
-	        return 'Unknown';
-	      case 0:
-	        return 'Jan';
-	      case 1:
-	        return 'Feb';
-	      case 2:
-	        return 'Mar';
-	      case 3:
-	        return 'Apr';
-	      case 4:
-	        return 'May';
-	      case 5:
-	        return 'Jun';
-	      case 6:
-	        return 'Jul';
-	      case 7:
-	        return 'Aug';
-	      case 8:
-	        return 'Sep';
-	      case 9:
-	        return 'Oct';
-	      case 10:
-	        return 'Nov';
-	      case 11:
-	        return 'Dec';
-	    }
-	  },
-	  getFullDayOfWeek: function getFullDayOfWeek(day) {
-	    switch (day) {
-	      default:
-	        return 'Unknown';
-	      case 0:
-	        return 'Sunday';
-	      case 1:
-	        return 'Monday';
-	      case 2:
-	        return 'Tuesday';
-	      case 3:
-	        return 'Wednesday';
-	      case 4:
-	        return 'Thursday';
-	      case 5:
-	        return 'Friday';
-	      case 6:
-	        return 'Saturday';
-	    }
-	  },
-	  getShortDayOfWeek: function getShortDayOfWeek(day) {
-	    switch (day) {
-	      default:
-	        return 'Unknown';
-	      case 0:
-	        return 'Sun';
-	      case 1:
-	        return 'Mon';
-	      case 2:
-	        return 'Tue';
-	      case 3:
-	        return 'Wed';
-	      case 4:
-	        return 'Thu';
-	      case 5:
-	        return 'Fri';
-	      case 6:
-	        return 'Sat';
-	    }
-	  },
-	  clone: function clone(d) {
-	    return new Date(d.getTime());
-	  },
-	  cloneAsDate: function cloneAsDate(d) {
-	    var clonedDate = this.clone(d);
-	    clonedDate.setHours(0, 0, 0, 0);
-	    return clonedDate;
-	  },
-	  isDateObject: function isDateObject(d) {
-	    return d instanceof Date;
-	  },
-	  addDays: function addDays(d, days) {
-	    var newDate = this.clone(d);
-	    newDate.setDate(d.getDate() + days);
-	    return newDate;
-	  },
-	  addMonths: function addMonths(d, months) {
-	    var newDate = this.clone(d);
-	    newDate.setMonth(d.getMonth() + months);
-	    return newDate;
-	  },
-	  addYears: function addYears(d, years) {
-	    var newDate = this.clone(d);
-	    newDate.setFullYear(d.getFullYear() + years);
-	    return newDate;
-	  },
-	  setDay: function setDay(d, day) {
-	    var newDate = this.clone(d);
-	    newDate.setDate(day);
-	    return newDate;
-	  },
-	  setMonth: function setMonth(d, month) {
-	    var newDate = this.clone(d);
-	    newDate.setMonth(month);
-	    return newDate;
-	  },
-	  setYear: function setYear(d, year) {
-	    var newDate = this.clone(d);
-	    newDate.setFullYear(year);
-	    return newDate;
-	  },
-	  setHours: function setHours(d, hours) {
-	    var newDate = this.clone(d);
-	    newDate.setHours(hours);
-	    return newDate;
-	  },
-	  setMinutes: function setMinutes(d, minutes) {
-	    var newDate = this.clone(d);
-	    newDate.setMinutes(minutes);
-	    return newDate;
-	  },
-	  toggleTimeMode: function toggleTimeMode(d) {
-	    var newDate = this.clone(d);
-	    var hours = newDate.getHours();
-
-	    newDate.setHours(hours - (hours > 12 ? -12 : 12));
-	    return newDate;
-	  },
-	  formatTime: function formatTime(date, format) {
-	    var hours = date.getHours();
-	    var mins = date.getMinutes().toString();
-
-	    if (format === 'ampm') {
-	      var isAM = hours < 12;
-	      var additional = isAM ? ' am' : ' pm';
-
-	      hours = hours % 12;
-	      hours = (hours || 12).toString();
-	      if (mins.length < 2) mins = '0' + mins;
-
-	      return hours + (mins === '00' ? '' : ':' + mins) + additional;
-	    }
-
-	    hours = hours.toString();
-	    if (hours.length < 2) hours = '0' + hours;
-	    if (mins.length < 2) mins = '0' + mins;
-	    return hours + ':' + mins;
-	  },
-	  dateOutOfRange: function dateOutOfRange(date, minDate, maxDate) {
-	    return minDate && !(date >= minDate) || maxDate && !(date <= maxDate);
-	  }
-	};
-
-/***/ },
-/* 230 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.default = {
-	  angleFromPositions: function angleFromPositions(cx, cy, ex, ey) {
-	    var theta = Math.atan2(ey - cy, ex - cx) + Math.PI / 2;
-	    return theta * 180 / Math.PI;
-	  },
-	  angle360FromPositions: function angle360FromPositions(cx, cy, ex, ey) {
-	    var angle = this.angleFromPositions(cx, cy, ex, ey);
-	    return angle < 0 ? 360 + angle : angle;
-	  },
-	  range: function range() {
-	    var start = arguments.length <= 0 || arguments[0] === undefined ? 0 : arguments[0];
-	    var stop = arguments.length <= 1 || arguments[1] === undefined ? null : arguments[1];
-	    var step = arguments.length <= 2 || arguments[2] === undefined ? 1 : arguments[2];
-	    var _start = 0;
-	    var _stop = start;
-
-	    if (stop !== null) {
-	      _start = start;
-	      _stop = stop;
-	    }
-	    var length = Math.max(Math.ceil((_stop - _start) / step), 0);
-	    var range = Array(length);
-
-	    for (var idx = 0; idx < length; idx++, _start += step) {
-	      range[idx] = _start;
-	    }
-
-	    return range;
-	  },
-	  round: function round(number, decimals) {
-	    if (!isNaN(parseFloat(number)) && isFinite(number)) {
-	      var decimalPower = Math.pow(10, decimals);
-	      return Math.round(parseFloat(number) * decimalPower) / decimalPower;
-	    }
-	    return NaN;
-	  },
-	  getViewport: function getViewport() {
-	    return {
-	      height: window.innerHeight || document.documentElement.offsetHeight,
-	      width: window.innerWidth || document.documentElement.offsetWidth
-	    };
-	  },
-	  cloneObject: function cloneObject(object) {
-	    return JSON.parse(JSON.stringify(object));
-	  },
-	  inputTypeForPrototype: function inputTypeForPrototype(prototype) {
-	    if (prototype === Date) return 'date';
-	    if (prototype === Number) return 'number';
-	    if (prototype === Boolean) return 'checkbox';
-	    return 'text';
-	  },
-	  prepareValueForInput: function prepareValueForInput(value, type) {
-	    if (type === 'date') return new Date(value).toISOString().slice(0, 10);
-	    if (type === 'checkbox') {
-	      return value ? 'on' : null;
-	    }
-	    return value;
-	  }
-	};
-
-/***/ },
-/* 231 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-	module.exports = {"root":"style-menu__root___3ensd","top-left":"style-menu__top-left___19PfJ","outline":"style-menu__outline___37dkx","top-right":"style-menu__top-right___1-JsZ","bottom-left":"style-menu__bottom-left___2wrNM","bottom-right":"style-menu__bottom-right___DJn4U","static":"style-menu__static___1GOND","menu":"style-menu__menu___wksfl","rippled":"style-menu__rippled___1_4cr","active":"style-menu__active___3ZDw6"};
-
-/***/ },
-/* 232 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _style = __webpack_require__(233);
-
-	var _style2 = _interopRequireDefault(_style);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var MenuDivider = function MenuDivider() {
-	  return _react2.default.createElement('hr', { 'data-react-toolbox': 'menu-divider', className: _style2.default.root });
-	};
-
-	exports.default = MenuDivider;
-
-/***/ },
-/* 233 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-	module.exports = {"root":"style-menu_divider__root___3Z46n"};
-
-/***/ },
-/* 234 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _button = __webpack_require__(167);
-
-	var _Menu = __webpack_require__(225);
-
-	var _Menu2 = _interopRequireDefault(_Menu);
-
-	var _style = __webpack_require__(235);
-
-	var _style2 = _interopRequireDefault(_style);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var IconMenu = function (_React$Component) {
-	  _inherits(IconMenu, _React$Component);
-
-	  function IconMenu() {
-	    var _Object$getPrototypeO;
-
-	    var _temp, _this, _ret;
-
-	    _classCallCheck(this, IconMenu);
-
-	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	      args[_key] = arguments[_key];
-	    }
-
-	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(IconMenu)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.handleButtonClick = function (event) {
-	      _this.refs.menu.show();
-	      if (_this.props.onClick) _this.props.onClick(event);
-	    }, _temp), _possibleConstructorReturn(_this, _ret);
-	  }
-
-	  _createClass(IconMenu, [{
-	    key: 'render',
-	    value: function render() {
-	      var className = _style2.default.root;
-	      if (this.props.className) className += ' ' + this.props.className;
-
-	      return _react2.default.createElement(
-	        'div',
-	        { className: className },
-	        _react2.default.createElement(_button.IconButton, {
-	          className: _style2.default.icon,
-	          icon: this.props.icon,
-	          onClick: this.handleButtonClick,
-	          ripple: this.props.iconRipple
-	        }),
-	        _react2.default.createElement(
-	          _Menu2.default,
-	          {
-	            ref: 'menu',
-	            onHide: this.props.onHide,
-	            onSelect: this.props.onSelect,
-	            onShow: this.props.onShow,
-	            position: this.props.position,
-	            ripple: this.props.menuRipple,
-	            selectable: this.props.selectable,
-	            selected: this.props.selected
-	          },
-	          this.props.children
-	        )
-	      );
-	    }
-	  }]);
-
-	  return IconMenu;
-	}(_react2.default.Component);
-
-	IconMenu.propTypes = {
-	  children: _react2.default.PropTypes.node,
-	  className: _react2.default.PropTypes.string,
-	  icon: _react2.default.PropTypes.any,
-	  iconRipple: _react2.default.PropTypes.bool,
-	  menuRipple: _react2.default.PropTypes.bool,
-	  onClick: _react2.default.PropTypes.func,
-	  onHide: _react2.default.PropTypes.func,
-	  onSelect: _react2.default.PropTypes.func,
-	  onShow: _react2.default.PropTypes.func,
-	  position: _react2.default.PropTypes.string,
-	  selectable: _react2.default.PropTypes.bool,
-	  selected: _react2.default.PropTypes.any
-	};
-	IconMenu.defaultProps = {
-	  className: '',
-	  icon: 'more_vert',
-	  iconRipple: true,
-	  menuRipple: true,
-	  position: 'auto',
-	  selectable: false
-	};
-	exports.default = IconMenu;
-
-/***/ },
-/* 235 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-	module.exports = {"root":"style-icon_menu__root___2QaGR","icon":"style-icon_menu__icon___2yuYn"};
-
-/***/ },
-/* 236 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var React = __webpack_require__(1);
-	var ReactDOM = __webpack_require__(158);
-
-	module.exports = function enhanceWithClickOutside(WrappedComponent) {
-	  var componentName = WrappedComponent.displayName || WrappedComponent.name;
-
-	  return React.createClass({
-	    displayName: 'Wrapped' + componentName,
-
-	    componentDidMount: function componentDidMount() {
-	      this.__wrappedComponent = this.refs.wrappedComponent;
-	      document.addEventListener('click', this.handleClickOutside, true);
-	    },
-
-	    componentWillUnmount: function componentWillUnmount() {
-	      document.removeEventListener('click', this.handleClickOutside, true);
-	    },
-
-	    handleClickOutside: function handleClickOutside(e) {
-	      var domNode = ReactDOM.findDOMNode(this);
-	      if ((!domNode || !domNode.contains(e.target)) && typeof this.refs.wrappedComponent.handleClickOutside === 'function') {
-	        this.refs.wrappedComponent.handleClickOutside(e);
-	      }
-	    },
-
-	    render: function render() {
-	      return React.createElement(WrappedComponent, _extends({}, this.props, { ref: 'wrappedComponent' }));
-	    }
+	  __webpack_require__(31).injection.injectEventPluginsByName({
+	    "TapEventPlugin":       __webpack_require__(188)(shouldRejectClick)
 	  });
 	};
 
+
 /***/ },
-/* 237 */
+/* 187 */
 /***/ function(module, exports) {
 
-	// removed by extract-text-webpack-plugin
+	module.exports = function(lastTouchEvent, clickTimestamp) {
+	  if (lastTouchEvent && (clickTimestamp - lastTouchEvent) < 750) {
+	    return true;
+	  }
+	};
+
 
 /***/ },
-/* 238 */
+/* 188 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	/**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * @providesModule TapEventPlugin
+	 * @typechecks static-only
+	 */
+
+	"use strict";
+
+	var EventConstants = __webpack_require__(30);
+	var EventPluginUtils = __webpack_require__(33);
+	var EventPropagators = __webpack_require__(73);
+	var SyntheticUIEvent = __webpack_require__(87);
+	var TouchEventUtils = __webpack_require__(189);
+	var ViewportMetrics = __webpack_require__(38);
+
+	var keyOf = __webpack_require__(190);
+	var topLevelTypes = EventConstants.topLevelTypes;
+
+	var isStartish = EventPluginUtils.isStartish;
+	var isEndish = EventPluginUtils.isEndish;
+
+	var isTouch = function(topLevelType) {
+	  var touchTypes = [
+	    topLevelTypes.topTouchCancel,
+	    topLevelTypes.topTouchEnd,
+	    topLevelTypes.topTouchStart,
+	    topLevelTypes.topTouchMove
+	  ];
+	  return touchTypes.indexOf(topLevelType) >= 0;
+	}
+
+	/**
+	 * Number of pixels that are tolerated in between a `touchStart` and `touchEnd`
+	 * in order to still be considered a 'tap' event.
+	 */
+	var tapMoveThreshold = 10;
+	var ignoreMouseThreshold = 750;
+	var startCoords = {x: null, y: null};
+	var lastTouchEvent = null;
+
+	var Axis = {
+	  x: {page: 'pageX', client: 'clientX', envScroll: 'currentPageScrollLeft'},
+	  y: {page: 'pageY', client: 'clientY', envScroll: 'currentPageScrollTop'}
+	};
+
+	function getAxisCoordOfEvent(axis, nativeEvent) {
+	  var singleTouch = TouchEventUtils.extractSingleTouch(nativeEvent);
+	  if (singleTouch) {
+	    return singleTouch[axis.page];
+	  }
+	  return axis.page in nativeEvent ?
+	    nativeEvent[axis.page] :
+	    nativeEvent[axis.client] + ViewportMetrics[axis.envScroll];
+	}
+
+	function getDistance(coords, nativeEvent) {
+	  var pageX = getAxisCoordOfEvent(Axis.x, nativeEvent);
+	  var pageY = getAxisCoordOfEvent(Axis.y, nativeEvent);
+	  return Math.pow(
+	    Math.pow(pageX - coords.x, 2) + Math.pow(pageY - coords.y, 2),
+	    0.5
+	  );
+	}
+
+	var touchEvents = [
+	  topLevelTypes.topTouchStart,
+	  topLevelTypes.topTouchCancel,
+	  topLevelTypes.topTouchEnd,
+	  topLevelTypes.topTouchMove,
+	];
+
+	var dependencies = [
+	  topLevelTypes.topMouseDown,
+	  topLevelTypes.topMouseMove,
+	  topLevelTypes.topMouseUp,
+	].concat(touchEvents);
+
+	var eventTypes = {
+	  touchTap: {
+	    phasedRegistrationNames: {
+	      bubbled: keyOf({onTouchTap: null}),
+	      captured: keyOf({onTouchTapCapture: null})
+	    },
+	    dependencies: dependencies
+	  }
+	};
+
+	var now = (function() {
+	  if (Date.now) {
+	    return Date.now;
+	  } else {
+	    // IE8 support: http://stackoverflow.com/questions/9430357/please-explain-why-and-how-new-date-works-as-workaround-for-date-now-in
+	    return function () {
+	      return +new Date;
+	    }
+	  }
+	})();
+
+	function createTapEventPlugin(shouldRejectClick) {
+	  return {
+
+	    tapMoveThreshold: tapMoveThreshold,
+
+	    ignoreMouseThreshold: ignoreMouseThreshold,
+
+	    eventTypes: eventTypes,
+
+	    /**
+	     * @param {string} topLevelType Record from `EventConstants`.
+	     * @param {DOMEventTarget} topLevelTarget The listening component root node.
+	     * @param {string} topLevelTargetID ID of `topLevelTarget`.
+	     * @param {object} nativeEvent Native browser event.
+	     * @return {*} An accumulation of synthetic events.
+	     * @see {EventPluginHub.extractEvents}
+	     */
+	    extractEvents: function(
+	        topLevelType,
+	        topLevelTarget,
+	        topLevelTargetID,
+	        nativeEvent,
+	        nativeEventTarget) {
+
+	      if (isTouch(topLevelType)) {
+	        lastTouchEvent = now();
+	      } else {
+	        if (shouldRejectClick(lastTouchEvent, now())) {
+	          return null;
+	        }
+	      }
+
+	      if (!isStartish(topLevelType) && !isEndish(topLevelType)) {
+	        return null;
+	      }
+	      var event = null;
+	      var distance = getDistance(startCoords, nativeEvent);
+	      if (isEndish(topLevelType) && distance < tapMoveThreshold) {
+	        event = SyntheticUIEvent.getPooled(
+	          eventTypes.touchTap,
+	          topLevelTargetID,
+	          nativeEvent,
+	          nativeEventTarget
+	        );
+	      }
+	      if (isStartish(topLevelType)) {
+	        startCoords.x = getAxisCoordOfEvent(Axis.x, nativeEvent);
+	        startCoords.y = getAxisCoordOfEvent(Axis.y, nativeEvent);
+	      } else if (isEndish(topLevelType)) {
+	        startCoords.x = 0;
+	        startCoords.y = 0;
+	      }
+	      EventPropagators.accumulateTwoPhaseDispatches(event);
+	      return event;
+	    }
+
+	  };
+	}
+
+	module.exports = createTapEventPlugin;
+
+
+/***/ },
+/* 189 */
+/***/ function(module, exports) {
+
+	/**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * @providesModule TouchEventUtils
+	 */
+
+	var TouchEventUtils = {
+	  /**
+	   * Utility function for common case of extracting out the primary touch from a
+	   * touch event.
+	   * - `touchEnd` events usually do not have the `touches` property.
+	   *   http://stackoverflow.com/questions/3666929/
+	   *   mobile-sarai-touchend-event-not-firing-when-last-touch-is-removed
+	   *
+	   * @param {Event} nativeEvent Native event that may or may not be a touch.
+	   * @return {TouchesObject?} an object with pageX and pageY or null.
+	   */
+	  extractSingleTouch: function(nativeEvent) {
+	    var touches = nativeEvent.touches;
+	    var changedTouches = nativeEvent.changedTouches;
+	    var hasTouches = touches && touches.length > 0;
+	    var hasChangedTouches = changedTouches && changedTouches.length > 0;
+
+	    return !hasTouches && hasChangedTouches ? changedTouches[0] :
+	           hasTouches ? touches[0] :
+	           nativeEvent;
+	  }
+	};
+
+	module.exports = TouchEventUtils;
+
+
+/***/ },
+/* 190 */
+/***/ function(module, exports) {
+
+	/**
+	 * Copyright 2013-2015, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule keyOf
+	 */
+
+	/**
+	 * Allows extraction of a minified key. Let's the build system minify keys
+	 * without losing the ability to dynamically use key strings as values
+	 * themselves. Pass in an object with a single key/val pair and it will return
+	 * you the string key of that single record. Suppose you want to grab the
+	 * value for a key 'className' inside of an object. Key/val minification may
+	 * have aliased that key to be 'xa12'. keyOf({className: null}) will return
+	 * 'xa12' in that case. Resolve keys you want to use once at startup time, then
+	 * reuse those resolutions.
+	 */
+	"use strict";
+
+	var keyOf = function (oneKeyObj) {
+	  var key;
+	  for (key in oneKeyObj) {
+	    if (!oneKeyObj.hasOwnProperty(key)) {
+	      continue;
+	    }
+	    return key;
+	  }
+	  return null;
+	};
+
+	module.exports = keyOf;
+
+/***/ },
+/* 191 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -31486,7 +24202,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _dialog = __webpack_require__(239);
+	var _dialog = __webpack_require__(192);
 
 	var _dialog2 = _interopRequireDefault(_dialog);
 
@@ -31494,7 +24210,7 @@
 
 	var _button2 = _interopRequireDefault(_button);
 
-	var _input = __webpack_require__(185);
+	var _input = __webpack_require__(198);
 
 	var _input2 = _interopRequireDefault(_input);
 
@@ -31506,7 +24222,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	__webpack_require__(245);
+	__webpack_require__(201);
 
 	var LoginDialog = exports.LoginDialog = function (_React$Component) {
 	    _inherits(LoginDialog, _React$Component);
@@ -31524,23 +24240,23 @@
 	    }
 
 	    _createClass(LoginDialog, [{
-	        key: 'render',
+	        key: "render",
 	        value: function render() {
 	            return _react2.default.createElement(
 	                _dialog2.default,
-	                _extends({ active: this.props.active }, this.props, { className: 'login-dialog', onOverlayClick: this._handleCancel.bind(this) }),
+	                _extends({ active: this.props.active }, this.props, { className: "login-dialog", onOverlayClick: this._handleCancel.bind(this) }),
 	                _react2.default.createElement(
-	                    'p',
-	                    { className: 'login-title' },
-	                    'Log In To Your Account'
+	                    "p",
+	                    { className: "login-title" },
+	                    "Log In To Your Account"
 	                ),
-	                _react2.default.createElement(_input2.default, { icon: 'perm_identity', type: 'text', label: 'User Name', name: 'username', value: this.state.username, onChange: this._handleUsernameChange.bind(this) }),
-	                _react2.default.createElement(_input2.default, { icon: 'lock', type: 'password', label: 'Password', name: 'password', value: this.state.password, onChange: this._handlePasswordChange.bind(this) }),
-	                _react2.default.createElement(_button2.default, { className: 'login-button', label: 'Log In', onClick: this.doLogin.bind(this) })
+	                _react2.default.createElement(_input2.default, { icon: "perm_identity", type: "text", label: "User Name", name: "username", value: this.state.username, onChange: this._handleUsernameChange.bind(this) }),
+	                _react2.default.createElement(_input2.default, { icon: "lock", type: "password", label: "Password", name: "password", value: this.state.password, onChange: this._handlePasswordChange.bind(this) }),
+	                _react2.default.createElement(_button2.default, { className: "login-button", label: "Log In", onClick: this.doLogin.bind(this) })
 	            );
 	        }
 	    }, {
-	        key: '_handlePasswordChange',
+	        key: "_handlePasswordChange",
 	        value: function _handlePasswordChange(e) {
 
 	            this.setState({
@@ -31548,7 +24264,7 @@
 	            });
 	        }
 	    }, {
-	        key: '_handleUsernameChange',
+	        key: "_handleUsernameChange",
 	        value: function _handleUsernameChange(e) {
 	            console.log(e);
 	            this.setState({
@@ -31556,14 +24272,14 @@
 	            });
 	        }
 	    }, {
-	        key: '_handleCancel',
+	        key: "_handleCancel",
 	        value: function _handleCancel(e) {
 	            if (this.props.onCancel) {
 	                this.props.onCancel();
 	            }
 	        }
 	    }, {
-	        key: 'doLogin',
+	        key: "doLogin",
 	        value: function doLogin(username, password) {
 	            if (this.props.onLogin) {
 	                this.props.onLogin(this.state.username, this.state.password);
@@ -31577,7 +24293,7 @@
 	exports.default = LoginDialog;
 
 /***/ },
-/* 239 */
+/* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31587,7 +24303,7 @@
 	});
 	exports.default = undefined;
 
-	var _Dialog = __webpack_require__(240);
+	var _Dialog = __webpack_require__(193);
 
 	var _Dialog2 = _interopRequireDefault(_Dialog);
 
@@ -31596,7 +24312,7 @@
 	exports.default = _Dialog2.default;
 
 /***/ },
-/* 240 */
+/* 193 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31619,11 +24335,11 @@
 
 	var _button2 = _interopRequireDefault(_button);
 
-	var _overlay = __webpack_require__(241);
+	var _overlay = __webpack_require__(194);
 
 	var _overlay2 = _interopRequireDefault(_overlay);
 
-	var _style = __webpack_require__(244);
+	var _style = __webpack_require__(197);
 
 	var _style2 = _interopRequireDefault(_style);
 
@@ -31692,7 +24408,7 @@
 	exports.default = Dialog;
 
 /***/ },
-/* 241 */
+/* 194 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31702,7 +24418,7 @@
 	});
 	exports.default = undefined;
 
-	var _Overlay = __webpack_require__(242);
+	var _Overlay = __webpack_require__(195);
 
 	var _Overlay2 = _interopRequireDefault(_Overlay);
 
@@ -31711,7 +24427,7 @@
 	exports.default = _Overlay2.default;
 
 /***/ },
-/* 242 */
+/* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31734,7 +24450,7 @@
 
 	var _classnames2 = _interopRequireDefault(_classnames);
 
-	var _style = __webpack_require__(243);
+	var _style = __webpack_require__(196);
 
 	var _style2 = _interopRequireDefault(_style);
 
@@ -31816,34 +24532,49 @@
 	exports.default = Overlay;
 
 /***/ },
-/* 243 */
+/* 196 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"root":"style__root___2eRNM","invisible":"style__invisible___1Mlqt","overlay":"style__overlay___VPPZH","active":"style__active___32WXW"};
 
 /***/ },
-/* 244 */
+/* 197 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"root":"style__root___2M7vY","active":"style__active___TmR1Z","small":"style__small___3HKlS","normal":"style__normal___PRYWe","large":"style__large___145ZH","title":"style__title___15CS5","body":"style__body___23zcE","navigation":"style__navigation___1Cnvq","button":"style__button___1xLHN"};
 
 /***/ },
-/* 245 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
-/* 246 */
+/* 198 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
+	exports.default = undefined;
+
+	var _Input = __webpack_require__(199);
+
+	var _Input2 = _interopRequireDefault(_Input);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = _Input2.default;
+
+/***/ },
+/* 199 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -31851,11 +24582,23 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _button = __webpack_require__(167);
+	var _classnames = __webpack_require__(162);
 
-	__webpack_require__(247);
+	var _classnames2 = _interopRequireDefault(_classnames);
+
+	var _font_icon = __webpack_require__(169);
+
+	var _font_icon2 = _interopRequireDefault(_font_icon);
+
+	var _style = __webpack_require__(200);
+
+	var _style2 = _interopRequireDefault(_style);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -31863,59 +24606,155 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var FloatingToolbar = function (_Component) {
-	    _inherits(FloatingToolbar, _Component);
+	var Input = function (_React$Component) {
+	  _inherits(Input, _React$Component);
 
-	    function FloatingToolbar(props) {
-	        _classCallCheck(this, FloatingToolbar);
+	  function Input() {
+	    var _Object$getPrototypeO;
 
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(FloatingToolbar).call(this, props));
+	    var _temp, _this, _ret;
+
+	    _classCallCheck(this, Input);
+
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
 	    }
 
-	    _createClass(FloatingToolbar, [{
-	        key: 'render',
-	        value: function render() {
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Input)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.handleChange = function (event) {
+	      if (_this.props.onChange) _this.props.onChange(event.target.value, event);
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
+	  }
 
-	            return _react2.default.createElement(
-	                'div',
-	                this.props,
-	                _react2.default.createElement(_button.IconButton, { icon: 'undo', onClick: this.props.onUndo }),
-	                _react2.default.createElement(_button.IconButton, { icon: 'redo', onClick: this.props.onRedo }),
-	                _react2.default.createElement(_button.IconButton, { icon: 'zoom_in', onClick: this.props.onZoomIn }),
-	                _react2.default.createElement(_button.IconButton, { icon: 'zoom_out', onClick: this.props.onZoomOut }),
-	                _react2.default.createElement(_button.IconButton, { icon: 'add_box', onClick: this.props.onAdd }),
-	                _react2.default.createElement(_button.IconButton, { icon: 'content_copy', onClick: this.props.onCopy }),
-	                _react2.default.createElement(_button.IconButton, { icon: 'content_paste', onClick: this.props.onPaste }),
-	                _react2.default.createElement(_button.IconButton, { icon: 'fullscreen', onClick: this.props.onFullScreen }),
-	                _react2.default.createElement(_button.IconButton, { icon: 'screen_rotation', onClick: this.props.onOrientationChange })
-	            );
-	        }
-	    }]);
+	  _createClass(Input, [{
+	    key: 'blur',
+	    value: function blur() {
+	      this.refs.input.blur();
+	    }
+	  }, {
+	    key: 'focus',
+	    value: function focus() {
+	      this.refs.input.focus();
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _ClassNames2;
 
-	    return FloatingToolbar;
-	}(_react.Component);
+	      var _props = this.props;
+	      var children = _props.children;
+	      var disabled = _props.disabled;
+	      var error = _props.error;
+	      var floating = _props.floating;
+	      var icon = _props.icon;
+	      var labelText = _props.label;
+	      var maxLength = _props.maxLength;
+	      var multiline = _props.multiline;
+	      var type = _props.type;
+	      var value = _props.value;
 
-	exports.default = FloatingToolbar;
+	      var others = _objectWithoutProperties(_props, ['children', 'disabled', 'error', 'floating', 'icon', 'label', 'maxLength', 'multiline', 'type', 'value']);
+
+	      var length = maxLength && value ? value.length : 0;
+	      var labelClassName = (0, _classnames2.default)(_style2.default.label, _defineProperty({}, _style2.default.fixed, !floating));
+
+	      var className = (0, _classnames2.default)(_style2.default.root, (_ClassNames2 = {}, _defineProperty(_ClassNames2, _style2.default.disabled, disabled), _defineProperty(_ClassNames2, _style2.default.errored, error), _defineProperty(_ClassNames2, _style2.default.hidden, type === 'hidden'), _defineProperty(_ClassNames2, _style2.default.withIcon, icon), _ClassNames2), this.props.className);
+
+	      var InputElement = _react2.default.createElement(multiline ? 'textarea' : 'input', _extends({}, others, {
+	        className: (0, _classnames2.default)(_style2.default.input, _defineProperty({}, _style2.default.filled, value)),
+	        onChange: this.handleChange,
+	        ref: 'input',
+	        role: 'input',
+	        disabled: disabled,
+	        type: type,
+	        value: value,
+	        maxLength: maxLength
+	      }));
+
+	      return _react2.default.createElement(
+	        'div',
+	        { 'data-react-toolbox': 'input', className: className },
+	        InputElement,
+	        icon ? _react2.default.createElement(_font_icon2.default, { className: _style2.default.icon, value: icon }) : null,
+	        _react2.default.createElement('span', { className: _style2.default.bar }),
+	        labelText ? _react2.default.createElement(
+	          'label',
+	          { className: labelClassName },
+	          labelText
+	        ) : null,
+	        error ? _react2.default.createElement(
+	          'span',
+	          { className: _style2.default.error },
+	          error
+	        ) : null,
+	        maxLength ? _react2.default.createElement(
+	          'span',
+	          { className: _style2.default.counter },
+	          length,
+	          '/',
+	          maxLength
+	        ) : null,
+	        children
+	      );
+	    }
+	  }]);
+
+	  return Input;
+	}(_react2.default.Component);
+
+	Input.propTypes = {
+	  children: _react2.default.PropTypes.any,
+	  className: _react2.default.PropTypes.string,
+	  disabled: _react2.default.PropTypes.bool,
+	  error: _react2.default.PropTypes.node,
+	  floating: _react2.default.PropTypes.bool,
+	  icon: _react2.default.PropTypes.any,
+	  label: _react2.default.PropTypes.string,
+	  maxLength: _react2.default.PropTypes.number,
+	  multiline: _react2.default.PropTypes.bool,
+	  onBlur: _react2.default.PropTypes.func,
+	  onChange: _react2.default.PropTypes.func,
+	  onFocus: _react2.default.PropTypes.func,
+	  onKeyPress: _react2.default.PropTypes.func,
+	  required: _react2.default.PropTypes.bool,
+	  type: _react2.default.PropTypes.string,
+	  value: _react2.default.PropTypes.any
+	};
+	Input.defaultProps = {
+	  className: '',
+	  disabled: false,
+	  floating: true,
+	  multiline: false,
+	  required: false,
+	  type: 'text'
+	};
+	exports.default = Input;
 
 /***/ },
-/* 247 */
+/* 200 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+	module.exports = {"root":"style__root___mvZgg","withIcon":"style__withIcon___l-VGA","icon":"style__icon___u0lkM","input":"style__input___2CW85","bar":"style__bar___3JfC1","label":"style__label___1ZZZb","fixed":"style__fixed___UEXes","filled":"style__filled___2qouG","error":"style__error___NYYg3","counter":"style__counter___2IQJy","disabled":"style__disabled___2UayE","errored":"style__errored___1U0HK","hidden":"style__hidden___3ZWXC"};
+
+/***/ },
+/* 201 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 248 */
+/* 202 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 249 */
+/* 203 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var _jquery = __webpack_require__(250);
+	var _jquery = __webpack_require__(204);
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
@@ -31998,7 +24837,7 @@
 	module.exports = Backend;
 
 /***/ },
-/* 250 */
+/* 204 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -41846,7 +34685,7 @@
 
 
 /***/ },
-/* 251 */
+/* 205 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41856,7 +34695,7 @@
 	});
 	exports.default = undefined;
 
-	var _App = __webpack_require__(252);
+	var _App = __webpack_require__(206);
 
 	var _App2 = _interopRequireDefault(_App);
 
@@ -41865,7 +34704,7 @@
 	exports.default = _App2.default;
 
 /***/ },
-/* 252 */
+/* 206 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41878,7 +34717,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _style = __webpack_require__(253);
+	var _style = __webpack_require__(207);
 
 	var _style2 = _interopRequireDefault(_style);
 
@@ -41906,14 +34745,1487 @@
 	exports.default = App;
 
 /***/ },
-/* 253 */
+/* 207 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"root":"style__root___EmyH0"};
 
 /***/ },
-/* 254 */
+/* 208 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	exports.__esModule = true;
+	exports.connect = exports.Provider = undefined;
+
+	var _Provider = __webpack_require__(209);
+
+	var _Provider2 = _interopRequireDefault(_Provider);
+
+	var _connect = __webpack_require__(211);
+
+	var _connect2 = _interopRequireDefault(_connect);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+	exports.Provider = _Provider2["default"];
+	exports.connect = _connect2["default"];
+
+/***/ },
+/* 209 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
+
+	exports.__esModule = true;
+	exports["default"] = undefined;
+
+	var _react = __webpack_require__(1);
+
+	var _storeShape = __webpack_require__(210);
+
+	var _storeShape2 = _interopRequireDefault(_storeShape);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var didWarnAboutReceivingStore = false;
+	function warnAboutReceivingStore() {
+	  if (didWarnAboutReceivingStore) {
+	    return;
+	  }
+	  didWarnAboutReceivingStore = true;
+
+	  /* eslint-disable no-console */
+	  if (typeof console !== 'undefined' && typeof console.error === 'function') {
+	    console.error('<Provider> does not support changing `store` on the fly. ' + 'It is most likely that you see this error because you updated to ' + 'Redux 2.x and React Redux 2.x which no longer hot reload reducers ' + 'automatically. See https://github.com/rackt/react-redux/releases/' + 'tag/v2.0.0 for the migration instructions.');
+	  }
+	  /* eslint-disable no-console */
+	}
+
+	var Provider = function (_Component) {
+	  _inherits(Provider, _Component);
+
+	  Provider.prototype.getChildContext = function getChildContext() {
+	    return { store: this.store };
+	  };
+
+	  function Provider(props, context) {
+	    _classCallCheck(this, Provider);
+
+	    var _this = _possibleConstructorReturn(this, _Component.call(this, props, context));
+
+	    _this.store = props.store;
+	    return _this;
+	  }
+
+	  Provider.prototype.render = function render() {
+	    var children = this.props.children;
+
+	    return _react.Children.only(children);
+	  };
+
+	  return Provider;
+	}(_react.Component);
+
+	exports["default"] = Provider;
+
+	if (process.env.NODE_ENV !== 'production') {
+	  Provider.prototype.componentWillReceiveProps = function (nextProps) {
+	    var store = this.store;
+	    var nextStore = nextProps.store;
+
+	    if (store !== nextStore) {
+	      warnAboutReceivingStore();
+	    }
+	  };
+	}
+
+	Provider.propTypes = {
+	  store: _storeShape2["default"].isRequired,
+	  children: _react.PropTypes.element.isRequired
+	};
+	Provider.childContextTypes = {
+	  store: _storeShape2["default"].isRequired
+	};
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+
+/***/ },
+/* 210 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	exports.__esModule = true;
+
+	var _react = __webpack_require__(1);
+
+	exports["default"] = _react.PropTypes.shape({
+	  subscribe: _react.PropTypes.func.isRequired,
+	  dispatch: _react.PropTypes.func.isRequired,
+	  getState: _react.PropTypes.func.isRequired
+	});
+
+/***/ },
+/* 211 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	exports.__esModule = true;
+	exports["default"] = connect;
+
+	var _react = __webpack_require__(1);
+
+	var _storeShape = __webpack_require__(210);
+
+	var _storeShape2 = _interopRequireDefault(_storeShape);
+
+	var _shallowEqual = __webpack_require__(212);
+
+	var _shallowEqual2 = _interopRequireDefault(_shallowEqual);
+
+	var _wrapActionCreators = __webpack_require__(213);
+
+	var _wrapActionCreators2 = _interopRequireDefault(_wrapActionCreators);
+
+	var _isPlainObject = __webpack_require__(224);
+
+	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
+
+	var _hoistNonReactStatics = __webpack_require__(227);
+
+	var _hoistNonReactStatics2 = _interopRequireDefault(_hoistNonReactStatics);
+
+	var _invariant = __webpack_require__(228);
+
+	var _invariant2 = _interopRequireDefault(_invariant);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var defaultMapStateToProps = function defaultMapStateToProps(state) {
+	  return {};
+	}; // eslint-disable-line no-unused-vars
+	var defaultMapDispatchToProps = function defaultMapDispatchToProps(dispatch) {
+	  return { dispatch: dispatch };
+	};
+	var defaultMergeProps = function defaultMergeProps(stateProps, dispatchProps, parentProps) {
+	  return _extends({}, parentProps, stateProps, dispatchProps);
+	};
+
+	function getDisplayName(WrappedComponent) {
+	  return WrappedComponent.displayName || WrappedComponent.name || 'Component';
+	}
+
+	function checkStateShape(stateProps, dispatch) {
+	  (0, _invariant2["default"])((0, _isPlainObject2["default"])(stateProps), '`%sToProps` must return an object. Instead received %s.', dispatch ? 'mapDispatch' : 'mapState', stateProps);
+	  return stateProps;
+	}
+
+	// Helps track hot reloading.
+	var nextVersion = 0;
+
+	function connect(mapStateToProps, mapDispatchToProps, mergeProps) {
+	  var options = arguments.length <= 3 || arguments[3] === undefined ? {} : arguments[3];
+
+	  var shouldSubscribe = Boolean(mapStateToProps);
+	  var mapState = mapStateToProps || defaultMapStateToProps;
+	  var mapDispatch = (0, _isPlainObject2["default"])(mapDispatchToProps) ? (0, _wrapActionCreators2["default"])(mapDispatchToProps) : mapDispatchToProps || defaultMapDispatchToProps;
+
+	  var finalMergeProps = mergeProps || defaultMergeProps;
+	  var checkMergedEquals = finalMergeProps !== defaultMergeProps;
+	  var _options$pure = options.pure;
+	  var pure = _options$pure === undefined ? true : _options$pure;
+	  var _options$withRef = options.withRef;
+	  var withRef = _options$withRef === undefined ? false : _options$withRef;
+
+	  // Helps track hot reloading.
+
+	  var version = nextVersion++;
+
+	  function computeMergedProps(stateProps, dispatchProps, parentProps) {
+	    var mergedProps = finalMergeProps(stateProps, dispatchProps, parentProps);
+	    (0, _invariant2["default"])((0, _isPlainObject2["default"])(mergedProps), '`mergeProps` must return an object. Instead received %s.', mergedProps);
+	    return mergedProps;
+	  }
+
+	  return function wrapWithConnect(WrappedComponent) {
+	    var Connect = function (_Component) {
+	      _inherits(Connect, _Component);
+
+	      Connect.prototype.shouldComponentUpdate = function shouldComponentUpdate() {
+	        return !pure || this.haveOwnPropsChanged || this.hasStoreStateChanged;
+	      };
+
+	      function Connect(props, context) {
+	        _classCallCheck(this, Connect);
+
+	        var _this = _possibleConstructorReturn(this, _Component.call(this, props, context));
+
+	        _this.version = version;
+	        _this.store = props.store || context.store;
+
+	        (0, _invariant2["default"])(_this.store, 'Could not find "store" in either the context or ' + ('props of "' + _this.constructor.displayName + '". ') + 'Either wrap the root component in a <Provider>, ' + ('or explicitly pass "store" as a prop to "' + _this.constructor.displayName + '".'));
+
+	        var storeState = _this.store.getState();
+	        _this.state = { storeState: storeState };
+	        _this.clearCache();
+	        return _this;
+	      }
+
+	      Connect.prototype.computeStateProps = function computeStateProps(store, props) {
+	        if (!this.finalMapStateToProps) {
+	          return this.configureFinalMapState(store, props);
+	        }
+
+	        var state = store.getState();
+	        var stateProps = this.doStatePropsDependOnOwnProps ? this.finalMapStateToProps(state, props) : this.finalMapStateToProps(state);
+
+	        return checkStateShape(stateProps);
+	      };
+
+	      Connect.prototype.configureFinalMapState = function configureFinalMapState(store, props) {
+	        var mappedState = mapState(store.getState(), props);
+	        var isFactory = typeof mappedState === 'function';
+
+	        this.finalMapStateToProps = isFactory ? mappedState : mapState;
+	        this.doStatePropsDependOnOwnProps = this.finalMapStateToProps.length !== 1;
+
+	        return isFactory ? this.computeStateProps(store, props) : checkStateShape(mappedState);
+	      };
+
+	      Connect.prototype.computeDispatchProps = function computeDispatchProps(store, props) {
+	        if (!this.finalMapDispatchToProps) {
+	          return this.configureFinalMapDispatch(store, props);
+	        }
+
+	        var dispatch = store.dispatch;
+
+	        var dispatchProps = this.doDispatchPropsDependOnOwnProps ? this.finalMapDispatchToProps(dispatch, props) : this.finalMapDispatchToProps(dispatch);
+
+	        return checkStateShape(dispatchProps, true);
+	      };
+
+	      Connect.prototype.configureFinalMapDispatch = function configureFinalMapDispatch(store, props) {
+	        var mappedDispatch = mapDispatch(store.dispatch, props);
+	        var isFactory = typeof mappedDispatch === 'function';
+
+	        this.finalMapDispatchToProps = isFactory ? mappedDispatch : mapDispatch;
+	        this.doDispatchPropsDependOnOwnProps = this.finalMapDispatchToProps.length !== 1;
+
+	        return isFactory ? this.computeDispatchProps(store, props) : checkStateShape(mappedDispatch, true);
+	      };
+
+	      Connect.prototype.updateStatePropsIfNeeded = function updateStatePropsIfNeeded() {
+	        var nextStateProps = this.computeStateProps(this.store, this.props);
+	        if (this.stateProps && (0, _shallowEqual2["default"])(nextStateProps, this.stateProps)) {
+	          return false;
+	        }
+
+	        this.stateProps = nextStateProps;
+	        return true;
+	      };
+
+	      Connect.prototype.updateDispatchPropsIfNeeded = function updateDispatchPropsIfNeeded() {
+	        var nextDispatchProps = this.computeDispatchProps(this.store, this.props);
+	        if (this.dispatchProps && (0, _shallowEqual2["default"])(nextDispatchProps, this.dispatchProps)) {
+	          return false;
+	        }
+
+	        this.dispatchProps = nextDispatchProps;
+	        return true;
+	      };
+
+	      Connect.prototype.updateMergedPropsIfNeeded = function updateMergedPropsIfNeeded() {
+	        var nextMergedProps = computeMergedProps(this.stateProps, this.dispatchProps, this.props);
+	        if (this.mergedProps && checkMergedEquals && (0, _shallowEqual2["default"])(nextMergedProps, this.mergedProps)) {
+	          return false;
+	        }
+
+	        this.mergedProps = nextMergedProps;
+	        return true;
+	      };
+
+	      Connect.prototype.isSubscribed = function isSubscribed() {
+	        return typeof this.unsubscribe === 'function';
+	      };
+
+	      Connect.prototype.trySubscribe = function trySubscribe() {
+	        if (shouldSubscribe && !this.unsubscribe) {
+	          this.unsubscribe = this.store.subscribe(this.handleChange.bind(this));
+	          this.handleChange();
+	        }
+	      };
+
+	      Connect.prototype.tryUnsubscribe = function tryUnsubscribe() {
+	        if (this.unsubscribe) {
+	          this.unsubscribe();
+	          this.unsubscribe = null;
+	        }
+	      };
+
+	      Connect.prototype.componentDidMount = function componentDidMount() {
+	        this.trySubscribe();
+	      };
+
+	      Connect.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+	        if (!pure || !(0, _shallowEqual2["default"])(nextProps, this.props)) {
+	          this.haveOwnPropsChanged = true;
+	        }
+	      };
+
+	      Connect.prototype.componentWillUnmount = function componentWillUnmount() {
+	        this.tryUnsubscribe();
+	        this.clearCache();
+	      };
+
+	      Connect.prototype.clearCache = function clearCache() {
+	        this.dispatchProps = null;
+	        this.stateProps = null;
+	        this.mergedProps = null;
+	        this.haveOwnPropsChanged = true;
+	        this.hasStoreStateChanged = true;
+	        this.renderedElement = null;
+	        this.finalMapDispatchToProps = null;
+	        this.finalMapStateToProps = null;
+	      };
+
+	      Connect.prototype.handleChange = function handleChange() {
+	        if (!this.unsubscribe) {
+	          return;
+	        }
+
+	        var prevStoreState = this.state.storeState;
+	        var storeState = this.store.getState();
+
+	        if (!pure || prevStoreState !== storeState) {
+	          this.hasStoreStateChanged = true;
+	          this.setState({ storeState: storeState });
+	        }
+	      };
+
+	      Connect.prototype.getWrappedInstance = function getWrappedInstance() {
+	        (0, _invariant2["default"])(withRef, 'To access the wrapped instance, you need to specify ' + '{ withRef: true } as the fourth argument of the connect() call.');
+
+	        return this.refs.wrappedInstance;
+	      };
+
+	      Connect.prototype.render = function render() {
+	        var haveOwnPropsChanged = this.haveOwnPropsChanged;
+	        var hasStoreStateChanged = this.hasStoreStateChanged;
+	        var renderedElement = this.renderedElement;
+
+	        this.haveOwnPropsChanged = false;
+	        this.hasStoreStateChanged = false;
+
+	        var shouldUpdateStateProps = true;
+	        var shouldUpdateDispatchProps = true;
+	        if (pure && renderedElement) {
+	          shouldUpdateStateProps = hasStoreStateChanged || haveOwnPropsChanged && this.doStatePropsDependOnOwnProps;
+	          shouldUpdateDispatchProps = haveOwnPropsChanged && this.doDispatchPropsDependOnOwnProps;
+	        }
+
+	        var haveStatePropsChanged = false;
+	        var haveDispatchPropsChanged = false;
+	        if (shouldUpdateStateProps) {
+	          haveStatePropsChanged = this.updateStatePropsIfNeeded();
+	        }
+	        if (shouldUpdateDispatchProps) {
+	          haveDispatchPropsChanged = this.updateDispatchPropsIfNeeded();
+	        }
+
+	        var haveMergedPropsChanged = true;
+	        if (haveStatePropsChanged || haveDispatchPropsChanged || haveOwnPropsChanged) {
+	          haveMergedPropsChanged = this.updateMergedPropsIfNeeded();
+	        } else {
+	          haveMergedPropsChanged = false;
+	        }
+
+	        if (!haveMergedPropsChanged && renderedElement) {
+	          return renderedElement;
+	        }
+
+	        if (withRef) {
+	          this.renderedElement = (0, _react.createElement)(WrappedComponent, _extends({}, this.mergedProps, {
+	            ref: 'wrappedInstance'
+	          }));
+	        } else {
+	          this.renderedElement = (0, _react.createElement)(WrappedComponent, this.mergedProps);
+	        }
+
+	        return this.renderedElement;
+	      };
+
+	      return Connect;
+	    }(_react.Component);
+
+	    Connect.displayName = 'Connect(' + getDisplayName(WrappedComponent) + ')';
+	    Connect.WrappedComponent = WrappedComponent;
+	    Connect.contextTypes = {
+	      store: _storeShape2["default"]
+	    };
+	    Connect.propTypes = {
+	      store: _storeShape2["default"]
+	    };
+
+	    if (process.env.NODE_ENV !== 'production') {
+	      Connect.prototype.componentWillUpdate = function componentWillUpdate() {
+	        if (this.version === version) {
+	          return;
+	        }
+
+	        // We are hot reloading!
+	        this.version = version;
+	        this.trySubscribe();
+	        this.clearCache();
+	      };
+	    }
+
+	    return (0, _hoistNonReactStatics2["default"])(Connect, WrappedComponent);
+	  };
+	}
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+
+/***/ },
+/* 212 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	exports.__esModule = true;
+	exports["default"] = shallowEqual;
+	function shallowEqual(objA, objB) {
+	  if (objA === objB) {
+	    return true;
+	  }
+
+	  var keysA = Object.keys(objA);
+	  var keysB = Object.keys(objB);
+
+	  if (keysA.length !== keysB.length) {
+	    return false;
+	  }
+
+	  // Test for A's keys different from B.
+	  var hasOwn = Object.prototype.hasOwnProperty;
+	  for (var i = 0; i < keysA.length; i++) {
+	    if (!hasOwn.call(objB, keysA[i]) || objA[keysA[i]] !== objB[keysA[i]]) {
+	      return false;
+	    }
+	  }
+
+	  return true;
+	}
+
+/***/ },
+/* 213 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	exports.__esModule = true;
+	exports["default"] = wrapActionCreators;
+
+	var _redux = __webpack_require__(214);
+
+	function wrapActionCreators(actionCreators) {
+	  return function (dispatch) {
+	    return (0, _redux.bindActionCreators)(actionCreators, dispatch);
+	  };
+	}
+
+/***/ },
+/* 214 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
+
+	exports.__esModule = true;
+	exports.compose = exports.applyMiddleware = exports.bindActionCreators = exports.combineReducers = exports.createStore = undefined;
+
+	var _createStore = __webpack_require__(215);
+
+	var _createStore2 = _interopRequireDefault(_createStore);
+
+	var _combineReducers = __webpack_require__(219);
+
+	var _combineReducers2 = _interopRequireDefault(_combineReducers);
+
+	var _bindActionCreators = __webpack_require__(221);
+
+	var _bindActionCreators2 = _interopRequireDefault(_bindActionCreators);
+
+	var _applyMiddleware = __webpack_require__(222);
+
+	var _applyMiddleware2 = _interopRequireDefault(_applyMiddleware);
+
+	var _compose = __webpack_require__(223);
+
+	var _compose2 = _interopRequireDefault(_compose);
+
+	var _warning = __webpack_require__(220);
+
+	var _warning2 = _interopRequireDefault(_warning);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+	/*
+	* This is a dummy function to check if the function name has been altered by minification.
+	* If the function has been minified and NODE_ENV !== 'production', warn the user.
+	*/
+	function isCrushed() {}
+
+	if (process.env.NODE_ENV !== 'production' && typeof isCrushed.name === 'string' && isCrushed.name !== 'isCrushed') {
+	  (0, _warning2["default"])('You are currently using minified code outside of NODE_ENV === \'production\'. ' + 'This means that you are running a slower development build of Redux. ' + 'You can use loose-envify (https://github.com/zertosh/loose-envify) for browserify ' + 'or DefinePlugin for webpack (http://stackoverflow.com/questions/30030031) ' + 'to ensure you have the correct code for your production build.');
+	}
+
+	exports.createStore = _createStore2["default"];
+	exports.combineReducers = _combineReducers2["default"];
+	exports.bindActionCreators = _bindActionCreators2["default"];
+	exports.applyMiddleware = _applyMiddleware2["default"];
+	exports.compose = _compose2["default"];
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+
+/***/ },
+/* 215 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	exports.__esModule = true;
+	exports.ActionTypes = undefined;
+	exports["default"] = createStore;
+
+	var _isPlainObject = __webpack_require__(216);
+
+	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+	/**
+	 * These are private action types reserved by Redux.
+	 * For any unknown actions, you must return the current state.
+	 * If the current state is undefined, you must return the initial state.
+	 * Do not reference these action types directly in your code.
+	 */
+	var ActionTypes = exports.ActionTypes = {
+	  INIT: '@@redux/INIT'
+	};
+
+	/**
+	 * Creates a Redux store that holds the state tree.
+	 * The only way to change the data in the store is to call `dispatch()` on it.
+	 *
+	 * There should only be a single store in your app. To specify how different
+	 * parts of the state tree respond to actions, you may combine several reducers
+	 * into a single reducer function by using `combineReducers`.
+	 *
+	 * @param {Function} reducer A function that returns the next state tree, given
+	 * the current state tree and the action to handle.
+	 *
+	 * @param {any} [initialState] The initial state. You may optionally specify it
+	 * to hydrate the state from the server in universal apps, or to restore a
+	 * previously serialized user session.
+	 * If you use `combineReducers` to produce the root reducer function, this must be
+	 * an object with the same shape as `combineReducers` keys.
+	 *
+	 * @param {Function} enhancer The store enhancer. You may optionally specify it
+	 * to enhance the store with third-party capabilities such as middleware,
+	 * time travel, persistence, etc. The only store enhancer that ships with Redux
+	 * is `applyMiddleware()`.
+	 *
+	 * @returns {Store} A Redux store that lets you read the state, dispatch actions
+	 * and subscribe to changes.
+	 */
+	function createStore(reducer, initialState, enhancer) {
+	  if (typeof initialState === 'function' && typeof enhancer === 'undefined') {
+	    enhancer = initialState;
+	    initialState = undefined;
+	  }
+
+	  if (typeof enhancer !== 'undefined') {
+	    if (typeof enhancer !== 'function') {
+	      throw new Error('Expected the enhancer to be a function.');
+	    }
+
+	    return enhancer(createStore)(reducer, initialState);
+	  }
+
+	  if (typeof reducer !== 'function') {
+	    throw new Error('Expected the reducer to be a function.');
+	  }
+
+	  var currentReducer = reducer;
+	  var currentState = initialState;
+	  var currentListeners = [];
+	  var nextListeners = currentListeners;
+	  var isDispatching = false;
+
+	  function ensureCanMutateNextListeners() {
+	    if (nextListeners === currentListeners) {
+	      nextListeners = currentListeners.slice();
+	    }
+	  }
+
+	  /**
+	   * Reads the state tree managed by the store.
+	   *
+	   * @returns {any} The current state tree of your application.
+	   */
+	  function getState() {
+	    return currentState;
+	  }
+
+	  /**
+	   * Adds a change listener. It will be called any time an action is dispatched,
+	   * and some part of the state tree may potentially have changed. You may then
+	   * call `getState()` to read the current state tree inside the callback.
+	   *
+	   * You may call `dispatch()` from a change listener, with the following
+	   * caveats:
+	   *
+	   * 1. The subscriptions are snapshotted just before every `dispatch()` call.
+	   * If you subscribe or unsubscribe while the listeners are being invoked, this
+	   * will not have any effect on the `dispatch()` that is currently in progress.
+	   * However, the next `dispatch()` call, whether nested or not, will use a more
+	   * recent snapshot of the subscription list.
+	   *
+	   * 2. The listener should not expect to see all states changes, as the state
+	   * might have been updated multiple times during a nested `dispatch()` before
+	   * the listener is called. It is, however, guaranteed that all subscribers
+	   * registered before the `dispatch()` started will be called with the latest
+	   * state by the time it exits.
+	   *
+	   * @param {Function} listener A callback to be invoked on every dispatch.
+	   * @returns {Function} A function to remove this change listener.
+	   */
+	  function subscribe(listener) {
+	    if (typeof listener !== 'function') {
+	      throw new Error('Expected listener to be a function.');
+	    }
+
+	    var isSubscribed = true;
+
+	    ensureCanMutateNextListeners();
+	    nextListeners.push(listener);
+
+	    return function unsubscribe() {
+	      if (!isSubscribed) {
+	        return;
+	      }
+
+	      isSubscribed = false;
+
+	      ensureCanMutateNextListeners();
+	      var index = nextListeners.indexOf(listener);
+	      nextListeners.splice(index, 1);
+	    };
+	  }
+
+	  /**
+	   * Dispatches an action. It is the only way to trigger a state change.
+	   *
+	   * The `reducer` function, used to create the store, will be called with the
+	   * current state tree and the given `action`. Its return value will
+	   * be considered the **next** state of the tree, and the change listeners
+	   * will be notified.
+	   *
+	   * The base implementation only supports plain object actions. If you want to
+	   * dispatch a Promise, an Observable, a thunk, or something else, you need to
+	   * wrap your store creating function into the corresponding middleware. For
+	   * example, see the documentation for the `redux-thunk` package. Even the
+	   * middleware will eventually dispatch plain object actions using this method.
+	   *
+	   * @param {Object} action A plain object representing “what changed”. It is
+	   * a good idea to keep actions serializable so you can record and replay user
+	   * sessions, or use the time travelling `redux-devtools`. An action must have
+	   * a `type` property which may not be `undefined`. It is a good idea to use
+	   * string constants for action types.
+	   *
+	   * @returns {Object} For convenience, the same action object you dispatched.
+	   *
+	   * Note that, if you use a custom middleware, it may wrap `dispatch()` to
+	   * return something else (for example, a Promise you can await).
+	   */
+	  function dispatch(action) {
+	    if (!(0, _isPlainObject2["default"])(action)) {
+	      throw new Error('Actions must be plain objects. ' + 'Use custom middleware for async actions.');
+	    }
+
+	    if (typeof action.type === 'undefined') {
+	      throw new Error('Actions may not have an undefined "type" property. ' + 'Have you misspelled a constant?');
+	    }
+
+	    if (isDispatching) {
+	      throw new Error('Reducers may not dispatch actions.');
+	    }
+
+	    try {
+	      isDispatching = true;
+	      currentState = currentReducer(currentState, action);
+	    } finally {
+	      isDispatching = false;
+	    }
+
+	    var listeners = currentListeners = nextListeners;
+	    for (var i = 0; i < listeners.length; i++) {
+	      listeners[i]();
+	    }
+
+	    return action;
+	  }
+
+	  /**
+	   * Replaces the reducer currently used by the store to calculate the state.
+	   *
+	   * You might need this if your app implements code splitting and you want to
+	   * load some of the reducers dynamically. You might also need this if you
+	   * implement a hot reloading mechanism for Redux.
+	   *
+	   * @param {Function} nextReducer The reducer for the store to use instead.
+	   * @returns {void}
+	   */
+	  function replaceReducer(nextReducer) {
+	    if (typeof nextReducer !== 'function') {
+	      throw new Error('Expected the nextReducer to be a function.');
+	    }
+
+	    currentReducer = nextReducer;
+	    dispatch({ type: ActionTypes.INIT });
+	  }
+
+	  // When a store is created, an "INIT" action is dispatched so that every
+	  // reducer returns their initial state. This effectively populates
+	  // the initial state tree.
+	  dispatch({ type: ActionTypes.INIT });
+
+	  return {
+	    dispatch: dispatch,
+	    subscribe: subscribe,
+	    getState: getState,
+	    replaceReducer: replaceReducer
+	  };
+	}
+
+/***/ },
+/* 216 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isHostObject = __webpack_require__(217),
+	    isObjectLike = __webpack_require__(218);
+
+	/** `Object#toString` result references. */
+	var objectTag = '[object Object]';
+
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
+
+	/** Used to resolve the decompiled source of functions. */
+	var funcToString = Function.prototype.toString;
+
+	/** Used to infer the `Object` constructor. */
+	var objectCtorString = funcToString.call(Object);
+
+	/**
+	 * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objectToString = objectProto.toString;
+
+	/** Built-in value references. */
+	var getPrototypeOf = Object.getPrototypeOf;
+
+	/**
+	 * Checks if `value` is a plain object, that is, an object created by the
+	 * `Object` constructor or one with a `[[Prototype]]` of `null`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a plain object, else `false`.
+	 * @example
+	 *
+	 * function Foo() {
+	 *   this.a = 1;
+	 * }
+	 *
+	 * _.isPlainObject(new Foo);
+	 * // => false
+	 *
+	 * _.isPlainObject([1, 2, 3]);
+	 * // => false
+	 *
+	 * _.isPlainObject({ 'x': 0, 'y': 0 });
+	 * // => true
+	 *
+	 * _.isPlainObject(Object.create(null));
+	 * // => true
+	 */
+	function isPlainObject(value) {
+	  if (!isObjectLike(value) ||
+	      objectToString.call(value) != objectTag || isHostObject(value)) {
+	    return false;
+	  }
+	  var proto = getPrototypeOf(value);
+	  if (proto === null) {
+	    return true;
+	  }
+	  var Ctor = proto.constructor;
+	  return (typeof Ctor == 'function' &&
+	    Ctor instanceof Ctor && funcToString.call(Ctor) == objectCtorString);
+	}
+
+	module.exports = isPlainObject;
+
+
+/***/ },
+/* 217 */
+/***/ function(module, exports) {
+
+	/**
+	 * Checks if `value` is a host object in IE < 9.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a host object, else `false`.
+	 */
+	function isHostObject(value) {
+	  // Many host objects are `Object` objects that can coerce to strings
+	  // despite having improperly defined `toString` methods.
+	  var result = false;
+	  if (value != null && typeof value.toString != 'function') {
+	    try {
+	      result = !!(value + '');
+	    } catch (e) {}
+	  }
+	  return result;
+	}
+
+	module.exports = isHostObject;
+
+
+/***/ },
+/* 218 */
+/***/ function(module, exports) {
+
+	/**
+	 * Checks if `value` is object-like. A value is object-like if it's not `null`
+	 * and has a `typeof` result of "object".
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 * @example
+	 *
+	 * _.isObjectLike({});
+	 * // => true
+	 *
+	 * _.isObjectLike([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObjectLike(_.noop);
+	 * // => false
+	 *
+	 * _.isObjectLike(null);
+	 * // => false
+	 */
+	function isObjectLike(value) {
+	  return !!value && typeof value == 'object';
+	}
+
+	module.exports = isObjectLike;
+
+
+/***/ },
+/* 219 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
+
+	exports.__esModule = true;
+	exports["default"] = combineReducers;
+
+	var _createStore = __webpack_require__(215);
+
+	var _isPlainObject = __webpack_require__(216);
+
+	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
+
+	var _warning = __webpack_require__(220);
+
+	var _warning2 = _interopRequireDefault(_warning);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+	function getUndefinedStateErrorMessage(key, action) {
+	  var actionType = action && action.type;
+	  var actionName = actionType && '"' + actionType.toString() + '"' || 'an action';
+
+	  return 'Reducer "' + key + '" returned undefined handling ' + actionName + '. ' + 'To ignore an action, you must explicitly return the previous state.';
+	}
+
+	function getUnexpectedStateShapeWarningMessage(inputState, reducers, action) {
+	  var reducerKeys = Object.keys(reducers);
+	  var argumentName = action && action.type === _createStore.ActionTypes.INIT ? 'initialState argument passed to createStore' : 'previous state received by the reducer';
+
+	  if (reducerKeys.length === 0) {
+	    return 'Store does not have a valid reducer. Make sure the argument passed ' + 'to combineReducers is an object whose values are reducers.';
+	  }
+
+	  if (!(0, _isPlainObject2["default"])(inputState)) {
+	    return 'The ' + argumentName + ' has unexpected type of "' + {}.toString.call(inputState).match(/\s([a-z|A-Z]+)/)[1] + '". Expected argument to be an object with the following ' + ('keys: "' + reducerKeys.join('", "') + '"');
+	  }
+
+	  var unexpectedKeys = Object.keys(inputState).filter(function (key) {
+	    return !reducers.hasOwnProperty(key);
+	  });
+
+	  if (unexpectedKeys.length > 0) {
+	    return 'Unexpected ' + (unexpectedKeys.length > 1 ? 'keys' : 'key') + ' ' + ('"' + unexpectedKeys.join('", "') + '" found in ' + argumentName + '. ') + 'Expected to find one of the known reducer keys instead: ' + ('"' + reducerKeys.join('", "') + '". Unexpected keys will be ignored.');
+	  }
+	}
+
+	function assertReducerSanity(reducers) {
+	  Object.keys(reducers).forEach(function (key) {
+	    var reducer = reducers[key];
+	    var initialState = reducer(undefined, { type: _createStore.ActionTypes.INIT });
+
+	    if (typeof initialState === 'undefined') {
+	      throw new Error('Reducer "' + key + '" returned undefined during initialization. ' + 'If the state passed to the reducer is undefined, you must ' + 'explicitly return the initial state. The initial state may ' + 'not be undefined.');
+	    }
+
+	    var type = '@@redux/PROBE_UNKNOWN_ACTION_' + Math.random().toString(36).substring(7).split('').join('.');
+	    if (typeof reducer(undefined, { type: type }) === 'undefined') {
+	      throw new Error('Reducer "' + key + '" returned undefined when probed with a random type. ' + ('Don\'t try to handle ' + _createStore.ActionTypes.INIT + ' or other actions in "redux/*" ') + 'namespace. They are considered private. Instead, you must return the ' + 'current state for any unknown actions, unless it is undefined, ' + 'in which case you must return the initial state, regardless of the ' + 'action type. The initial state may not be undefined.');
+	    }
+	  });
+	}
+
+	/**
+	 * Turns an object whose values are different reducer functions, into a single
+	 * reducer function. It will call every child reducer, and gather their results
+	 * into a single state object, whose keys correspond to the keys of the passed
+	 * reducer functions.
+	 *
+	 * @param {Object} reducers An object whose values correspond to different
+	 * reducer functions that need to be combined into one. One handy way to obtain
+	 * it is to use ES6 `import * as reducers` syntax. The reducers may never return
+	 * undefined for any action. Instead, they should return their initial state
+	 * if the state passed to them was undefined, and the current state for any
+	 * unrecognized action.
+	 *
+	 * @returns {Function} A reducer function that invokes every reducer inside the
+	 * passed object, and builds a state object with the same shape.
+	 */
+	function combineReducers(reducers) {
+	  var reducerKeys = Object.keys(reducers);
+	  var finalReducers = {};
+	  for (var i = 0; i < reducerKeys.length; i++) {
+	    var key = reducerKeys[i];
+	    if (typeof reducers[key] === 'function') {
+	      finalReducers[key] = reducers[key];
+	    }
+	  }
+	  var finalReducerKeys = Object.keys(finalReducers);
+
+	  var sanityError;
+	  try {
+	    assertReducerSanity(finalReducers);
+	  } catch (e) {
+	    sanityError = e;
+	  }
+
+	  return function combination() {
+	    var state = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    var action = arguments[1];
+
+	    if (sanityError) {
+	      throw sanityError;
+	    }
+
+	    if (process.env.NODE_ENV !== 'production') {
+	      var warningMessage = getUnexpectedStateShapeWarningMessage(state, finalReducers, action);
+	      if (warningMessage) {
+	        (0, _warning2["default"])(warningMessage);
+	      }
+	    }
+
+	    var hasChanged = false;
+	    var nextState = {};
+	    for (var i = 0; i < finalReducerKeys.length; i++) {
+	      var key = finalReducerKeys[i];
+	      var reducer = finalReducers[key];
+	      var previousStateForKey = state[key];
+	      var nextStateForKey = reducer(previousStateForKey, action);
+	      if (typeof nextStateForKey === 'undefined') {
+	        var errorMessage = getUndefinedStateErrorMessage(key, action);
+	        throw new Error(errorMessage);
+	      }
+	      nextState[key] = nextStateForKey;
+	      hasChanged = hasChanged || nextStateForKey !== previousStateForKey;
+	    }
+	    return hasChanged ? nextState : state;
+	  };
+	}
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+
+/***/ },
+/* 220 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	exports.__esModule = true;
+	exports["default"] = warning;
+	/**
+	 * Prints a warning in the console if it exists.
+	 *
+	 * @param {String} message The warning message.
+	 * @returns {void}
+	 */
+	function warning(message) {
+	  /* eslint-disable no-console */
+	  if (typeof console !== 'undefined' && typeof console.error === 'function') {
+	    console.error(message);
+	  }
+	  /* eslint-enable no-console */
+	  try {
+	    // This error was thrown as a convenience so that you can use this stack
+	    // to find the callsite that caused this warning to fire.
+	    throw new Error(message);
+	    /* eslint-disable no-empty */
+	  } catch (e) {}
+	  /* eslint-enable no-empty */
+	}
+
+/***/ },
+/* 221 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	exports.__esModule = true;
+	exports["default"] = bindActionCreators;
+	function bindActionCreator(actionCreator, dispatch) {
+	  return function () {
+	    return dispatch(actionCreator.apply(undefined, arguments));
+	  };
+	}
+
+	/**
+	 * Turns an object whose values are action creators, into an object with the
+	 * same keys, but with every function wrapped into a `dispatch` call so they
+	 * may be invoked directly. This is just a convenience method, as you can call
+	 * `store.dispatch(MyActionCreators.doSomething())` yourself just fine.
+	 *
+	 * For convenience, you can also pass a single function as the first argument,
+	 * and get a function in return.
+	 *
+	 * @param {Function|Object} actionCreators An object whose values are action
+	 * creator functions. One handy way to obtain it is to use ES6 `import * as`
+	 * syntax. You may also pass a single function.
+	 *
+	 * @param {Function} dispatch The `dispatch` function available on your Redux
+	 * store.
+	 *
+	 * @returns {Function|Object} The object mimicking the original object, but with
+	 * every action creator wrapped into the `dispatch` call. If you passed a
+	 * function as `actionCreators`, the return value will also be a single
+	 * function.
+	 */
+	function bindActionCreators(actionCreators, dispatch) {
+	  if (typeof actionCreators === 'function') {
+	    return bindActionCreator(actionCreators, dispatch);
+	  }
+
+	  if (typeof actionCreators !== 'object' || actionCreators === null) {
+	    throw new Error('bindActionCreators expected an object or a function, instead received ' + (actionCreators === null ? 'null' : typeof actionCreators) + '. ' + 'Did you write "import ActionCreators from" instead of "import * as ActionCreators from"?');
+	  }
+
+	  var keys = Object.keys(actionCreators);
+	  var boundActionCreators = {};
+	  for (var i = 0; i < keys.length; i++) {
+	    var key = keys[i];
+	    var actionCreator = actionCreators[key];
+	    if (typeof actionCreator === 'function') {
+	      boundActionCreators[key] = bindActionCreator(actionCreator, dispatch);
+	    }
+	  }
+	  return boundActionCreators;
+	}
+
+/***/ },
+/* 222 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	exports.__esModule = true;
+	exports["default"] = applyMiddleware;
+
+	var _compose = __webpack_require__(223);
+
+	var _compose2 = _interopRequireDefault(_compose);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+	/**
+	 * Creates a store enhancer that applies middleware to the dispatch method
+	 * of the Redux store. This is handy for a variety of tasks, such as expressing
+	 * asynchronous actions in a concise manner, or logging every action payload.
+	 *
+	 * See `redux-thunk` package as an example of the Redux middleware.
+	 *
+	 * Because middleware is potentially asynchronous, this should be the first
+	 * store enhancer in the composition chain.
+	 *
+	 * Note that each middleware will be given the `dispatch` and `getState` functions
+	 * as named arguments.
+	 *
+	 * @param {...Function} middlewares The middleware chain to be applied.
+	 * @returns {Function} A store enhancer applying the middleware.
+	 */
+	function applyMiddleware() {
+	  for (var _len = arguments.length, middlewares = Array(_len), _key = 0; _key < _len; _key++) {
+	    middlewares[_key] = arguments[_key];
+	  }
+
+	  return function (createStore) {
+	    return function (reducer, initialState, enhancer) {
+	      var store = createStore(reducer, initialState, enhancer);
+	      var _dispatch = store.dispatch;
+	      var chain = [];
+
+	      var middlewareAPI = {
+	        getState: store.getState,
+	        dispatch: function dispatch(action) {
+	          return _dispatch(action);
+	        }
+	      };
+	      chain = middlewares.map(function (middleware) {
+	        return middleware(middlewareAPI);
+	      });
+	      _dispatch = _compose2["default"].apply(undefined, chain)(store.dispatch);
+
+	      return _extends({}, store, {
+	        dispatch: _dispatch
+	      });
+	    };
+	  };
+	}
+
+/***/ },
+/* 223 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	exports.__esModule = true;
+	exports["default"] = compose;
+	/**
+	 * Composes single-argument functions from right to left.
+	 *
+	 * @param {...Function} funcs The functions to compose.
+	 * @returns {Function} A function obtained by composing functions from right to
+	 * left. For example, compose(f, g, h) is identical to arg => f(g(h(arg))).
+	 */
+	function compose() {
+	  for (var _len = arguments.length, funcs = Array(_len), _key = 0; _key < _len; _key++) {
+	    funcs[_key] = arguments[_key];
+	  }
+
+	  return function () {
+	    if (funcs.length === 0) {
+	      return arguments.length <= 0 ? undefined : arguments[0];
+	    }
+
+	    var last = funcs[funcs.length - 1];
+	    var rest = funcs.slice(0, -1);
+
+	    return rest.reduceRight(function (composed, f) {
+	      return f(composed);
+	    }, last.apply(undefined, arguments));
+	  };
+	}
+
+/***/ },
+/* 224 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isHostObject = __webpack_require__(225),
+	    isObjectLike = __webpack_require__(226);
+
+	/** `Object#toString` result references. */
+	var objectTag = '[object Object]';
+
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
+
+	/** Used to resolve the decompiled source of functions. */
+	var funcToString = Function.prototype.toString;
+
+	/** Used to infer the `Object` constructor. */
+	var objectCtorString = funcToString.call(Object);
+
+	/**
+	 * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objectToString = objectProto.toString;
+
+	/** Built-in value references. */
+	var getPrototypeOf = Object.getPrototypeOf;
+
+	/**
+	 * Checks if `value` is a plain object, that is, an object created by the
+	 * `Object` constructor or one with a `[[Prototype]]` of `null`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a plain object, else `false`.
+	 * @example
+	 *
+	 * function Foo() {
+	 *   this.a = 1;
+	 * }
+	 *
+	 * _.isPlainObject(new Foo);
+	 * // => false
+	 *
+	 * _.isPlainObject([1, 2, 3]);
+	 * // => false
+	 *
+	 * _.isPlainObject({ 'x': 0, 'y': 0 });
+	 * // => true
+	 *
+	 * _.isPlainObject(Object.create(null));
+	 * // => true
+	 */
+	function isPlainObject(value) {
+	  if (!isObjectLike(value) ||
+	      objectToString.call(value) != objectTag || isHostObject(value)) {
+	    return false;
+	  }
+	  var proto = getPrototypeOf(value);
+	  if (proto === null) {
+	    return true;
+	  }
+	  var Ctor = proto.constructor;
+	  return (typeof Ctor == 'function' &&
+	    Ctor instanceof Ctor && funcToString.call(Ctor) == objectCtorString);
+	}
+
+	module.exports = isPlainObject;
+
+
+/***/ },
+/* 225 */
+/***/ function(module, exports) {
+
+	/**
+	 * Checks if `value` is a host object in IE < 9.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a host object, else `false`.
+	 */
+	function isHostObject(value) {
+	  // Many host objects are `Object` objects that can coerce to strings
+	  // despite having improperly defined `toString` methods.
+	  var result = false;
+	  if (value != null && typeof value.toString != 'function') {
+	    try {
+	      result = !!(value + '');
+	    } catch (e) {}
+	  }
+	  return result;
+	}
+
+	module.exports = isHostObject;
+
+
+/***/ },
+/* 226 */
+/***/ function(module, exports) {
+
+	/**
+	 * Checks if `value` is object-like. A value is object-like if it's not `null`
+	 * and has a `typeof` result of "object".
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 * @example
+	 *
+	 * _.isObjectLike({});
+	 * // => true
+	 *
+	 * _.isObjectLike([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObjectLike(_.noop);
+	 * // => false
+	 *
+	 * _.isObjectLike(null);
+	 * // => false
+	 */
+	function isObjectLike(value) {
+	  return !!value && typeof value == 'object';
+	}
+
+	module.exports = isObjectLike;
+
+
+/***/ },
+/* 227 */
+/***/ function(module, exports) {
+
+	/**
+	 * Copyright 2015, Yahoo! Inc.
+	 * Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
+	 */
+	'use strict';
+
+	var REACT_STATICS = {
+	    childContextTypes: true,
+	    contextTypes: true,
+	    defaultProps: true,
+	    displayName: true,
+	    getDefaultProps: true,
+	    mixins: true,
+	    propTypes: true,
+	    type: true
+	};
+
+	var KNOWN_STATICS = {
+	    name: true,
+	    length: true,
+	    prototype: true,
+	    caller: true,
+	    arguments: true,
+	    arity: true
+	};
+
+	module.exports = function hoistNonReactStatics(targetComponent, sourceComponent) {
+	    var keys = Object.getOwnPropertyNames(sourceComponent);
+	    for (var i=0; i<keys.length; ++i) {
+	        if (!REACT_STATICS[keys[i]] && !KNOWN_STATICS[keys[i]]) {
+	            try {
+	                targetComponent[keys[i]] = sourceComponent[keys[i]];
+	            } catch (error) {
+
+	            }
+	        }
+	    }
+
+	    return targetComponent;
+	};
+
+
+/***/ },
+/* 228 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {/**
+	 * Copyright 2013-2015, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 */
+
+	'use strict';
+
+	/**
+	 * Use invariant() to assert state which your program assumes to be true.
+	 *
+	 * Provide sprintf-style format (only %s is supported) and arguments
+	 * to provide information about what broke and what you were
+	 * expecting.
+	 *
+	 * The invariant message will be stripped in production, but the invariant
+	 * will remain to ensure logic does not differ in production.
+	 */
+
+	var invariant = function(condition, format, a, b, c, d, e, f) {
+	  if (process.env.NODE_ENV !== 'production') {
+	    if (format === undefined) {
+	      throw new Error('invariant requires an error message argument');
+	    }
+	  }
+
+	  if (!condition) {
+	    var error;
+	    if (format === undefined) {
+	      error = new Error(
+	        'Minified exception occurred; use the non-minified dev environment ' +
+	        'for the full error message and additional helpful warnings.'
+	      );
+	    } else {
+	      var args = [a, b, c, d, e, f];
+	      var argIndex = 0;
+	      error = new Error(
+	        format.replace(/%s/g, function() { return args[argIndex++]; })
+	      );
+	      error.name = 'Invariant Violation';
+	    }
+
+	    error.framesToPop = 1; // we don't care about invariant's own frame
+	    throw error;
+	  }
+	};
+
+	module.exports = invariant;
+
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+
+/***/ },
+/* 229 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.AppRoot = AppRoot;
+	function AppRoot() {
+	    var state = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    var action = arguments[1];
+
+	    switch (action.type) {
+	        default:
+	    }
+	    return state;
+	}
+
+/***/ },
+/* 230 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

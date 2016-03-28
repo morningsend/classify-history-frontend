@@ -9,8 +9,9 @@
 @import "material-icons.less";
 @import "fonts.less";
 @import "variables.less";
-@import "filepicker.css";
-@import "../../node_modules/dropzone/dist/min/dropzone.min.css";
+
+
+
 body {
     .hammersmith;
     font-size: @defaultFontSize;
@@ -19,118 +20,7 @@ body {
 button > [data-react-toolbox="button"]{
 }
 
-.progress-bar {
-    position: absolute;
-    top: 0px;
-    z-index: 99999;
-    background-color: #777;
-}
-.header {
-    z-index: 9999;
-    position: relative;
-    width: 100%;
-}
-.navbar-main {
-    display: flex;
-    align-items: center;
-    font-family: @mainFont !important;;
-    vertical-align: middle;
-    background-color: @primaryColor;
-    padding: 0;
-    postion:relative;
-    z-index: 9999;
-    height: 4.4rem;
-    .navbar-title {
-        font-size: 1.6rem;
-        font-family: @titleFont;
-        display: inline-block;
-        margin-right: 3rem;
-        height:100%;
-        vertical-align: middle;
-        line-height: 3em;
-    }
-    .navbar-group {
-        font-size: 1.6rem;
-        display: inline-block;
-        padding: 0;
-        color: @textColor;
-        button {
-            height: 100%;
-            font-family: @mainFont !important;
-            .material-icons {
-                line-height: inherit;
-                
-            }
-        }
-        .tag-search-box {
-            display: inline-block;
-            height: 70%;
-            padding: 0px;
-            color: black;
-            .material-icons {
-                color: white;
-            }
-            span {
-                color: @textColor;
-            }
-            input {
-                color: white;
-            }
-            label {
-                color: #ccc;
-            }
-        }
-    }
-    .navbar-link {
-        color: @textColor;
-    }
-    a {
-        text-decoration: none;
-    }
-    
-    .float-right {
-        margin-left: auto;
-    }
-}
 
-.floating-toolbar {
-   text-align: center;
-    button {
-       margin: 3px;
-       background-color: @primaryColor;
-       border-radius: 0;
-       .material-icons {
-           font-size: 3rem;
-           color: @textColor;
-       }
-       padding: 1rem;
-       width: auto;
-       height: auto;
-       
-       &:hover, &:focus {
-           background-color: @accentColor;
-       }
-    }
-    width: 100%;
-    z-index: 1;
-    
-}
-.floating-button {
-    position: fixed;
-    right: 4rem;
-    bottom: 4rem;
-    
-    .material-icons {
-        font-size: 2.2rem;
-        line-height: 2.2rem !important;
-    }
-    z-index: 999;
-    box-shadow: 1px 1px 5px rgba(0,0,0,0.5);
-}
-.dock-bottom {
-        position: absolute;
-        bottom: 64px;
-}
 .upload-file{
     background-color: #eee;
     width: 300px;

@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './style';
 
-export class CollectionViewer extends React.Component {
+export class CollectionViewer extends Component {
     
     constructor(props){
         super(props);

@@ -31,15 +31,17 @@ button > [data-react-toolbox="button"]{
     width: 100%;
 }
 .navbar-main {
-    display: block;
+    display: flex;
+    align-items: center;
     font-family: @mainFont !important;;
     vertical-align: middle;
     background-color: @primaryColor;
     padding: 0;
     postion:relative;
     z-index: 9999;
+    height: 4.4rem;
     .navbar-title {
-        font-size: 2rem;
+        font-size: 1.6rem;
         font-family: @titleFont;
         display: inline-block;
         margin-right: 3rem;
@@ -51,7 +53,6 @@ button > [data-react-toolbox="button"]{
         font-size: 1.6rem;
         display: inline-block;
         padding: 0;
-        height: 100%;
         color: @textColor;
         button {
             height: 100%;
@@ -88,7 +89,7 @@ button > [data-react-toolbox="button"]{
     }
     
     .float-right {
-        float: right;
+        margin-left: auto;
     }
 }
 

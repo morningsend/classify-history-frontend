@@ -1,2 +1,12 @@
 node_modules/*
-npm-debug.log
+npm-debug.log*
+
+app/build
+app/build/*
+
+.grunt
+
+
+.DS_Store
+.AppleDouble
+.LSOverride

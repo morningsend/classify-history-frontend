@@ -15,33 +15,12 @@ import Canvas from './canvas/Canvas';
 import { ContextMenu, ThumbnailContextMenu } from './menu/ContextMenu';
 import LoginDialog from './login/LoginDialog';
 
+import FloatingToolbar from './floating-toolbar/FloatingToolbar';
+
 import './RootStyle';
 
 import Backend from './Backend';
 InjectTapPlugin();
-
-
-class FloatingToolbar extends React.Component {
-    constructor (props) {
-        super(props);
-    }
-    render() {
-        
-        return <div {... this.props}>
-            <IconButton icon="undo" onClick={this.props.onUndo}/>
-            <IconButton icon="redo" onClick={this.props.onRedo}/>
-            <IconButton icon="zoom_in" onClick={this.props.onZoomIn}/>
-            <IconButton icon="zoom_out" onClick={this.props.onZoomOut}/>
-            <IconButton icon="add_box" onClick={this.props.onAdd}/>
-            <IconButton icon="content_copy" onClick={this.props.onCopy} />
-            <IconButton icon="content_paste" onClick={this.props.onPaste}/>
-            <IconButton icon="fullscreen" onClick={this.props.onFullScreen}/>
-            <IconButton icon="screen_rotation" onClick={this.props.onOrientationChange} />
-        </div>
-
-    }
-}
-
 
 
 class AppRoot extends React.Component {
@@ -113,7 +92,7 @@ class AppRoot extends React.Component {
                 <div className="header">
                     <ProgressBar type="linear" mode="indeterminate" className="progress-bar" />
                     <AppBar  className="navbar-main">
-                        <h1 className="navbar-title">Classify Hisry</h1>
+                        <h1 className="navbar-title">Classify History</h1>
                         <Navigation className="navbar-group">
                             <Link href="" label="My Projects" className="navbar-link" active/>
                             <Link href="" label="Image Collection" className="navbar-link" onClick={this.showImageCollections.bind(this)}/>
@@ -135,7 +114,7 @@ class AppRoot extends React.Component {
                                 name="countries"
                                 onChange={null}
                                 source={{"china":"china"}}
-                                value="coutr"
+                                value="coutry"
                                 icon="search"
                                 className="tag-search-box"
                             />

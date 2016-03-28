@@ -1,0 +1,40 @@
+@import "../../less/variables";
+
+.floating-toolbar {
+   text-align: center;
+    button {
+       margin: 3px;
+       background-color: @primaryColor;
+       border-radius: 0;
+       .material-icons {
+           font-size: 3rem;
+           color: @textColor;
+       }
+       padding: 1rem;
+       width: auto;
+       height: auto;
+       
+       &:hover, &:focus {
+           background-color: @accentColor;
+       }
+    }
+    width: 100%;
+    z-index: 1;
+    
+}
+.floating-button {
+    position: fixed;
+    right: 4rem;
+    bottom: 4rem;
+    
+    .material-icons {
+        font-size: 2.2rem;
+        line-height: 2.2rem !important;
+    }
+    z-index: 999;
+    box-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+}
+.dock-bottom {
+        position: absolute;
+        bottom: 64px;
+}

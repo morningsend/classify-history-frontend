@@ -1,14 +1,18 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 
-import Slider, {SliderItem} from '../slider/Slider';
-import Thumbnail, { DraggableThumbnail } from '../image/Thumbnail';
-import Canvas from '../canvas/Canvas';
-import { ContextMenu, ThumbnailContextMenu } from '../menu/ContextMenu';
+import Slider, {SliderItem} from "../slider/Slider";
+import Thumbnail, { DraggableThumbnail } from "../image/Thumbnail";
+import Canvas from "../canvas/Canvas";
+import { ContextMenu, ThumbnailContextMenu } from "../menu/ContextMenu";
 
-import DraggableButton from '../button/DraggableButton';
-import Autocomplete from 'react-toolbox/lib/autocomplete';
-import FloatingToolbar from '../floating-toolbar/FloatingToolbar';
+import AppBar from "react-toolbox/lib/app_bar";
+import Navigation from "react-toolbox/lib/navigation";
+import {Button, IconButton} from "react-toolbox/lib/button";
+
+import DraggableButton from "../button/DraggableButton";
+import Autocomplete from "react-toolbox/lib/autocomplete";
+import FloatingToolbar from "../floating-toolbar/FloatingToolbar";
 class WorkSpaceView extends Component {
     constructor(props){
         super(props);
@@ -30,39 +34,36 @@ class WorkSpaceView extends Component {
         });
     }
     render(){
-        return (<div><AppBar className="navbar-main">
-                        <Navigation className="navbar-group" >
-                            <Button label="Edit" icon="edit" inverse/>
-                        </Navigation >
-                        <Navigation className="navbar-group float-right" >
-                            <Button label="shanghai" icon="gavel" inverse/>
-                            <Autocomplete
-                                direction="right"
-                                label="Find Tags"
-                                name="countries"
-                                onChange={null}
-                                source={{"china":"china"}}
-                                value="coutry"
-                                icon="search"
-                                className="tag-search-box"
-                            />
-                        </Navigation >
-                    </AppBar>
-
-                    <Slider className="slider" >
-                        {this.state.images.map((image)=><SliderItem className="slider-item"><img src={image.url} /></SliderItem>)}
-                    </Slider>
-                    <Canvas className="canvas" images={this.state.images} />
-                    <DraggableButton floating icon="cloud" primary top={300} left={100} />
-                    <FloatingToolbar className="floating-toolbar dock-bottom" 
-                        onOrientationChange={this.invertOrientation.bind(this)}
+        return (<div>
+            <AppBar className="navbar-main">
+                <Navigation className="navbar-group" >
+                    <Button label="Edit" icon="edit" inverse/>
+                </Navigation >
+                <Navigation className="navbar-group float-right" >
+                    <Button label="shanghai" icon="gavel" inverse/>
+                    <Autocomplete
+                        direction="down"
+                        label="Find Tags"
+                        name="countries"
+                        onChange={null}
+                        source={{"china":"china"}}
+                        value="coutry"
+                        icon="search"
+                        className="tag-search-box"
                     />
-                    <ThumbnailContextMenu left={this.state.left} top={this.state.top} show={this.state.showThumbnailContextMenu} onHide={this._handleThumbnailContextMenuClose.bind(this)} />
-                    
-                    
-                    </div>
-                    
-        )
+                </Navigation >
+            </AppBar>
+
+            <Slider className="slider" >
+                {this.state.images.map((image)=><SliderItem className="slider-item"><img src={image.url} /></SliderItem>)}
+            </Slider>
+            <Canvas className="canvas" images={this.state.images} />
+            <DraggableButton floating icon="cloud" primary top={300} left={100} />
+            <FloatingToolbar className="floating-toolbar dock-bottom" 
+                onOrientationChange={this.invertOrientation.bind(this)}
+            />
+            <ThumbnailContextMenu left={this.state.left} top={this.state.top} show={this.state.showThumbnailContextMenu} onHide={this._handleThumbnailContextMenuClose.bind(this)} />
+        </div>)
     }
     
     getImages(n){
@@ -81,15 +82,20 @@ class WorkSpaceView extends Component {
         return images;
     }
     _handleThumbnailContextMenu(e){
-        this.setState({
+        /*this.setState({
             showThumbnailContextMenu: true,
             left:e.clientX,
             top: e.clientY
-        });
+        });*/
         e.preventDefault();
     }
     _handleThumbnailContextMenuClose(...args){
-        this.setState({showThumbnailContextMenu:false});
+        /* this.setState({showThumbnailContextMenu:false}); */
+    }
+    invertOrientation(){
+        this.setState({
+            inverted: !this.state.inverted
+        });
     }
 }
 

@@ -1,21 +1,21 @@
                                                                                                                                                                                                                                                                                                                 import React  from "react";
 import AppBar from "react-toolbox/lib/app_bar";
 import Navigation from "react-toolbox/lib/navigation";
-import {Button, IconButton} from 'react-toolbox/lib/button';
-import Link from 'react-toolbox/lib/link';
-import ProgressBar from 'react-toolbox/lib/progress_bar';
+import {Button, IconButton} from "react-toolbox/lib/button";
+import ProgressBar from "react-toolbox/lib/progress_bar";
+
+import { Link } from "react-router";
+
+import CanvasDraggableEnhancer from "./canvas/CanvasDraggableEnhancer";
+
+import InjectTapPlugin from "react-tap-event-plugin";
+
+import LoginDialog from "./login/LoginDialog";
 
 
-import CanvasDraggableEnhancer from './canvas/CanvasDraggableEnhancer';
+import "./RootStyle";
 
-import InjectTapPlugin from 'react-tap-event-plugin';
-
-import LoginDialog from './login/LoginDialog';
-
-
-import './RootStyle';
-
-import Backend from './Backend';
+import Backend from "./Backend";
 InjectTapPlugin();
 
 
@@ -72,9 +72,9 @@ class AppRoot extends React.Component {
                     <AppBar  className="navbar-main">
                         <h1 className="navbar-title">Classify History</h1>
                         <Navigation className="navbar-group">
-                            <Link href="/" label="Dashboard" className="navbar-link" />
-                            <Link href="/workspace" label="Work space" className="navbar-link" active/>
-                            <Link href="/image-collections" label="Image Collection" className="navbar-link" />
+                            <Link className="navbar-link" to="/">Dashboard</Link>
+                            <Link className="navbar-link" to="workspace">Work Space</Link>
+                            <Link className="navbar-link" to="image-collections">Image Collections</Link>
                         </Navigation>
                         <Navigation className="navbar-group float-right" >
                             <Button label="Settings" inverse/>
@@ -85,17 +85,12 @@ class AppRoot extends React.Component {
                 <main className="main-content">
                     {this.props.children}
                 </main>
-                <div className='hidden'>
+                <div className="hidden">
                 <LoginDialog active={this.state.showLogin} onLogin={this._handleLogin.bind(this)} onCancel={this._loginCancelled.bind(this)}/>
                 </div>
             </div>;
     }
-    invertOrientation(){
-        this.setState({
-            inverted: !this.state.inverted
-        });
-    }
-    
+
 }
 
 export default AppRoot;

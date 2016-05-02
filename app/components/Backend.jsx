@@ -33,7 +33,7 @@ var Backend = function( backendURL )
     return new Promise(
       function( resolve, reject )
       {
-        $.post( backendURL + "/backend/login", { tagname: tagName },
+        $.post( backendURL + "/backend/createtag", { tagname: tagName },
           function( data )
           {
             if( data.status == "OK" )
@@ -55,7 +55,29 @@ var Backend = function( backendURL )
     return new Promise(
       function( resolve, reject )
       {
-        $.post( backendURL + "/backend/login", { imageid: imageID, tagid: tagID },
+        $.post( backendURL + "/backend/tagimage", { imageid: imageID, tagid: tagID },
+          function( data )
+          {
+            if( data.status == "OK" )
+            {
+              resolve( data );
+            }
+            else
+            {
+              reject( data );
+            }
+          }
+        );
+      }
+    );
+  }
+
+  this.untagImage = function( imageID, tagID )
+  {
+    return new Promise(
+      function( resolve, reject )
+      {
+        $.post( backendURL + "/backend/untagimage", { imageid: imageID, tagid: tagID },
           function( data )
           {
             if( data.status == "OK" )
@@ -75,7 +97,7 @@ var Backend = function( backendURL )
   this.getImageURL = function( imageID )
   {
     //return backendURL + "/backend/image?id=" + imageID;
-    return 
+    return
   }
 
   this.getImageUploadURL = function()

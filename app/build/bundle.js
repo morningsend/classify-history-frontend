@@ -30677,7 +30677,7 @@
 
 	  this.createTag = function (tagName) {
 	    return new Promise(function (resolve, reject) {
-	      _jquery2.default.post(backendURL + "/backend/login", { tagname: tagName }, function (data) {
+	      _jquery2.default.post(backendURL + "/backend/createtag", { tagname: tagName }, function (data) {
 	        if (data.status == "OK") {
 	          resolve(data);
 	        } else {
@@ -30689,7 +30689,19 @@
 
 	  this.tagImage = function (imageID, tagID) {
 	    return new Promise(function (resolve, reject) {
-	      _jquery2.default.post(backendURL + "/backend/login", { imageid: imageID, tagid: tagID }, function (data) {
+	      _jquery2.default.post(backendURL + "/backend/tagimage", { imageid: imageID, tagid: tagID }, function (data) {
+	        if (data.status == "OK") {
+	          resolve(data);
+	        } else {
+	          reject(data);
+	        }
+	      });
+	    });
+	  };
+
+	  this.untagImage = function (imageID, tagID) {
+	    return new Promise(function (resolve, reject) {
+	      _jquery2.default.post(backendURL + "/backend/untagimage", { imageid: imageID, tagid: tagID }, function (data) {
 	        if (data.status == "OK") {
 	          resolve(data);
 	        } else {
@@ -42404,8 +42416,40 @@
 	        _react2.default.createElement(_DraggableButton2.default, { floating: true, icon: "cloud", primary: true, top: 300, left: 100, handleTap: function handleTap(e) {
 	            console.log("Hello Tap");
 
-	            var d = _reactDom2.default.findDOMNode(_this2.refs.canvas_1);
-	            console.log(d.getBoundingClientRect());
+	            var size = _reactDom2.default.findDOMNode(_this2.refs.canvas_1).getBoundingClientRect();
+
+	            var inClass = [];
+	            var outClass = [];
+	            var boundary = size.width / 2;
+
+	            for (var key in _this2.refs.canvas_1.refs) {
+	              var value = _this2.refs.canvas_1.refs[key];
+	              if (value.state.position.left > boundary) {
+	                inClass.push(value);
+	              } else {
+	                outClass.push(value);
+	              }
+	            }
+
+	            _this2.backend.createTag(_this2.state.blabel).then(function (data) {
+	              console.log(data);
+
+	              inClass.map(function (img) {
+	                console.log(img.props.id);
+	                _this2.backend.tagImage(img.props.id, data.id).then(function (data) {}, function (error) {
+	                  console.log(error);
+	                });
+	              });
+
+	              outClass.map(function (img) {
+	                console.log(img.props.id);
+	                _this2.backend.untagImage(img.props.id, data.id).then(function (data) {}, function (error) {
+	                  console.log(error);
+	                });
+	              });
+	            }, function (error) {
+	              console.log(error);
+	            });
 	          } }),
 	        _react2.default.createElement(_ContextMenu.ThumbnailContextMenu, { left: this.state.left, top: this.state.top, show: this.state.showThumbnailContextMenu, onHide: this._handleThumbnailContextMenuClose.bind(this) })
 	      );

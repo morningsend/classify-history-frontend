@@ -8,7 +8,6 @@ function HexHack( dbWrapper )
 
 HexHack.prototype.onLogin = function( username, password, callback )
 {
-  console.log( "onLogin" );
   this.db.lookupUserWithPassword( username, md5( password ),
     function( user )
     {
@@ -30,26 +29,25 @@ HexHack.prototype.onLogin = function( username, password, callback )
 
 HexHack.prototype.onCreateTag = function( token, tagName, callback )
 {
-  console.log( "onCreateTag" );
   var self = this;
   this.db.lookupUserWithToken( token,
     function( user )
     {
-      if( user != null )
+      self.db.addTag( user, tagName, callback );
+      /*if( user != null )
       {
         self.db.addTag( user, tagName, callback );
       }
       else
       {
         callback( null );
-      }
+      }*/
     }
   );
 }
 
 HexHack.prototype.onInsertImage = function( token, path, callback )
 {
-  console.log( "onInsertImage" );
   var self = this;
   this.db.lookupUserWithToken( token,
     function( user )
@@ -68,7 +66,6 @@ HexHack.prototype.onInsertImage = function( token, path, callback )
 
 HexHack.prototype.fetchImage = function( token, id, callback )
 {
-  console.log( "fetchImage" );
   var self = this;
   this.db.lookupUserWithToken( token,
     function( user )
@@ -87,26 +84,44 @@ HexHack.prototype.fetchImage = function( token, id, callback )
 
 HexHack.prototype.tagImage = function( token, imageID, tagID, callback )
 {
-  console.log( "tagImage" );
   var self = this;
   this.db.lookupUserWithToken( token,
     function( user )
     {
-      if( user != null )
+      self.db.addTagToImage( imageID, tagID, callback );
+      /*if( user != null )
       {
         self.db.addTagToImage( imageID, tagID, callback );
       }
       else
       {
         callback( null );
+      }*/
+    }
+  );
+}
+
+HexHack.prototype.untagImage = function( token, imageID, tagID, callback )
+{
+  var self = this;
+  this.db.lookupUserWithToken( token,
+    function( user )
+    {
+      self.db.removeTagToImage( imageID, tagID, callback );
+      /*if( user != null )
+      {
+        self.db.addTagToImage( imageID, tagID, callback );
       }
+      else
+      {
+        callback( null );
+      }*/
     }
   );
 }
 
 HexHack.prototype.fetchTags = function( token, callback )
 {
-  console.log( "fetchTags" );
   var self = this;
   this.db.lookupUserWithToken( token,
     function( user )
@@ -126,7 +141,6 @@ HexHack.prototype.fetchTags = function( token, callback )
 
 HexHack.prototype.fetchImages = function( token, callback )
 {
-  console.log( "fetchImages" );
   var self = this;
   this.db.lookupUserWithToken( token,
     function( user )

@@ -101,8 +101,54 @@ class WorkSpaceView extends Component {
               {
                 console.log("Hello Tap");
 
-                var d = ReactDOM.findDOMNode( this.refs.canvas_1 );
-                console.log( d.getBoundingClientRect() );
+                var size = ReactDOM.findDOMNode( this.refs.canvas_1 ).getBoundingClientRect();
+
+                var inClass = [];
+                var outClass = [];
+                var boundary = size.width / 2;
+
+                for( var key in this.refs.canvas_1.refs )
+                {
+                  var value = this.refs.canvas_1.refs[ key ];
+                  if( value.state.position.left > boundary )
+                  {
+                    inClass.push( value );
+                  }
+                  else
+                  {
+                    outClass.push( value );
+                  }
+                }
+
+                this.backend.createTag( this.state.blabel ).then(
+                  ( data ) =>
+                  {
+                    console.log( data );
+
+                    inClass.map(
+                      ( img ) =>
+                      {
+                        console.log( img.props.id );
+                        this.backend.tagImage( img.props.id, data.id ).then(
+                          ( data ) => {},
+                          ( error ) => { console.log( error ); }
+                        );
+                      }
+                    );
+
+                    outClass.map(
+                      ( img ) =>
+                      {
+                        console.log( img.props.id );
+                        this.backend.untagImage( img.props.id, data.id ).then(
+                          ( data ) => {},
+                          ( error ) => { console.log( error ); }
+                        );
+                      }
+                    );
+                  },
+                  ( error ) => { console.log( error ); }
+                );
               }
             }/>
             <ThumbnailContextMenu left={this.state.left} top={this.state.top} show={this.state.showThumbnailContextMenu} onHide={this._handleThumbnailContextMenuClose.bind(this)} />

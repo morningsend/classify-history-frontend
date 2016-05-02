@@ -129,8 +129,31 @@ MySQLWrapper.prototype.lookupImageWithID = function( id, callback )
   );
 }
 
+MySQLWrapper.prototype.lookupTagByName = function( user, tag, callback )
+{
+  this.connection.query
+  (
+    'select Tags.id, Tags.name from Tags where Tags.name=?;',
+    [ tag ],
+    function( error, result )
+    {
+      if( !error && (result.length > 0) )
+      {
+        console.log( result );
+        callback( result[0].id );
+      }
+      else
+      {
+        callback( null );
+        console.log( error );
+      }
+    }
+  );
+}
+
 MySQLWrapper.prototype.addTag = function( user, tag, callback )
 {
+  var self = this;
   this.connection.query
   (
     'insert into Tags ( name ) values ( ? );',
@@ -143,8 +166,7 @@ MySQLWrapper.prototype.addTag = function( user, tag, callback )
       }
       else
       {
-        callback( null );
-        console.log( error );
+        self.lookupTagByName( user, tag, callback );
       }
     }
   );
@@ -155,6 +177,27 @@ MySQLWrapper.prototype.addTagToImage = function( imageID, tagID, callback )
   this.connection.query
   (
     'insert into Images_has_Tags ( Image_id, Tag_id ) values ( ?, ? );',
+    [ imageID, tagID ],
+    function( error )
+    {
+      if( !error )
+      {
+        callback( true );
+      }
+      else
+      {
+        callback( null );
+      }
+    }
+  );
+}
+
+MySQLWrapper.prototype.removeTagToImage = function( imageID, tagID, callback )
+{
+  this.connection.query
+  (
+    //'insert into Images_has_Tags ( Image_id, Tag_id ) values ( ?, ? );',
+    'delete from Images_has_Tags where Image_id=? and Tag_id=?',
     [ imageID, tagID ],
     function( error )
     {

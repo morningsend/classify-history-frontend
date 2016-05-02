@@ -53,6 +53,7 @@ backend.post( '/login',
 backend.post( '/createtag',
   function( request, response )
   {
+    console.log( "createTag" );
     hexHack.onCreateTag( request.cookies.token, request.body.tagname,
       function( id )
       {
@@ -91,7 +92,28 @@ backend.post( '/upload', upload.single( 'file' ),
 backend.post( '/tagimage',
   function( request, response )
   {
+    console.log( "[Assigning image " + request.body.imageid + " to tag " + request.body.tagid + "]" );
     hexHack.tagImage( request.cookies.token, request.body.imageid, request.body.tagid,
+      function( status )
+      {
+        if( status != null )
+        {
+          response.json( { status : "OK" } );
+        }
+        else
+        {
+          response.json( { status : "ERROR" } );
+        }
+      }
+    );
+  }
+);
+
+backend.post( '/untagimage',
+  function( request, response )
+  {
+    console.log( "[Un-assigning image " + request.body.imageid + " to tag " + request.body.tagid + "]" );
+    hexHack.untagImage( request.cookies.token, request.body.imageid, request.body.tagid,
       function( status )
       {
         if( status != null )

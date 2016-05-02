@@ -74,7 +74,8 @@ var Backend = function( backendURL )
 
   this.getImageURL = function( imageID )
   {
-    return backendURL + "/backend/image?id=" + imageID;
+    //return backendURL + "/backend/image?id=" + imageID;
+    return 
   }
 
   this.getImageUploadURL = function()

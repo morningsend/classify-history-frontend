@@ -35,7 +35,7 @@ export const CollectionViewToolBar = (props) => {
             <IconButton icon="view_comfy" />
         </Navigation>
     </AppBar>
-    
+
 }
 export const CollectionBottomToolbar = (props) =>{
     return <AppBar className="navbar-bottom">
@@ -81,7 +81,7 @@ export class CollectionList extends Component {
         return (<List selectable ripple>{this.props.collections.map(this.renderCollectionItem)}</List>);
     }
     renderCollectionItem(collection){
-        return <ListItem 
+        return <ListItem
             caption={collection.name}
             leftIcon="folder"
             rightIcon="star_border"
@@ -91,7 +91,7 @@ export class CollectionList extends Component {
 }
 export const HorizontalSeparator = (props) => <hr />
 export class CollectionView extends Component {
-    
+
     constructor(props){
         super(props);
         this.state = {};
@@ -129,7 +129,7 @@ export class CollectionView extends Component {
                 </Sidebar>
                 <Content autoscroll>
                     <GridView>
-                        { 
+                        {
                             this.state.collections[0].images.map(
                                 (image)=><GridThumbnail url={image.url} className="grid-thumbnail" />
                             )

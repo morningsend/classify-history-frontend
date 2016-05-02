@@ -192,6 +192,7 @@ MySQLWrapper.prototype.lookupImageTags = function( id, callback )
 
 DatabaseWrapper.prototype.getTagList = function( callback )
 {
+  console.log( "getTagList" );
   this.connection.query
   (
     'select Tags.id, Tags.name from Tags;', [],
@@ -199,10 +200,12 @@ DatabaseWrapper.prototype.getTagList = function( callback )
     {
       if( !error && ( result.length > 0 ) )
       {
+        console.log( result );
         callback( result );
       }
       else
       {
+        console.log( result.length );
         callback( null );
       }
     }

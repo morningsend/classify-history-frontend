@@ -110,6 +110,7 @@ backend.post( '/tagimage',
 backend.get( '/image',
   function( request, response )
   {
+    console.log( hexHack );
     hexHack.fetchImage( request.cookies.token, request.query.id,
       function( image )
       {
@@ -129,7 +130,7 @@ backend.get( '/image',
 backend.get( '/imagelist',
   function( request, response )
   {
-    hexhack.fetchImages( request.cookies.token,
+    hexHack.fetchImages( request.cookies.token,
       function( images )
       {
         if( images != null )
@@ -148,7 +149,7 @@ backend.get( '/imagelist',
 backend.get( '/taglist',
   function( request, response )
   {
-    hexhack.fetchTags( request.cookies.token,
+    hexHack.fetchTags( request.cookies.token,
       function( tags )
       {
         if( tags != null )

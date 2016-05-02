@@ -4,8 +4,8 @@ import Hammer from 'react-hammerjs';
 const CanvasDraggableEnhancer = ( Incoming ) => class extends Component {
     constructor(props){
         super(props);
-        
-        this.state = this.getTransform(); 
+
+        this.state = this.getTransform();
     }
     getTransform(){
         return {
@@ -43,19 +43,23 @@ const CanvasDraggableEnhancer = ( Incoming ) => class extends Component {
             onPanEnd={ this.handlePanEnd.bind(this) }
             ><Incoming {...childProps} key={id+"1"}/></Hammer>
     }
-    
+
     getCSSTransform(){
         var translate = "translate3d("+this.state.translate.x+"px,"+this.state.translate.y+"px,0)";
         var rotate = "rotate("+this.state.rotate.deg+"deg)";
         var scale = "scale("+this.state.scale.x+", "+this.state.scale.y+")";
         return [translate, rotate, scale].join(" ");
     }
-    
+
     handleTap(e){
-        console.log(e);
+        //console.log(e);
+        if( this.props.handleTap != null )
+        {
+          this.props.handleTap( e );
+        }
     }
     handlePanStart(e){
-        
+
     }
     handlePan(e){
         console.log("pan")
@@ -82,14 +86,14 @@ const CanvasDraggableEnhancer = ( Incoming ) => class extends Component {
         });
     }
     handlePanStart(e){
-        
+
     }
     handleDoubleTap(e){
-        
+
     }
-    
+
     handleDrag(e){
-        
+
     }
 }
 

@@ -3,10 +3,12 @@ var md5 = require( 'md5' );
 function HexHack( dbWrapper )
 {
   this.db = dbWrapper;
+  console.log( "Construct hexhack" );
 }
 
 HexHack.prototype.onLogin = function( username, password, callback )
 {
+  console.log( "onLogin" );
   this.db.lookupUserWithPassword( username, md5( password ),
     function( user )
     {
@@ -28,6 +30,7 @@ HexHack.prototype.onLogin = function( username, password, callback )
 
 HexHack.prototype.onCreateTag = function( token, tagName, callback )
 {
+  console.log( "onCreateTag" );
   var self = this;
   this.db.lookupUserWithToken( token,
     function( user )
@@ -46,6 +49,7 @@ HexHack.prototype.onCreateTag = function( token, tagName, callback )
 
 HexHack.prototype.onInsertImage = function( token, path, callback )
 {
+  console.log( "onInsertImage" );
   var self = this;
   this.db.lookupUserWithToken( token,
     function( user )
@@ -64,6 +68,7 @@ HexHack.prototype.onInsertImage = function( token, path, callback )
 
 HexHack.prototype.fetchImage = function( token, id, callback )
 {
+  console.log( "fetchImage" );
   var self = this;
   this.db.lookupUserWithToken( token,
     function( user )
@@ -82,6 +87,7 @@ HexHack.prototype.fetchImage = function( token, id, callback )
 
 HexHack.prototype.tagImage = function( token, imageID, tagID, callback )
 {
+  console.log( "tagImage" );
   var self = this;
   this.db.lookupUserWithToken( token,
     function( user )
@@ -100,36 +106,41 @@ HexHack.prototype.tagImage = function( token, imageID, tagID, callback )
 
 HexHack.prototype.fetchTags = function( token, callback )
 {
+  console.log( "fetchTags" );
   var self = this;
   this.db.lookupUserWithToken( token,
     function( user )
     {
-      if( user != null )
+      self.db.getTagList( callback );
+      /*if( user != null )
       {
         self.db.getTagList( callback );
       }
       else
       {
         callback( null );
-      }
+      }*/
     }
   );
 }
 
 HexHack.prototype.fetchImages = function( token, callback )
 {
+  console.log( "fetchImages" );
   var self = this;
   this.db.lookupUserWithToken( token,
     function( user )
     {
-      if( user != null )
+      self.db.getImageList( callback );
+      /*if( user != null )
       {
         self.db.getImageList( callback );
       }
       else
       {
+        console.log( "user is null" );
         callback( null );
-      }
+      }*/
     }
   );
 }

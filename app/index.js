@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import AppRoot from "./components/AppRoot";
-import ToolboxApp from "react-toolbox/lib/app";
+//import ToolboxApp from "react-toolbox/lib/app";
 
 import { Provider } from "react-redux";
 import { createStore } from "redux";
@@ -18,9 +18,9 @@ import CollectionView from "./components/collection-view/CollectionView";
 
 var store = createStore(AppRootReducer);
 
-const TouchApp =(props)=> <ToolboxApp > 
+const TouchApp =(props)=> <div> 
                     <AppRoot {...props} />
-                </ToolboxApp>;
+                </div>;
 
 ReactDOM.render(
 <Provider store={store}>

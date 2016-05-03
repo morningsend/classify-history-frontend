@@ -19806,7 +19806,6 @@
 	            this.setState({
 	                showLogin: true
 	            });
-	            console.log("hehahahah");
 	        }
 	    }, {
 	        key: "_loginCancelled",
@@ -42362,9 +42361,7 @@
 	      data.tags.map(function (tag) {
 	        _this.setState({ initialSource: _this.state.initialSource.concat([tag.name]) });
 	      });
-	    }, function (error) {
-	      console.log(error);
-	    });
+	    }, function (error) {});
 	    return _this;
 	  }
 
@@ -42395,7 +42392,6 @@
 	              label: "Tag",
 	              name: "countries",
 	              onChange: function onChange(event, value) {
-	                console.log(value);
 	                _this2.setState({ blabel: event[0] });
 	              },
 	              onSelect: function onSelect(value, item) {
@@ -42414,8 +42410,6 @@
 	        ),
 	        _react2.default.createElement(_Canvas2.default, { className: "canvas", images: this.state.images, ref: "canvas_1" }),
 	        _react2.default.createElement(_DraggableButton2.default, { floating: true, icon: "cloud", primary: true, top: 300, left: 100, handleTap: function handleTap(e) {
-	            console.log("Hello Tap");
-
 	            var size = _reactDom2.default.findDOMNode(_this2.refs.canvas_1).getBoundingClientRect();
 
 	            var inClass = [];
@@ -42432,24 +42426,14 @@
 	            }
 
 	            _this2.backend.createTag(_this2.state.blabel).then(function (data) {
-	              console.log(data);
-
 	              inClass.map(function (img) {
-	                console.log(img.props.id);
-	                _this2.backend.tagImage(img.props.id, data.id).then(function (data) {}, function (error) {
-	                  console.log(error);
-	                });
+	                _this2.backend.tagImage(img.props.id, data.id).then(function (data) {}, function (error) {});
 	              });
 
 	              outClass.map(function (img) {
-	                console.log(img.props.id);
-	                _this2.backend.untagImage(img.props.id, data.id).then(function (data) {}, function (error) {
-	                  console.log(error);
-	                });
+	                _this2.backend.untagImage(img.props.id, data.id).then(function (data) {}, function (error) {});
 	              });
-	            }, function (error) {
-	              console.log(error);
-	            });
+	            }, function (error) {});
 	          } }),
 	        _react2.default.createElement(_ContextMenu.ThumbnailContextMenu, { left: this.state.left, top: this.state.top, show: this.state.showThumbnailContextMenu, onHide: this._handleThumbnailContextMenuClose.bind(this) })
 	      );
@@ -42457,11 +42441,7 @@
 	  }, {
 	    key: "getImages",
 	    value: function getImages(n) {
-	      this.backend.getImageList().then(function (data) {
-	        console.log(data);
-	      }, function (e) {
-	        console.log(e);
-	      });
+	      this.backend.getImageList().then(function (data) {}, function (e) {});
 	      if (n < 0) return null;
 	      var images = [];
 	      for (var i = this.base; i < this.base + n; i++) {

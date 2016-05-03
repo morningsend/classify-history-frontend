@@ -31,7 +31,6 @@ class AppRoot extends React.Component {
         this.setState({
             showLogin: true
         });
-        console.log("hehahahah");
     }
     _loginCancelled(){
         this.setState({

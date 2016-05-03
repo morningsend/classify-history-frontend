@@ -43,7 +43,7 @@ class WorkSpaceView extends Component {
               }
             );
           },
-          function( error ){ console.log( error ); }
+          function( error ){}
         );
     }
 
@@ -65,7 +65,6 @@ class WorkSpaceView extends Component {
                         onChange={
                           (event, value) =>
                           {
-                            console.log( value );
                             this.setState(
                               { blabel: event[ 0 ] }
                             );
@@ -99,8 +98,6 @@ class WorkSpaceView extends Component {
             <DraggableButton floating icon="cloud" primary top={300} left={100} handleTap={
               (e) =>
               {
-                console.log("Hello Tap");
-
                 var size = ReactDOM.findDOMNode( this.refs.canvas_1 ).getBoundingClientRect();
 
                 var inClass = [];
@@ -123,15 +120,12 @@ class WorkSpaceView extends Component {
                 this.backend.createTag( this.state.blabel ).then(
                   ( data ) =>
                   {
-                    console.log( data );
-
                     inClass.map(
                       ( img ) =>
                       {
-                        console.log( img.props.id );
                         this.backend.tagImage( img.props.id, data.id ).then(
                           ( data ) => {},
-                          ( error ) => { console.log( error ); }
+                          ( error ) => {}
                         );
                       }
                     );
@@ -139,15 +133,14 @@ class WorkSpaceView extends Component {
                     outClass.map(
                       ( img ) =>
                       {
-                        console.log( img.props.id );
                         this.backend.untagImage( img.props.id, data.id ).then(
                           ( data ) => {},
-                          ( error ) => { console.log( error ); }
+                          ( error ) => {}
                         );
                       }
                     );
                   },
-                  ( error ) => { console.log( error ); }
+                  ( error ) => {}
                 );
               }
             }/>
@@ -157,8 +150,8 @@ class WorkSpaceView extends Component {
 
     getImages(n){
       this.backend.getImageList().then(
-        function( data ){ console.log( data ); },
-        function( e ){ console.log( e ); }
+        function( data ){},
+        function( e ){}
       );
         if(n < 0) return null;
         var images = [];

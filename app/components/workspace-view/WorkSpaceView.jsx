@@ -9,10 +9,21 @@ import { ContextMenu, ThumbnailContextMenu } from "../menu/ContextMenu";
 import AppBar from "react-toolbox/lib/app_bar";
 import Navigation from "react-toolbox/lib/navigation";
 import {Button, IconButton} from "react-toolbox/lib/button";
-
+import Chip from "react-toolbox/lib/chip";
 import DraggableButton from "../button/DraggableButton";
 import Autocomplete from "react-toolbox/lib/autocomplete";
 import FloatingToolbar from "../floating-toolbar/FloatingToolbar";
+import TagsView from "../tagsview/TagsView";
+
+
+let tagsObject = {
+    "china": "China",
+    "Shanghai": "Shanghai",
+    "ChiangKie-Shek":"Chian ke Shek",
+    "Fashion" : "Fashion"
+}
+
+
 class WorkSpaceView extends Component {
     constructor(props){
         super(props);
@@ -23,8 +34,11 @@ class WorkSpaceView extends Component {
             
             images: this.getImages(10),
             inverted: false,
-            zoom: 1.0,  
-             
+            zoom: 1.0,
+            tags: [],
+            tagsWindowState: false,
+            selectedImages: [],
+            tagButtonDisable: true
         }
     }
     
@@ -33,24 +47,33 @@ class WorkSpaceView extends Component {
             showImageCollectionViewer: false
         });
     }
+    handleTagsChange(value){
+        this.setState({
+            tags: value
+        })
+    }
+    tagButtonDisableState(){
+        var disable = true;
+        if(this.state.selectedImages.length > 0)
+        {
+            disable = false;
+        }
+        this.setState({tagButtonDisable: disable})       
+    }
     render(){
         return (<div>
             <AppBar className="navbar-main">
                 <Navigation className="navbar-group" >
-                    <Button label="Edit" icon="edit" inverse/>
+                    <Button label="Tag" icon="gavel" inverse disabled={this.state.tagButtonDisable} />
+                    {
+                        this.state.tags.map(tag=><Chip>
+                            <span>{tag}</span>
+                        </Chip>)
+                    }
                 </Navigation >
                 <Navigation className="navbar-group float-right" >
-                    <Button label="shanghai" icon="gavel" inverse/>
-                    <Autocomplete
-                        direction="down"
-                        label="Find Tags"
-                        name="countries"
-                        onChange={null}
-                        source={{"china":"china"}}
-                        value="coutry"
-                        icon="search"
-                        className="tag-search-box"
-                    />
+                    <Button label="search tags" icon="search" inverse 
+                        onClick={this.toggleTagsViewDialog.bind(this)}/>
                 </Navigation >
             </AppBar>
 
@@ -58,14 +81,30 @@ class WorkSpaceView extends Component {
                 {this.state.images.map((image)=><SliderItem className="slider-item"><img src={image.url} /></SliderItem>)}
             </Slider>
             <Canvas className="canvas" images={this.state.images} />
-            <DraggableButton floating icon="cloud" primary top={300} left={100} />
+            <DraggableButton floating icon="menu" primary top={300} left={100} />
             <FloatingToolbar className="floating-toolbar dock-bottom" 
                 onOrientationChange={this.invertOrientation.bind(this)}
             />
             <ThumbnailContextMenu left={this.state.left} top={this.state.top} show={this.state.showThumbnailContextMenu} onHide={this._handleThumbnailContextMenuClose.bind(this)} />
+            
+            <TagsView 
+                active={this.state.tagsWindowState} 
+                onCancel={this.toggleTagsViewDialog.bind(this)}
+                availableTags={tagsObject}
+                selectedTags={this.state.tags}
+                onChange={this.handleTagsChange.bind(this)}
+                onTagsNotFound = {this.handleTagsNotFound.bind(this)}
+            />
         </div>)
     }
-    
+    handleTagsNotFound(tag){
+        
+    }
+    toggleTagsViewDialog(){
+        this.setState({
+            tagsWindowState: !this.state.tagsWindowState
+        })
+    }
     getImages(n){
         if(n < 0) return null;
         var images = [];

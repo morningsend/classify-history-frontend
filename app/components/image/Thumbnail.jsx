@@ -15,9 +15,9 @@ export class Thumbnail extends React.Component {
         }
     }
     render (){
-        
         var cssClass = ClassNames(this.props.className, "image-thumbnail" , { "selected": !this.state.selected } );
-        return <Card className={cssClass} {...this.props} >
+        return <Card className={cssClass} {...this.props}>
+                    <CardTitle title="image xxx" className="image-name" />
                     <CardMedia
                             aspectRatio="square"
                             image={this.props.url}

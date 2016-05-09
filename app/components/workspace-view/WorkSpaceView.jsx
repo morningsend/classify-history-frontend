@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import Slider, {SliderItem} from "../slider/Slider";
 import Thumbnail, { DraggableThumbnail } from "../image/Thumbnail";
 import Canvas from "../canvas/Canvas";
+import CanvasContainer from "../canvas/CanvasContainer";
 import { ContextMenu, ThumbnailContextMenu } from "../menu/ContextMenu";
 
 import AppBar from "react-toolbox/lib/app_bar";
@@ -22,7 +23,6 @@ let tagsObject = {
     "ChiangKie-Shek":"Chian ke Shek",
     "Fashion" : "Fashion"
 }
-
 
 class WorkSpaceView extends Component {
     constructor(props){
@@ -61,6 +61,8 @@ class WorkSpaceView extends Component {
         this.setState({tagButtonDisable: disable})       
     }
     render(){
+        console.log("workspace view");
+        console.dir(this.props);
         return (<div>
             <AppBar className="navbar-main">
                 <Navigation className="navbar-group" >
@@ -76,17 +78,15 @@ class WorkSpaceView extends Component {
                         onClick={this.toggleTagsViewDialog.bind(this)}/>
                 </Navigation >
             </AppBar>
-
             <Slider className="slider" >
                 {this.state.images.map((image)=><SliderItem className="slider-item"><img src={image.url} /></SliderItem>)}
             </Slider>
-            <Canvas className="canvas" images={this.state.images} />
+            <CanvasContainer className="canvas" images={this.state.images} />
             <DraggableButton floating icon="menu" primary top={300} left={100} />
             <FloatingToolbar className="floating-toolbar dock-bottom" 
                 onOrientationChange={this.invertOrientation.bind(this)}
             />
             <ThumbnailContextMenu left={this.state.left} top={this.state.top} show={this.state.showThumbnailContextMenu} onHide={this._handleThumbnailContextMenuClose.bind(this)} />
-            
             <TagsView 
                 active={this.state.tagsWindowState} 
                 onCancel={this.toggleTagsViewDialog.bind(this)}

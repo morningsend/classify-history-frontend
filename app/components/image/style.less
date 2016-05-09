@@ -1,22 +1,36 @@
+@import "../../less/variables";
+
+
 @thumbnail-width: 200px;
 
 .image-thumbnail{
     width: @thumbnail-width;
     
-    .selected {
-        border:5px solid rgba(66,22,33,0.6);
-    }
-    font-size: 0.5rem;
-    background-color: transparent;
-    .image-name {
+    .image-thumbnail-inner {
         background-color: transparent;
-        font-size: 1rem;
-        color: white;
-        padding: 0;
-        margin-bottom: 1rem;
-        text-align:right;
-        h5 {
-            font-size: 1rem !important;
+        position: relative;
+    
+        & .selected {
+            background-color: @thumbnailBackgroundColorSelected;
+        }
+        font-size: 0.5rem;
+        background-color: transparent;
+        .image-name {
+            background-color: transparent;
+            font-size: 1rem;
+            color: white;
+            padding: 0.5rem 1rem;
+            text-align:right;
+            h5 {
+                font-size: 1rem !important;
+            }
+        }
+        .image-select-toggle {
+            position: absolute;
+            right: 0;
+            top: 0;
+            margin: 0;
+            height: auto;
         }
     }
 }

@@ -52,13 +52,13 @@ const CanvasDraggableEnhancer = ( Incoming ) => class extends Component {
     }
     
     handleTap(e){
-        console.log(e);
+        
     }
     handlePanStart(e){
         
     }
     handlePan(e){
-        console.log("pan")
+
         this.setState({
             translate: {
                 x: e.deltaX,
@@ -67,7 +67,7 @@ const CanvasDraggableEnhancer = ( Incoming ) => class extends Component {
         });
     }
     handlePanEnd(e){
-        console.log("panend")
+
         var position = this.state.position;
         var translate = this.state.translate;
         this.setState({
@@ -92,5 +92,4 @@ const CanvasDraggableEnhancer = ( Incoming ) => class extends Component {
         
     }
 }
-
 export default CanvasDraggableEnhancer;

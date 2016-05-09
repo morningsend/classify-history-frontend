@@ -3,19 +3,14 @@ import AppBar from "react-toolbox/lib/app_bar";
 import Navigation from "react-toolbox/lib/navigation";
 import {Button, IconButton} from "react-toolbox/lib/button";
 import ProgressBar from "react-toolbox/lib/progress_bar";
-
 import { Link } from "react-router";
-
-import CanvasDraggableEnhancer from "./canvas/CanvasDraggableEnhancer";
-
 import InjectTapPlugin from "react-tap-event-plugin";
-
 import LoginDialog from "./login/LoginDialog";
-
-
 import "./RootStyle";
-
 import Backend from "./Backend";
+
+import { connect } from "react-redux";
+
 InjectTapPlugin();
 
 
@@ -29,6 +24,11 @@ class AppRoot extends React.Component {
 
         this.backend = new Backend( "http://localhost:8080" );
     }
+    componentDidMount(){
+        const dispatch = this.props;
+        console.log(this.props);
+    }
+    
     showImageCollections(e){
         e.preventDefault();
         this.setState({
@@ -72,7 +72,7 @@ class AppRoot extends React.Component {
                     <AppBar  className="navbar-main">
                         <h1 className="navbar-title">Classify History</h1>
                         <Navigation className="navbar-group">
-                            <Link className="navbar-link" to="/">Dashboard</Link>
+                            <Link className="navbar-link" to="/dashboard">Dashboard</Link>
                             <Link className="navbar-link" to="workspace">Work Space</Link>
                             <Link className="navbar-link" to="image-collections">Image Collections</Link>
                         </Navigation>
@@ -93,4 +93,11 @@ class AppRoot extends React.Component {
 
 }
 
-export default AppRoot;
+function mapStateToProps(state){
+    console.log(state)
+    return {
+        
+    }
+}
+
+export default connect(mapStateToProps)(AppRoot);

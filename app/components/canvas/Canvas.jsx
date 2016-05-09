@@ -6,8 +6,7 @@ import { DraggableThumbnail } from '../image/Thumbnail';
 export class Canvas extends React.Component {
     
     constructor (props) {
-        super(props);
-        this.state = {};
+        super(props)
     }
     render() {
         
@@ -16,16 +15,23 @@ export class Canvas extends React.Component {
         return <div className={cssClass} >
             <div className="canvas-inner">
                 { thumbnails }
-            </div>      
-            </div>;
+            </div>
+        </div>;
     }
     renderImages(){
-        console.log(this.props.images);
+        console.log(this.props);
         if(!this.props.images) return null;
         return this.props.images.map( ({url, id, top, left}) =>{
-            return <DraggableThumbnail url={url} top={top} left={left} key={id} id={id} />
-        } )
+            return <DraggableThumbnail url={url} top={top} left={left} key={id} id={id} onSelectChange={this._handleThumbSelectChange.bind(this)} />
+        })
     }
+    _handleThumbSelectChange(id){
+        const { dispatch } = this.props;
+    }
+}
+
+Canvas.PropTypes = {
+    images: React.PropTypes.array
 }
 
 export default Canvas;

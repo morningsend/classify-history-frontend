@@ -8,12 +8,13 @@ Progress Sheet
 |**UI design and implementation**|
 |Design and Implement the login component| DONE |**Zaiyang Li** |
 |The login screen allows the user to log into the system|DONE|**Jake**|
-|The backend persists user profile data|||
 |The backend stores the images and serves up links|DONE|**Jake**|
+|Suggested tags given from previously used tags|DONE|**Jake**|
 |**Usability and UX**|
 |Able to create tags|DONE|**Jake**|
 |Able to tag images|DONE|**Jake**|
 |Able to upload images|DONE|**Jake**|
+|Able to associate images with tags|DONE|**Jake**|
 |Able to drag images around in canvas|DONE||
 |Able to long-press images to display context menu|In Progress|**Zaiyang Li**|
 |Able to change current tag on the "tag tool" |DONE|**Jake**|

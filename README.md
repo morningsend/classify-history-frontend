@@ -104,3 +104,12 @@ The front-end and back-end repositories will be merged into one. Any existing ba
 
 *04/03/2016*
 Added a progress folder. A markdown to keep track of current development progress. Take any feature not yet implemented from the list and get started working on them. If you finished a feature, edit the file and put your name in the table. Also don't forget to mark it as completed. Also please add new requirements to the list.
+#How to use the application
+1. Open ./build/app/index.html
+2. Click "New Images" to get a set of images to tag.
+3. Enter a tag into the "Tag" input field.
+4. Move images that belong to that tag into the dark grey region.
+5. Press the blue cloud button to commit the tagging.
+6. If you are happy with the tagging, go to step 2.
+7. If you are unhappy with the tagging, go to step 4.
+8. If you want to use the same images with a different tag, go to step 3.

@@ -1,13 +1,9 @@
 language: node_js
 
 node_js:
-    - stable
-    - "5.5.0"
-    - "5.0.0"
+    - "4.4.4"
     
 before_install: 
-    - npm install -g webpack
-    - npm install -g mocha
     - npm install
 
 before_script: npm run build 

@@ -107,7 +107,7 @@ Added a progress folder. A markdown to keep track of current development progres
 ##How to use the application
 1. Open ./build/app/index.html
 2. Click "New Images" to get a set of images to tag.
-3. Enter a tag into the "Tag" input field.
+3. Enter a tag into the "Tag" input field (If the server is available, previously used tags will be suggested).
 4. Move images that belong to that tag into the dark grey region.
 5. Press the blue cloud button to commit the tagging.
 6. If you are happy with the tagging, go to step 2.

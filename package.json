@@ -12,30 +12,8 @@
     "start-backend": "node server/Server.js",
     "lint": "./node_modules/.bin/eslint --format './node_modules/eslint-friendly-formatter/index.js' -c .eslintrc  --ext .js --ext .jsx ."
   },
-  "jest": {
-    "testPathDirs": [
-      "__tests__"
-    ],
-    "unmockedModulePathPatterns": [
-      "<rootDir>/node_modules/react",
-      "<rootDir>/node_modules/react-dom",
-      "<rootDir>/node_modules/css-loader",
-      "<rootDir>/node_modules/node-sass",
-      "<rootDir>/node_modules/style-loader",
-      "<rootDir>/node_modules/sass-loader",
-      "<rootDir>/node_modules/react-addons-test-utils"
-    ],
-    "testFileExtensions": [
-      "js"
-    ],
-    "moduleFileExtensions": [
-      "js",
-      "json"
-    ],
-    "scriptPreprocessor": "<rootDir>/node_modules/babel-jest/index.js"
-  },
   "engines": {
-    "node": "5.7.0",
+    "node": "4.4.4",
     "npm": "3.7.x"
   },
   "author": "Zaiyang Li",
@@ -62,7 +40,6 @@
     "eslint-loader": "^1.3.0",
     "eslint-plugin-babel": "^3.0.0",
     "eslint-plugin-react": "^3.16.1",
-    "express-session": "^1.13.0",
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.8.5",
     "flux": "^2.1.1",
@@ -70,12 +47,9 @@
     "history": "^1.17.0",
     "html-loader": "^0.4.0",
     "jasmine": "^2.4.1",
-    "jest-cli": "^0.8.2",
-    "jquery": "^2.2.1",
     "less": "^2.5.3",
     "less-loader": "^2.2.2",
     "material-design-icons": "^2.1.3",
-    "mysql": "^2.10.2",
     "node-sass": "^3.4.2",
     "normalize.css": "^4.1.1",
     "postcss-loader": "^0.8.1",
@@ -104,13 +78,6 @@
     "webpack-dev-server": "^1.14.1"
   },
   "dependencies": {
-    "body-parser": "^1.14.2",
-    "express": "^4.13.4",
-    "jquery": "^2.2.0",
-    "md5": "^2.0.0",
-    "morgan": "^1.6.1",
-    "multer": "^1.1.0",
-    "mysql": "^2.10.2",
-    "promise": "^7.1.1"
+    "md5": "^2.0.0"
   }
 }

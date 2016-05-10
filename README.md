@@ -104,7 +104,7 @@ The front-end and back-end repositories will be merged into one. Any existing ba
 
 *04/03/2016*
 Added a progress folder. A markdown to keep track of current development progress. Take any feature not yet implemented from the list and get started working on them. If you finished a feature, edit the file and put your name in the table. Also don't forget to mark it as completed. Also please add new requirements to the list.
-#How to use the application
+##How to use the application
 1. Open ./build/app/index.html
 2. Click "New Images" to get a set of images to tag.
 3. Enter a tag into the "Tag" input field.

@@ -54,7 +54,10 @@ module.exports = {
     eslint: {
         configFile: path.resolve(__dirname, ".eslintrc"),
     },
-    plugins: [ new ExtractTextPlugin("style.css",{ allChunks: true} )],
+    plugins: [ 
+        new ExtractTextPlugin("style.css",{ allChunks: true} ),
+        new 
+        ],
     resolve: {
         extensions: ['', '.js', '.json', '.jsx', '.css', '.less', '.scss'] 
     }

@@ -10,7 +10,8 @@
     "build": "./node_modules/.bin/webpack --colors --progress --config webpack.config.js",
     "webpack-watch": "./node_modules/.bin/webpack --colors --progress --watch --config webpack.config.js",
     "start-backend": "node server/Server.js",
-    "lint": "node_modules/.bin/eslint -c .eslintrc  --ext .js --ext .jsx ."
+    "lint": "node_modules/.bin/eslint -c .eslintrc  --ext .js --ext .jsx .",
+    "server-test": "./node_modules/.bin/jasmine server/spec/spec.js"
   },
   "engines": {
     "node": "4.4.4",

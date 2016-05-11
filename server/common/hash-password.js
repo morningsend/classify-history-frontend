@@ -18,8 +18,8 @@ function calculateHash(password,salt){
             if(error) reject(error)
             else
                 resolve({
-                    password_hash: hash,
-                    password_salt: salt
+                    hash: hash,
+                    salt: salt
                 })
         })
     })
@@ -42,8 +42,12 @@ function compareBuffer(buffer1, buffer2){
     return buffer1.equals(buffer2)
 }
 function verifyPassword(password, password_hash, password_salt){
-    return calculateHash(password,password_salt).then((hash)=>
-        Promise.resolve(compareBuffer(hash, password_hash)))
+    return calculateHash(password,password_salt).then((hash)=>{
+            return Promise.resolve(compareBuffer(hash.hash, password_hash))
+        }
+        ,(error)=>{
+            console.log(error)
+        })
 }
 var exports = module.exports
 exports.getSalt = getSalt

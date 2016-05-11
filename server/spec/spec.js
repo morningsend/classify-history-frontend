@@ -1,0 +1,2 @@
+require("./HashPasswordSpec")
+require("./EmailValidatorSpec")

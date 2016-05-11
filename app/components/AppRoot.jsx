@@ -1,4 +1,4 @@
-                                                                                                                                                                                                                                                                                                                import React  from "react";
+import React  from "react";
 import AppBar from "react-toolbox/lib/app_bar";
 import Navigation from "react-toolbox/lib/navigation";
 import {Button, IconButton} from "react-toolbox/lib/button";
@@ -7,7 +7,7 @@ import { Link } from "react-router";
 import InjectTapPlugin from "react-tap-event-plugin";
 import LoginDialog from "./login/LoginDialog";
 import "./RootStyle";
-import Backend from "./Backend";
+
 
 import { connect } from "react-redux";
 
@@ -18,11 +18,8 @@ class AppRoot extends React.Component {
     constructor(props ) {
         super(props);
         this.state={
-
             showLogin: false,          
         }
-
-        this.backend = new Backend( "http://localhost:8080" );
     }
     componentDidMount(){
         const dispatch = this.props;

@@ -1,8 +1,8 @@
 var path = require("path");
 var webpack = require("webpack");
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
-
 var autoprefixer = require('autoprefixer');
+
 module.exports = {
     entry: {
         // test:path.resolve(__dirname,)
@@ -55,11 +55,9 @@ module.exports = {
         configFile: path.resolve(__dirname, ".eslintrc"),
     },
     plugins: [ 
-        new ExtractTextPlugin("style.css",{ allChunks: true} ),
-        new 
-        ],
+        new ExtractTextPlugin("style.css",{ allChunks: true} )
+    ],
     resolve: {
         extensions: ['', '.js', '.json', '.jsx', '.css', '.less', '.scss'] 
     }
-     
 };

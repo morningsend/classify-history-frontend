@@ -6,9 +6,8 @@ function sum(a,b){
 
 import AppRoot from "../app/components/AppRoot.jsx";
 
-import React from "react/addons";
+import TestUtils from "react-addons-test-utils";
 
-var TestUtils = React.addons.TestUtils;
 
 describe("sum function ", ()=>{
     it("should return sum of two numbers", ()=>{

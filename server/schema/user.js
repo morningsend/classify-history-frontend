@@ -13,8 +13,12 @@ const UserSchema = new Mongoose.Schema({
             unique: true
         }
     },
-    password: {
-        type:String,
+    passwordHash: {
+        type:Buffer,
+        required: true
+    },
+    passwordSalt: {
+        type:Buffer,
         required: true
     },
     email: {

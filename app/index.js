@@ -7,7 +7,7 @@ import { createStore } from "redux";
 
 import { AppRoot as AppRootReducer } from "./reducers/AppRoot.js" ;
 
-import { Router, Link, Route, hashHistory, IndexRoute, RouterContext } from "react-router";
+import { Router, Link, Route, browserHistory, IndexRoute, RouterContext } from "react-router";
 
 import "./less/style.less";
 
@@ -21,7 +21,7 @@ const TouchApp =(props)=> <AppRoot {...props} />
 
 ReactDOM.render(
 <Provider store={store}>
-    <Router history={hashHistory} render={props => <RouterContext {...props} />}>
+    <Router history={browserHistory} render={props => <RouterContext {...props} />}>
         <Route path="/" component={TouchApp} >
             <IndexRoute component={WorkSpaceView} />
             <Route path="workspace" component={WorkSpaceView} />

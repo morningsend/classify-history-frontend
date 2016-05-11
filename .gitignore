@@ -8,7 +8,7 @@ server/public/
 
 .grunt
 
-
+spec/spec.js
 .DS_Store
 .AppleDouble
 .LSOverride

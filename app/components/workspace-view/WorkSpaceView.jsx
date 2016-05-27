@@ -79,7 +79,7 @@ class WorkSpaceView extends Component {
                 </Navigation >
             </AppBar>
             <Slider className="slider" >
-                {this.state.images.map((image)=><SliderItem className="slider-item"><img src={image.url} /></SliderItem>)}
+                {this.state.images.map((image)=><SliderItem className="slider-item" key={"image"+image.id}><img src={image.url} /></SliderItem>)}
             </Slider>
             <CanvasContainer className="canvas" images={this.state.images} />
             <DraggableButton floating icon="menu" primary top={300} left={100} />

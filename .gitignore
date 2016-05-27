@@ -3,7 +3,7 @@ npm-debug.log*
 
 app/build/
 app/build/*
-
+app/build*
 server/public/
 
 .grunt

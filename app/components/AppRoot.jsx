@@ -3,91 +3,90 @@ import AppBar from "react-toolbox/lib/app_bar";
 import Navigation from "react-toolbox/lib/navigation";
 import {Button, IconButton} from "react-toolbox/lib/button";
 import ProgressBar from "react-toolbox/lib/progress_bar";
-import { Link } from "react-router";
+import { Link, withRouter } from "react-router";
 import InjectTapPlugin from "react-tap-event-plugin";
 import LoginDialog from "./login/LoginDialog";
-import "./RootStyle";
-
-
 import { connect } from "react-redux";
+import "./RootStyle";
 
 InjectTapPlugin();
 
 
 class AppRoot extends React.Component {
-    constructor(props ) {
-        super(props);
+    constructor(props, context ) {
+        super(props, context);
         this.state={
-            showLogin: false,          
+            showLogin: false,
+            isAuthenticated: false
         }
     }
     componentDidMount(){
         const dispatch = this.props;
         console.log(this.props);
     }
-    
-    showImageCollections(e){
-        e.preventDefault();
-        this.setState({
-            showImageCollectionViewer: true,
-        });
-    }
+   
     _showLogin() {
         this.setState({
             showLogin: true
         });
-        console.log("hehahahah");
     }
     _loginCancelled(){
         this.setState({
-            showLogin:false
+            showLogin: false
         });
     }
     _loginComplete(){
-        this.setState({
-            showLogin:false
-        });
+        this.props.router.push("/dashboard")
     }
     _loginFailed(){
-
+        
     }
     _handleLogin(username, password){
-        var self = this;
-        this.backend.login( username, password ).then(
-          function( result ) { self.__loginComplete(); },
-          function( error ){ self._loginFailed(); }
-        );
+        this.setState({
+            isAuthenticated: true,
+            showLogin: false
+        })
+        this._loginComplete()
     }
-    
+    _logOut(){
+        this.setState({
+            isAuthenticated: false,
+        })
+        this.props.router.push("/");
+    }
     render () {
-        var invertedTransform = this.state.inverted ? {
-            transform: "rotate(180deg)",
-        } : null;
-        return <div className="app-container" style={invertedTransform} >
+        
+        const accountButton = !this.state.isAuthenticated ? 
+            <Button label="Log in" inverse primary onClick={this._showLogin.bind(this)}/> :
+            <Button label="Log out" inverse primary onClick={this._logOut.bind(this)} />
+            
+        const settingsButton = !this.state.isAuthenticated?
+            null 
+            : <Button label="Settings" inverse/>
+            
+        return <div className="app-container">
                 <header className="header">
                     <ProgressBar type="linear" mode="indeterminate" className="progress-bar" />
                     <AppBar  className="navbar-main">
                         <h1 className="navbar-title">Classify History</h1>
-                        <Navigation className="navbar-group">
-                            <Link className="navbar-link" to="/dashboard">Dashboard</Link>
-                            <Link className="navbar-link" to="workspace">Work Space</Link>
-                            <Link className="navbar-link" to="image-collections">Image Collections</Link>
-                        </Navigation>
                         <Navigation className="navbar-group float-right" >
-                            <Button label="Settings" inverse/>
-                            <Button label="Log in" inverse primary onClick={this._showLogin.bind(this)}/>
-                        </Navigation >
+                            { settingsButton }
+                            { accountButton }
+                        </Navigation>
                     </AppBar>
                 </header>
                 <main className="main-content">
                     {this.props.children}
                 </main>
                 <div className="hidden">
-                <LoginDialog active={this.state.showLogin} onLogin={this._handleLogin.bind(this)} onCancel={this._loginCancelled.bind(this)}/>
+                <LoginDialog active={this.state.showLogin} 
+                    onLogin={this._handleLogin.bind(this)} 
+                    onCancel={this._loginCancelled.bind(this)}
+                    registerUrl="/register"
+                />
                 </div>
             </div>;
     }
-
 }
 
 function mapStateToProps(state){
@@ -97,4 +96,10 @@ function mapStateToProps(state){
     }
 }
 
-export default connect(mapStateToProps)(AppRoot);
+AppRoot.propTypes = {
+    history: React.PropTypes.object,
+    dispatch: React.PropTypes.func,
+    router: React.PropTypes.object
+}
+
+export default connect(mapStateToProps)(withRouter(AppRoot));
